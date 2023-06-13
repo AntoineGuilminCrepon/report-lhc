@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-impl-r]{
+  \pvar(P) \inters \mods(\m{t}) = \emptyset
+}{
+  P \implies \WPU{\m{t}}{Q}
+  \lequiv
+  \WPU{\m{t}}{\ret. P \implies Q(\ret)}
+}

@@ -1,0 +1,11 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-ind-prep]{}{
+  \V
+  \WPU {\m{t} {\m.} \m[i: t_1, j: t_2]}
+  {\at{A}{i} \implies Q}
+  |-
+  \WPU {\m{t} {\m.} \m[i: t_1]}{
+    \at{A}{i} \implies
+    \WPU{\m[j: t_2]}{Q}
+  }
+}

@@ -1,0 +1,11 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-subst]{
+  \p{x} \notin \mods(t)
+}{
+  \V
+  \p{x}(i) = v
+  \land
+  \WPE{\bigl(\map[\big]{i: t\subst{\p{x}->v}}\m.\m{t}'\bigr)}{Q}
+  |-
+  \WPE{(\m[i: t]\m.\m{t}')}{Q}
+}

@@ -1,0 +1,58 @@
+% For camera-ready:
+% \documentclass[acmsmall,screen]{acmart}
+% For arXiv:
+\documentclass[acmsmall,screen,nonacm,appendix]{acmart}
+
+% TO BE REMOVED
+\usepackage{lipsum}
+
+\usepackage[capitalize]{cleveref}
+\crefname{line}{Line}{Lines}
+\crefname{rule}{rule}{rules}
+\Crefname{rule}{Rule}{Rules}
+\crefrangelabelformat{line}{#3#1#4--#5#2#6}
+
+% These commands are used to suppress the "Too many math alphabets" error
+% https://texfaq.org/FAQ-manymathalph
+% https://tex.stackexchange.com/questions/3676/too-many-math-alphabets-error
+\newcommand\bmmax{0}
+\newcommand\hmmax{0}
+
+% \usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{wrapfig}
+\usepackage{natbib}
+\usepackage[inline]{enumitem}
+\usepackage{mathpartir}
+\usepackage{style/comments}
+\usepackage{style/notation}
+\usepackage{style/appendix}
+
+\usepackage[figuresleft]{rotating}
+\setlength\rotFPtop{0pt plus 1fil}
+
+% Alter some LaTeX defaults for better treatment of figures:
+\renewcommand{\floatpagefraction}{0.7}  % require fuller float pages
+\renewcommand{\dblfloatpagefraction}{0.7}  % require fuller float pages
+
+\newenvironment{mathfig}[1][]{\adjustfigure[#1]\begin{figure}}{\end{figure}}
+
+\title{Extending LHC to Hyperliveness Properties}
+\subtitle{Report for internship -- MPI-SWS Saarbrücken}
+\author{Antoine Guilmin-Crépon}
+\email{antoine.guilmin@ens-paris-saclay.fr}
+\affiliation{%
+  \institution{ENS Paris-Saclay}
+  \city{Gif-Sur-Yvette}
+  \country{France}
+}
+
+\begin{document}
+
+\maketitle
+
+\input{1-SoA}
+\input{2-LHC}
+\input{3-extension}
+
+\end{document}

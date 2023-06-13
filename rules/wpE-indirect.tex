@@ -1,0 +1,32 @@
+%!TEX root = ../main.tex
+\infer*[
+lab=wp$_{\exists}$-indirect,
+Right={%
+    $\begin{smallmatrix*}[l]
+        j \notin \idx(\Gamma)
+        \\
+        j \notin \supp(\m{t})
+      \end{smallmatrix*}$}
+]{
+\V \Gamma |- \WPE{\m[i: t_1]}{\E v. \at{A(v)}{i}}
+\\
+\exists v\st\ %
+\V
+\Gamma, \at{A(v)}{j}
+|-
+\WPE{(\m[i: t_1, j: t_2] \m. \m{t})}{
+  \at{A(v)}{i} \implies Q(v)
+}
+}{
+\V
+\Gamma
+|-
+\WPE{(\m[i: t_1] \m. \m{t})}*{
+\E v.
+\at{A(v)}{i}
+\land
+\WPE{\m[i: t_2]}{
+  \bigl( \PP i. Q(v) \bigr)\isub{j->i}
+}
+}
+}

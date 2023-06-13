@@ -1,0 +1,16 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-proj,
+  Right={$ I = \supp(\m{t}_1) $}
+]{
+  %I = \supp(\m{t}_1)
+}{
+  \V
+  \P I. \bigl(
+  \proj(\m{t}_2) \implies \proj(\m{t}_1)
+  \land
+  \WPE{(\m{t}_1 \m. \m{t}_2)}{Q}
+  \bigr)
+  |-
+  \WPE{\m{t}_2}{\PP I.Q}
+}
+% derivable from wp$\exists$-elim, proj-irrel, proj-weak, proj-intro

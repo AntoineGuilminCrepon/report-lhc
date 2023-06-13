@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-project]{
+  \V \Gamma |- \WPE{(\m{t}'\m.\m[i: t])}{Q}
+  \\
+  \V \Gamma |- \at{\proj(t)}{i}
+}{
+  \V \P i.\Gamma |- \WPE {\m{t}'} {\PP i. Q}
+}

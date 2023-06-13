@@ -1,0 +1,10 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-seq-plus]{
+  \V \Gamma
+  |- \WPE{(\m[i: t_i | i \in I] \m. \m{t}_1)}{
+    \WPE{(\m[i: t_i' | i \in I] \m. \m{t}_2)}{Q}
+  }
+}{
+  \V \Gamma
+  |- \WPE{(\m[i: (t_i\code{;}\ t'_i) | i \in I] \m. \m{t}_1 \m. \m{t}_2)}{Q}
+}

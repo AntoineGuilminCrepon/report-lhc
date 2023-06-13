@@ -1,0 +1,15 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-conj]{
+  % \idx(Q_1) \subs \supp(\m{t}_1)
+  \idx(Q_1) \inters \supp(\m{t}_2) \subs \supp(\m{t}_1)
+  \\
+  % \idx(Q_2) \subs \supp(\m{t}_2)
+  \idx(Q_2) \inters \supp(\m{t}_1) \subs \supp(\m{t}_2)
+}{
+  \V
+  \WPU{\m{t}_1}{Q_1}
+  \land
+  \WPU{\m{t}_2}{Q_2}
+  |-
+  \WPU{(\m{t}_1 \m+ \m{t}_2)}{Q_1 \land Q_2}
+}

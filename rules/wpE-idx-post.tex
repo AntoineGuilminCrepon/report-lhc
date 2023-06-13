@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-idx-post]{
+  \V \Gamma |- \WPE{\m{t}}{Q}
+  \\
+  j \notin \supp(\m{t}) \union \idx(\Gamma)
+}{
+  \V \Gamma |- \WPE{\m{t}}{Q\isub{j->i}}
+}

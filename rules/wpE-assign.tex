@@ -1,0 +1,11 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-assign$_I$]{
+  \exists i\in I\st
+  (\p{x}_i,i) \not\in \pvar(Q)
+}{
+  \V
+  \WPE {\m[i: e_i | i\in I]} {Q}
+  |-
+  \WPE {\m[i: \p{x}_i \code{:=}\, e_i | i \in I]}
+  {\ret.Q(\ret) \land \LAnd_{i\in I} \ret[i] = \p{x}_i(i)}
+}

@@ -1,0 +1,13 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-ind-seq]{
+  \V |- \E v.A(v)
+  \\
+  \forall v\st\ %
+  \V
+  \Gamma, \at{A(v)}{j}
+  |-
+  \WPU{(\m{t}\m.\m[i: t_1, j: t_2])}{\at{A(v)}{i} \implies Q}
+}{
+  \V \Gamma |-
+  \WPU{(\m{t}\m.\m[i: (t_1\p;t_2)])}*{\bigl( \PP i. Q \bigr)\isub{j->i}}
+}

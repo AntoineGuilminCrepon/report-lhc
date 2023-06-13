@@ -1,0 +1,17 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-while]{
+  \V
+  P
+  |-
+  \WPE {\m[i: g_i | i\in I]}[\big]{
+    \fun\m{b}.
+    (\m{b} =_I 0 \implies R)
+    \land
+    \WPE {\m[i: t_i | \m{b}(i) \ne 0]} {P}
+  }
+}{
+  \V
+  P
+  |-
+  \WPE {\m[i: \code{while}\ g_i\ \code{do}\ t_i | i \in I]} {R}
+}

@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-frame]{
+  \V \Gamma |- \WPU{\m{t}}{Q}
+  \\
+  \pvar(P) \inters \mods(\m{t}) = \emptyset
+}{
+  \V \Gamma,P |- \WPU {\m{t}} {\ret. P \land Q(\ret)}
+}

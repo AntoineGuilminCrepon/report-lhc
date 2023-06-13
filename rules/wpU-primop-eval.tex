@@ -1,0 +1,13 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-prim$_{\oplus}$]{}{
+  \V
+  \WPU {\m[i: e_1]}{
+    \fun\m{v}_1.
+    \WPU {\m[i: e_2]}{
+      \fun\m{v}_2.
+      \WPU {\m[i: \m{v}_1(i) \oplus \m{v}_2(i)]}{Q}
+    }
+  }
+  |-
+  \WPU {\m[i: e_1 \oplus e_2]}{Q}
+}

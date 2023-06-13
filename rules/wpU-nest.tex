@@ -1,0 +1,12 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-nest]{%
+  % \supp(\m{t}_1) \inters \supp(\m{t}_2) = \emptyset
+  % implied by well definedness
+}{
+  % \WPU{\m{t}_1}{\WPU{\m{t}_2}{Q}} % simpler but discards ret vals of t1
+  \WPU{\m{t}_1}{\fun\m{v}.
+    \WPU{\m{t}_2}{\fun\m{w}.
+      Q(\m{v}\m.\m{w})}}
+  \lequiv
+  \WPU{(\m{t}_1 \m. \m{t}_2)}{Q}
+}

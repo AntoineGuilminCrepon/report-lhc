@@ -1,0 +1,385 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                               CHEATSHEET                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% OPTIONS: draft,final,notikz                                              %
+%                                                                          %
+% \ifdraft\else\fi                                                         %
+%                                                                          %
+% authors: ed,az (using ed as example below)                               %
+%                                                                          %
+% \ed{MSG}           inline comment                                        %
+% \ed*{MSG}          margin comment                                        %
+% \ED[title]{MSG}    block comment                                         %
+% \seehere[ed]{text} highlight                                             %
+% \del[ed]{text}     mark as deleted                                       %
+% \citneed{key}      missing citation                                      %
+% \todo{Text}        content placeholder                                   %
+% \todo*{Text}       paragraph placeholder                                 %
+% \todo[2]{Text}     specify how long a placeholder (not very general atm) %
+% \todoframe{Text}   box placeholder                                       %
+% \draftpar          par that is there only in draft mode                  %
+% \SEP[Title]        Separator                                             %
+% \ONGOING[ed]{what}                                                       %
+% \ENDONGOING[ed]    Mark enclosed fragment as ongoing work                %
+%                                                                          %
+% \begin{todolist}                                                         %
+%   \item Task                                                             %
+%   \item[\done] Task                                                      %
+% \end{todolist}                                                           %
+%                                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% TODO: use soul only if loaded/provide option
+
+\newif\ifdraft
+\newif\ifcomm@use@tikz@
+\comm@use@tikz@true
+
+\DeclareOption{draft}{\drafttrue}
+\DeclareOption{comments}{\drafttrue}
+\DeclareOption{final}{\draftfalse}
+\DeclareOption{notikz}{\comm@use@tikz@false}
+
+\ExecuteOptions{final}
+
+
+
+\ProcessOptions\relax
+
+
+\RequirePackage{xcolor,etoolbox}
+
+\ifdraft
+  \RequirePackage{soul}
+\fi
+
+\colorlet{todo}{brown!70!black}
+\colorlet{highlight}{yellow!50}
+\@ifpackageloaded{soul}{
+  \sethlcolor{highlight}
+}
+
+\colorlet{ed}{green!50!black}
+\colorlet{az}{red}
+\colorlet{pg}{brown}
+\colorlet{dd}{blue}
+
+\DeclareRobustCommand{\ed}{\@ifstar{\makemargincomment{ed}}{\makecomment{ed}}}
+\DeclareRobustCommand{\az}{\@ifstar{\makemargincomment{az}}{\makecomment{az}}}
+\DeclareRobustCommand{\pg}{\@ifstar{\makemargincomment{pg}}{\makecomment{pg}}}
+\DeclareRobustCommand{\dd}{\@ifstar{\makemargincomment{dd}}{\makecomment{dd}}}
+
+\DeclareRobustCommand{\ED}[1][]{\MakeComment{ed}{#1}}
+\DeclareRobustCommand{\AZ}[1][]{\MakeComment{az}{#1}}
+\DeclareRobustCommand{\PG}[1][]{\MakeComment{pg}{#1}}
+\DeclareRobustCommand{\DD}[1][]{\MakeComment{dd}{#1}}
+
+\newenvironment{todolist}[1][Todo List]{%
+  \def\done{\fboxsep1.8pt\fboxrule.8pt\color{todo}\fbox{\textsf{x}}}%
+  \def\notdone{\fboxsep1.8pt\fboxrule.8pt\color{todo}\fbox{\phantom{\textsf{x}}}}%
+  \par\color{todo}%
+  \@beginparpenalty\@M%
+  \noindent%
+  \rule{0.2ex}{.5\baselineskip}%
+  \rule[.5\baselineskip-.2ex]{3ex}{.2ex}\kern.8ex\textbf{#1}\kern.8ex%
+  \leavevmode\leaders\hrule height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\hfill%
+  \kern0pt%
+  \rule{0.2ex}{.5\baselineskip}\nopagebreak%
+  \begin{itemize}[label={\quad\notdone}]
+}{%
+  \end{itemize}%
+  \nopagebreak\noindent%
+  \rule{0.2ex}{.5\baselineskip}%
+  \leavevmode\leaders\hrule height 0.2ex depth 0pt\hfill%
+  \rule{3ex}{.2ex}%
+  \rule{0.2ex}{.5\baselineskip}%
+  \par%
+}
+
+\newcommand{\makemargincomment}[2]{\comm@marginpar{\textcolor{#1}{\llap{\textbullet}#2}}}
+
+\newcommand{\comm@sign}[1]{{\tiny\uppercase{#1}}}
+
+\providecommand{\makecomment@pre@hook}{}
+\providecommand{\makecomment@post@hook}{}
+
+\newlength{\comm@todowd}
+
+\ifdraft
+  \DeclareRobustCommand{\seehere}[2][red]{{\colorlet{highlight}{#1!30}\hl{#2}}}
+  \DeclareRobustCommand{\del}[2][red]{{\colorlet{highlight}{#1!70!black}\def\SOUL@ulthickness{1.2pt}\setstcolor{highlight}\ST{#2}}}
+  \newcommand{\citneed}[1]{%
+    \comm@mark{red}\textcolor{red}{\textbf{[CIT?]}}%
+  }
+
+  % \DeclareRobustCommand{\makecomment}[2]{\noindent{\color{#1}\small\OpenCommentBraket\comm@mark{#1}\makecomment@pre@hook#2\makecomment@post@hook\ClosedCommentBraket\comm@sign{#1}}}
+  \DeclareRobustCommand{\makecomment}[2]{\noindent\textcolor{#1}{\small\OpenCommentBraket\comm@mark{#1}\makecomment@pre@hook#2\makecomment@post@hook\ClosedCommentBraket\comm@sign{#1}}}
+
+  \DeclareRobustCommand{\MakeComment}[3]{%
+    \par\noindent\leavevmode\begingroup\color{#1}%
+    \@beginparpenalty\@M%
+    \rule{0.2ex}{.5\baselineskip}%
+    % \hrule width 2ex height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\relax%
+    % \leavevmode\leaders\hrule height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\hfill%
+    \ifblank{#2}{}{\rule{0pt}{1.2\baselineskip}\rule[.5\baselineskip-.2ex]{3ex}{.2ex}\kern.8ex\raisebox{.8ex}{\textbf{#2}}\kern.8ex}%
+    \leavevmode\leaders\hrule height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\hfill%
+    \kern0pt%
+    \rule{0.2ex}{.5\baselineskip}\par\nopagebreak\noindent%
+    \begin{list}{}{%
+        \rightmargin=1ex%
+        \leftmargin=1ex%
+        \topsep=0pt%
+        \itemsep=0pt%
+      }%
+      \item #3\par\nobreak\@afterheading
+    \end{list}%
+    \noindent%
+    \rule{0.2ex}{.5\baselineskip}%
+    \leavevmode\leaders\hrule height 0.2ex depth 0pt\hfill%
+    \kern.8ex\uppercase{#1}\kern.8ex%
+    % \leavevmode\leaders\hrule width 3em height 0.2ex depth 0pt%
+    % \kern0pt%
+    \rule{3ex}{.2ex}%
+    \rule{0.2ex}{.5\baselineskip}%
+    \endgroup\par%
+  }%
+
+
+  \newcommand{\comm@marginpar}[1]{%
+    \marginpar%
+      [\leavevmode\raggedleft\footnotesize#1]%
+      {\leavevmode\raggedright\footnotesize#1}%
+  }
+
+  \DeclareRobustCommand{\todoframe}[1]{%
+    \begingroup%
+      \setlength{\comm@todowd}{\columnwidth}%
+      \addtolength{\comm@todowd}{-\leftmargin}%
+      \addtolength{\comm@todowd}{-\rightmargin}%
+      \addtolength{\comm@todowd}{-4\fboxsep}
+      \addtolength{\comm@todowd}{-4\fboxrule}
+      \begin{center}%
+        \color{todo}%
+        % \comm@mark@todo{todo}%
+        \fbox{\fbox{%
+          \parbox{\comm@todowd}{
+            \vspace{1em}
+            \begin{center}
+              #1
+            \end{center}
+            \vspace{1em}
+          }%
+        }}%
+      \end{center}%
+    \endgroup%
+  }
+
+  \newcommand{\SEP}[2][red]{%
+    \par\noindent\textcolor{#1}{\divider#2\divider}\par%
+  }
+  % \newcommand{\ONGOING}[2][red]{%
+  %   % \draftpar\noindent\textcolor{#1}{$\lceil$\divider\MakeUppercase{Ongoing~#2}\divider$\rceil$}\draftpar%
+  %   \leavevmode\par\begingroup\color{#1}%
+  %   \noindent%
+  %   \rule{0.2ex}{.5\baselineskip}%
+  %   % \hrule width 2ex height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\relax%
+  %   % \leavevmode\leaders\hrule height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\hfill%
+  %   \ifblank{#2}{}{\rule[.5\baselineskip-.2ex]{3ex}{.2ex}\kern.8ex\textbf{\MakeUppercase{Ongoing~#2}}\kern.8ex}%
+  %   \leavevmode\leaders\hrule height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\hfill%
+  %   \kern0pt%
+  %   \rule{0.2ex}{.5\baselineskip}\endgroup\par\nopagebreak%
+  % }
+  % \newcommand{\ENDONGOING}[1][]{%
+  %   % \draftpar\noindent\textcolor{#1}{$\lfloor$\divider\divider$\rfloor$}\draftpar%
+  %   \par\nopagebreak\noindent\begingroup\ifblank{#1}{\color{red}}{\color{#1}}%
+  %   \rule{0.2ex}{.5\baselineskip}%
+  %   \leavevmode\leaders\hrule height 0.2ex depth 0pt\hfill%
+  %   \ifblank{#1}{}{\kern.8ex\uppercase{#1}\kern.8ex}%
+  %   \rule{3ex}{.2ex}%
+  %   \rule{0.2ex}{.5\baselineskip}%
+  %   \endgroup\par%
+  % }
+  \newcommand{\BEGINMARK}[2][red]{%
+    % \draftpar\noindent\textcolor{#1}{$\lceil$\divider\MakeUppercase{Ongoing~#2}\divider$\rceil$}\draftpar%
+    \leavevmode\par\begingroup\color{#1}%
+    \noindent%
+    \rule{0.2ex}{.5\baselineskip}%
+    % \hrule width 2ex height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\relax%
+    % \leavevmode\leaders\hrule height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\hfill%
+    \ifblank{#2}{}{\rule[.5\baselineskip-.2ex]{3ex}{.2ex}\kern.8ex\textbf{#2}\kern.8ex}%
+    \leavevmode\leaders\hrule height .5\baselineskip depth \dimexpr-.5\baselineskip+0.2ex\hfill%
+    \kern0pt%
+    \rule{0.2ex}{.5\baselineskip}\endgroup\par\nopagebreak%
+  }
+  \newcommand{\ENDMARK}[1][]{%
+    % \draftpar\noindent\textcolor{#1}{$\lfloor$\divider\divider$\rfloor$}\draftpar%
+    \par\nopagebreak\noindent\begingroup\ifblank{#1}{\color{red}}{\color{#1}}%
+    \rule{0.2ex}{.5\baselineskip}%
+    \leavevmode\leaders\hrule height 0.2ex depth 0pt\hfill%
+    \ifblank{#1}{}{\kern.8ex\uppercase{#1}\kern.8ex}%
+    \rule{3ex}{.2ex}%
+    \rule{0.2ex}{.5\baselineskip}%
+    \endgroup\par%
+  }
+  \newcommand{\ONGOING}[2][red]{\BEGINMARK[#1]{\MakeUppercase{Ongoing~#2}}}
+  \def\ENDONGOING{\ENDMARK}
+
+\else
+  \newsavebox{\comm@ignore@box}
+  \renewenvironment{todolist}[1][Todo List]
+    {\def\done{}\def\notdone{}\def\item{}\begin{lrbox}{\comm@ignore@box}}{\end{lrbox}}
+  \newcommand{\SEP}[2][red]{\@bsphack\@esphack}
+  \newcommand{\BEGINMARK}[2][red]{\@bsphack\@esphack}
+  \newcommand{\ENDMARK}[1][]{\@bsphack\@esphack}
+  \newcommand{\ONGOING}[2][red]{\@bsphack\@esphack}
+  \newcommand{\ENDONGOING}[1][]{\@bsphack\@esphack}
+
+  \DeclareRobustCommand{\seehere}[1][red]{}
+  \DeclareRobustCommand{\del}[2][red]{\@bsphack\@esphack}
+  \newcommand{\citneed}[1]{\PackageWarning{comments}{Citation missing}{You inserted a \textbackslash citneed macro and not resolved it}}
+
+  \DeclareRobustCommand{\makecomment}[2]{\@bsphack\@esphack}
+  \newcommand{\MakeComment}[3]{\@bsphack\@esphack}
+
+  \newcommand{\comm@marginpar}[1]{\@bsphack\@esphack}
+
+  \DeclareRobustCommand{\todoframe}[2][]{\@bsphack\@esphack}
+\fi
+
+\newcommand{\draftpar}{\ifdraft\par\fi}
+\def\divider{%
+  \noindent\leavevmode\leaders\hrule height 0.6ex depth \dimexpr0.4pt-0.6ex\hfill%
+  \kern0pt%
+}
+
+
+\newcommand{\OpenCommentBraket}{$\lceil$}
+\newcommand{\ClosedCommentBraket}{$\rfloor$}
+\newcommand{\PaddedClosedCommentBraket}{\hfill$\rfloor$}
+
+\def\todo@par{\relax}
+\def\todo{\@ifstar{\todoblock@par}{\todoblock@relax}}%
+\def\todoblock@par{\def\todo@par{\par}\todoblock}
+\def\todoblock@relax{\def\todo@par{\relax}\todoblock}
+
+\newlength{\comm@markshift}
+\setlength{\comm@markshift}{0pt}
+% \setlength{\comm@markshift}{\paperwidth}
+% \addtolength{\comm@markshift}{-\textwidth}
+% \setlength{\comm@markshift}{.5\comm@markshift}
+\addtolength{\comm@markshift}{-10pt}
+\newdimen{\comm@mark@tmp}
+\newlength{\comm@marksep}
+\setlength{\comm@marksep}{4pt}
+\newcounter{comm@mark@i}
+\newcounter{comm@mark@lastpage}
+\newdimen{\comm@mark@lasty}
+
+\ifcomm@use@tikz@
+  \RequirePackage{tikz}
+  \usetikzlibrary{calc}
+
+  \DeclareRobustCommand{\todoblock}[2][28]{%
+  % \ifdraft%
+  \todo@par%\medskip%
+  \foreach \comm@len [count=\comm@i] in {2.5,.5,2,4.5,1.3,3.4,4.5,1,6.3,1.2,3,1,5.6,3,1,5.6,3,2.1,5.3,1,2,2.5,.5,2,4.5,1.3,7,1.4}{%
+    \ifnum\comm@i>#1\breakforeach\fi%
+    \fakeword{\comm@len em}
+  }%
+  {\color{todo!30!white}%
+  \leavevmode\xleaders\hrule height 1ex\hfill}%
+  \ifnum#1>0\relax\\\fi%
+  {\color{todo!30!white}%
+  \leavevmode\leaders\hrule height 1ex width .5em\hfill\hspace{.8ex plus .6ex minus .6ex}
+  \ifnum#1>0\relax\leavevmode\leaders\hrule height 1ex width .8em\hfill\hspace{.8ex plus .6ex minus .6ex}\fi%
+  \leavevmode\cleaders\hrule height 1ex width .2em\hfill}
+  \textcolor{todo}{\bfseries\ \comm@mark{todo}#2\ }
+  {\color{todo!30!white}%
+  \leavevmode\cleaders\hrule height 1ex\hfill\hspace{.8ex plus .6ex minus .6ex}
+  \leavevmode\xleaders\hrule height 1ex\hfill\hspace{.8ex plus .6ex minus .6ex}
+  \leavevmode\xleaders\hrule height 1ex\hfill}
+  % \foreach \l in {.5,2,5}{%
+  %   \fakeword{\l em}
+  % }%
+  \ifnum#1>0\relax\\\fi%
+  \unskip
+  \foreach \comm@len [count=\comm@i] in {1,6.7,1.5,3,1,6,3,2,5,1.5,4.7,1,3,1,6,2.5,1,5.5,1,3,1,3.6,2}{%
+    \ifnum\comm@i>#1\breakforeach\fi%
+    \fakeword{\comm@len em}
+  }%
+  \todo@par%\medskip%
+  % \fi%
+  }
+  \def\fakeword#1{{\color{todo!30!white}\strut\rule{#1}{1ex}}\hspace{.8ex plus .6ex minus .6ex}}
+
+  \if@twocolumn
+  % \ifnum\ACM@format@nr=6\relax% if sigplan (twocolumn)
+  \newcommand{\comm@mark}[1]{%
+    \tikz[remember picture,overlay,baseline=-2.5pt]{
+      \pgfextracty\comm@mark@tmp{\pgfpointanchor{current page}{north}}%
+      \ifnum\value{comm@mark@lastpage}=\value{page}\relax%
+        \ifdim\comm@mark@tmp=\comm@mark@lasty\relax%
+          \stepcounter{comm@mark@i}%
+        \else%
+          \setcounter{comm@mark@i}{0}%
+        \fi%
+      \else%
+        \setcounter{comm@mark@i}{0}%
+      \fi%
+      \global\comm@mark@lasty=\comm@mark@tmp\relax%
+      \fill[thin,#1,draw=white]
+        let \p1=(current page.north),
+            \n1={\x1 > 0 ? 180 : 0}
+        in (0,0 -| current page.\n1)
+            ++ (\n1+180:\comm@markshift-\thecomm@mark@i\comm@marksep)
+        circle[radius=3pt];
+      \setcounter{comm@mark@lastpage}{\thepage}%
+    }%
+  }
+  \else
+  \newcommand{\comm@mark}[1]{%
+    \tikz[remember picture,overlay,baseline=-2.5pt]{
+    \pgfextracty\comm@mark@tmp{\pgfpointanchor{current page}{north}}%
+    \ifnum\value{comm@mark@lastpage}=\value{page}\relax%
+      \ifdim\comm@mark@tmp=\comm@mark@lasty\relax%
+        \stepcounter{comm@mark@i}%
+      \else%
+        \setcounter{comm@mark@i}{0}%
+      \fi%
+    \else%
+      \setcounter{comm@mark@i}{0}%
+    \fi%
+    \global\comm@mark@lasty=\comm@mark@tmp\relax%
+    \fill[thin,#1,draw=white]
+      (0,0 -| current page.north east)
+      ++(180:\comm@markshift-\thecomm@mark@i\comm@marksep)
+      circle[radius=3pt,xshift=-10ex];%
+    \setcounter{comm@mark@lastpage}{\thepage}%
+    }%
+  }
+  \fi
+
+\else
+
+  \newcommand{\comm@mark}[1]{\marginpar{\textcolor{#1}{\textbullet}}}
+  \newcommand{\comm@mark@todo}[1]{\marginpar{\vspace{1em}\vspace{\baselineskip}\hspace{1.1pc}\textcolor{#1}{\huge\textbullet}}}
+
+  \DeclareRobustCommand{\todoblock}[2][]{\comm@mark@todo{todo}\todoframe{#2}}
+
+\fi
+
+
+\def\comm@xrep#1{%
+\ifnum#1>0
+\tmp
+\comm@xrep{\numexpr#1-1\relax}%
+\fi}
+
+
+% \ifdraft
+%   \setlength{\marginparsep}{3pt}
+%   \setlength{\marginparwidth}{\paperwidth}
+%   \addtolength{\marginparwidth}{-\textwidth}
+%   \addtolength{\marginparwidth}{-3pt}
+% \fi

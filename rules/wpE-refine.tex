@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-refine]{}{
+  \V
+  \at{(t_1 \semleq t_2)}{i},
+  \WPE {(\m*[i: t_2] \m. \m{t})} {Q}
+  |-
+  \WPE {(\m[i: t_1] \m. \m{t})} {Q}
+}

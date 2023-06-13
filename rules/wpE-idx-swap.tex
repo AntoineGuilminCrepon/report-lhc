@@ -1,0 +1,11 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-idx-swap]{
+  i \notin \idx(Q)
+  % \\
+  % i \notin \supp(\m{t}') % implied by well definedness
+}{
+  \V
+  \bigl(\WPE{(\m[j: t]\m.\m{t}')}{Q}\bigr)\isub{j->i}
+  |-
+  \WPE{(\m[i: t]\m.\m{t}')}{Q\isub{j->i}}
+}

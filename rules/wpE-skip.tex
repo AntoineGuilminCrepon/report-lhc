@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-skip]{%
+  % i \notin \supp(\m{t}) % implied by well-formedness
+}{
+  \WPE {(\m{t} \m. \m[i: \code{skip}])} {Q}
+  \lequiv
+  \WPE {\m{t}} {Q}
+}

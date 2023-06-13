@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-rename]{
+  \V \Gamma |- \WPU{\m{t}}{Q}
+  \\
+  \pi\ \mathrm{bij.}
+}{
+  \V \Gamma\isub*{\pi} |- \WPU{\m{t}\isub*{\pi}}{Q\isub*{\pi}}
+}

@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\exists}$-seq$_I$]{}{
+  \WPE {\m[i: t_i | i \in I]}[\big]{
+    \WPE {\m*[i: \smash{t'_i} | i\in I]} {Q}
+  }
+  \lequiv
+  \WPE {\m[i: (t_i\code{;}\ t'_i) | i \in I]} {Q}
+}

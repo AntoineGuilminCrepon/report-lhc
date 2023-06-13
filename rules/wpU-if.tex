@@ -1,0 +1,16 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-if$_I$]{}{
+  \WPU {\m[i: g_i | i\in I]}*{
+    \fun\m{b}.
+    \WPU {
+      \begin{pmatrix*}[l]
+        {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}
+        {\m.}\\
+        {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
+      \end{pmatrix*}
+    }[\big]{Q}
+  }
+  \lequiv
+  \WPU {\m[i: \code{if}\ g_i\ \code{then}\ t_i\ \code{else}\ t'_i | i \in I]}
+  {Q}
+}

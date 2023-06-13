@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-seq$_I$]{}{
+  \WPU {\m[i: t_i | i \in I]}[\big]{
+    \WPU {\m*[i: \smash{t'_i} | i\in I]} {Q}
+  }
+  \lequiv
+  \WPU {\m[i: (t_i\code{;}\ t'_i) | i \in I]} {Q}
+}

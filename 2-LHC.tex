@@ -1,0 +1,69 @@
+%!TEX root = main.tex
+\section{Presentation of LHC}
+
+This section is inspired by the paper presenting LHC. %insert link here%
+The logic defines, upon an arbitrary toy language, hyperterms, hyperstores, hyperreturn values and hyperproperties.
+
+\begin{mathfig}[\small]
+  \begin{proofrules}
+    \input{rules/wpU-triv.tex}
+
+    \input{rules/wpU-cons.tex}
+
+    \input{rules/wpU-all.tex}
+
+    \input{rules/wpU-frame.tex}
+
+    \input{rules/wpU-impl-r.tex}
+
+    \input{rules/wpU-subst.tex}
+
+    \input{rules/wpU-idx.tex}
+  \end{proofrules}
+  \caption{Base rules for $\mathbf{wp}_{\forall}$ from LHC}
+\end{mathfig}
+
+\begin{mathfig}{\small}
+  \begin{proofrules}
+    \input{rules/wpU-var.tex}
+
+    \input{rules/wpU-val.tex}
+
+    \input{rules/wpU-skip.tex}
+
+    \input{rules/wpU-primop.tex}
+
+    \input{rules/wpU-seq.tex}
+
+    \input{rules/wpU-assign.tex}
+
+    \input{rules/wpU-if.tex}
+
+    \input{rules/wpU-while.tex}
+  \end{proofrules}
+  \caption{Lockstep rules for $\mathbf{wp}_{\forall}$ from LHC}
+\end{mathfig}
+
+\begin{mathfig}{\small}
+  \begin{proofrules}
+    \input{rules/wpU-nest.tex}
+
+    \input{rules/wpU-conj.tex}
+
+    \input{rules/wpU-proj.tex}
+  \end{proofrules}
+  \caption{Hyper-structure laws from LHC}
+\end{mathfig}
+
+\begin{mathfig}{\small}
+  \begin{proofrules}
+    \input{rules/wpU-idx-pass.tex}
+
+    \input{rules/wpU-idx-swap.tex}
+
+    \input{rules/wpU-idx-merge.tex}
+
+    \input{rules/wpU-idx-post.tex}
+  \end{proofrules}
+  \caption{Reindexing rules from LHC}
+\end{mathfig}
