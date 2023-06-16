@@ -1,0 +1,22 @@
+%TEX root = main.tex
+\section*{Soundness proofs}
+
+\begin{itemize}
+    \item \textsc{wp-triv}:
+          \begin{eqnarray*}
+              \V |- \WPU{\m{t}}{\WPE {\m{t}} {\True}} &:=& \A s\ v_1\ s'_1. \E v_2\ s'_2. \bigstep t s {v_1} {s_1'} \Rightarrow \bigstep t s {v_2} {s_2'} \\
+              &\Leftarrow& \A s\ v\ s'. \bigstep t s v {s'} \Rightarrow \bigstep t s v {s'}
+          \end{eqnarray*}
+
+    \item \textsc{wp$_{\exists}$-cons}:
+
+          Suppose $\V \A v. Q(v) |- Q'(v)$.
+
+          If we have $\WPE {\m{t}} Q$, it means there exists an return value $v$ and a output store $s'$ s.t $\bigstep t s v {s'}$ and $Q(v)(s')$. By the first assumption, we have $Q'(v)(s')$, thus $\WPE {\m{t}} {Q'}$.
+
+    \item \textsc{wp$_{\exists}$-exists}:
+          \begin{eqnarray*}
+              && \E x.\WPE{\m{t}}{Q(x)} \lequiv \WPE{\m{t}}{\E x.Q(x)} \\
+              &:=& \A s. (\E x\ v\ s'. \bigstep t s v {s'} \land Q(x)(v)(s') \iff \E v\ s'. \bigstep t s v {s'} \land (\E x. Q(x)(v)(s')))
+          \end{eqnarray*}
+\end{itemize}
