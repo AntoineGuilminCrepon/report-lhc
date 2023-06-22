@@ -1,0 +1,7 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp$_{\forall}$-wp$_{\exists}$-swap]
+{
+    \A i. \WPU {[1: \m{t}_2(i)]} {\WPE {[2:\m{t}_1(i)]} {Q}}
+}{
+  \V \WPE {\m{t}_2} {\WPU {\m{t}_1} {Q}}|- \WPU{\m{t}_1}{\WPE {\m{t}_2} {Q}}
+}

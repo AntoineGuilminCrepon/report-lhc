@@ -7,11 +7,15 @@ This object is defined as such :
 
 $\WPE{\m{t}}{Q} ::= \lambda s. \E s' v. \bigstep t s v {s'} \land Q(v)$
 
-This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness
+This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness.
+
+An interesting point 
 
 \begin{mathfig}{\small}
     \begin{proofrules}
-
+        \input{rules/wp-triv.tex}
+        
+        \input{rules/wpU-wpE-swap.tex}
     \end{proofrules}
     \caption{New $\mathbf{wp}_{\exists}$ rules}
 \end{mathfig}

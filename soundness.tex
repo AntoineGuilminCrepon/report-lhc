@@ -12,11 +12,36 @@
 
           Suppose $\V \A v. Q(v) |- Q'(v)$.
 
-          If we have $\WPE {\m{t}} Q$, it means there exists an return value $v$ and a output store $s'$ s.t $\bigstep t s v {s'}$ and $Q(v)(s')$. By the first assumption, we have $Q'(v)(s')$, thus $\WPE {\m{t}} {Q'}$.
+            $\WPE {\m{t}} Q$ means there exists an return value $v$ and a output store $s'$ s.t $\bigstep t s v {s'}$ and $Q(v)(s')$. By the first assumption, one gets $Q'(v)(s')$, thus $\WPE {\m{t}} {Q'}$.
 
     \item \textsc{wp$_{\exists}$-exists}:
+
+          Given that $\m{t}$ does not depend on $x$,
           \begin{eqnarray*}
               && \E x.\WPE{\m{t}}{Q(x)} \lequiv \WPE{\m{t}}{\E x.Q(x)} \\
               &:=& \A s. (\E x\ v\ s'. \bigstep t s v {s'} \land Q(x)(v)(s') \iff \E v\ s'. \bigstep t s v {s'} \land (\E x. Q(x)(v)(s')))
           \end{eqnarray*}
+
+    \item \textsc{wp$_{\exists}$-frame}:
+
+          Suppose $\V \Gamma |- \WPE{\m{t}}{Q}$ and $\pvar(P) \cap \mods(t) = \emptyset$. The first assumption implies a terminating trace for $\m{t}$ verifying $Q$.
+
+          Given that no variable of $P$ is modified by $\m{t}$, for every execution of the term, $P$ will equally hold at both ends of the trace.
+
+          Thus $\V \Gamma,P |- \WPE{\m{t}}{\lambda r. P \land Q(r)}$.
+    
+    \item \textsc{wp$_{\exists}$-impl-r}:
+
+    Similar to \textsc{wp$_{\exists}$-frame}.
+
+    \item \textsc{wp$_{\exists}$-idx}:
+          
+          The proof relies on the fact that the existence of some terminating trace for a certain hyperterm is unchanged by a bijective reindexing of said hyperterm.
+
+    \item \textsc{wp$_{\exists}$-nest}:
+          Suppose $\WPE{(\m{t}_1 \cdot \m{t}_2)}{Q}$. It says that for all input states, there exists an output state satisfying $Q$.
+
+          Given that there are no side effects between the terms of an hyperterm, one can "divide" the trace as two separate traces in $\m{t}_1$ and $\m{t}_2$. Thus, forall input state, there exists a state that coincides with the output state given by the assumption for the domain of $\m{t}_1$, and with the input state for the domain of $\m{t}_2$ (it is here of prime importance that $\m{t}_1$ and $\m{t}_2$ are disjoint).
+
+          Therefore, $\WPE{\m{t}_1}{\WPE{\m{t}_2}{Q}}$
 \end{itemize}
