@@ -1,17 +1,17 @@
 %!TEX root = ../main.tex
 \infer*[lab=wp$_{\exists}$-while$_I$]{
   \V
-  \A \alpha P(\alpha)
+  {\A \alpha. P(\alpha)}
   |-
   \WPE {\m[i: g_i | i\in I]}[\big]{
     \fun\m{b}.
     (\m{b} =_I 0 \land R)
     \lor
-    (\m{b} \ne_I 0 \land \WPE {\m[i: t_i | i \in I]} {\E \alpha' P(\alpha') \AND \alpha' < \alpha})
+    (\m{b} \ne_I 0 \land \WPE {\m[i: t_i | i \in I]} {\E \alpha'. {P(\alpha') \land \alpha' < \alpha}})
   }
 }{
   \V
-  P (\alpha_0)
+  {P (\alpha_0)}
   |-
   \WPE {\m[i: \code{while}\ g_i\ \code{do}\ t_i | i \in I]} {R}
 }

@@ -39,6 +39,7 @@
           The proof relies on the fact that the existence of some terminating trace for a certain hyperterm is unchanged by a bijective reindexing of said hyperterm.
 
     \item \textsc{wp$_{\exists}$-nest}:
+    
           Suppose $\WPE{(\m{t}_1 \cdot \m{t}_2)}{Q}$. It says that for all input states, there exists an output state satisfying $Q$.
 
           Given that there are no side effects between the terms of an hyperterm, one can "divide" the trace as two separate traces in $\m{t}_1$ and $\m{t}_2$. Thus, forall input state, there exists a state that coincides with the output state given by the assumption for the domain of $\m{t}_1$, and with the input state for the domain of $\m{t}_2$ (it is here of prime importance that $\m{t}_1$ and $\m{t}_2$ are disjoint).

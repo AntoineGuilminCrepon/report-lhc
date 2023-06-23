@@ -9,7 +9,49 @@ $\WPE{\m{t}}{Q} ::= \lambda s. \E s' v. \bigstep t s v {s'} \land Q(v)$
 
 This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness.
 
-An interesting point 
+\begin{mathfig}{\small}
+    \begin{proofrules}
+        \input{rules/wpE-cons.tex}
+
+        \input{rules/wpE-exists.tex}
+
+        \input{rules/wpE-frame.tex}
+
+        \input{rules/wpE-impl-r.tex}
+
+        \input{rules/wpE-subst.tex}
+
+        \input{rules/wpE-idx.tex}
+
+        \input{rules/wpE-seq.tex}
+
+        \input{rules/wpE-assign.tex}
+
+        \input{rules/wpE-if.tex}
+
+        \input{rules/wpE-while.tex}
+
+        \input{rules/wpE-nest.tex}
+
+        \input{rules/wpE-conj.tex}
+
+        \input{rules/wpE-idx-pass.tex}
+
+        \input{rules/wpE-idx-swap.tex}
+
+        \input{rules/wpE-idx-merge.tex}
+
+        \input{rules/wpE-idx-post.tex}
+    \end{proofrules}
+    \caption{Rules for $\mathbf{wp}_{\exists}$ mirrored on $\mathbf{wp}_{\forall}$}
+\end{mathfig}
+
+An interesting point is that predicates that couldn't be defined in the original theory using the base langugage, and thus needed to be explicitly defined to be used, can now be defined using this new $\mathbf{wp}_{\exists}$ object.
+
+\begin{eqnarray*}
+    \proj(t) &:=& \WPE{\m{t}}{\True} \\
+    t_1 \semleq t_2 &\lequiv& \WPU{[1: t_1]}{\WPE{[2: t_2]}{v(1) = v(2) \land s(1) = s(2)}}
+\end{eqnarray*}
 
 \begin{mathfig}{\small}
     \begin{proofrules}
@@ -17,5 +59,5 @@ An interesting point
         
         \input{rules/wpU-wpE-swap.tex}
     \end{proofrules}
-    \caption{New $\mathbf{wp}_{\exists}$ rules}
+    \caption{Rules combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules}
 \end{mathfig}
