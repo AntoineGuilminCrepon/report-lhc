@@ -45,4 +45,9 @@
           Given that there are no side effects between the terms of an hyperterm, one can "divide" the trace as two separate traces in $\m{t}_1$ and $\m{t}_2$. Thus, forall input state, there exists a state that coincides with the output state given by the assumption for the domain of $\m{t}_1$, and with the input state for the domain of $\m{t}_2$ (it is here of prime importance that $\m{t}_1$ and $\m{t}_2$ are disjoint).
 
           Therefore, $\WPE{\m{t}_1}{\WPE{\m{t}_2}{Q}}$
+    \item \textsc{wp$_{\exists}$-conj}:
+
+          Suppose $\WPE{\m{t}_1}{Q_1} \land \WPE{\m{t}_2}{Q_2}$. It gives a trace for $\m{t}_1$ satisfying $Q_1$, and a trace for $\m{t}_2$ satisfying $Q_2$.
+          
+          To prove the result, one should construct a trace of $\m{t}_1 + \m{t}_2$ that satisfies $Q_1 \land Q_2$. To do so, combining the traces given by the assumptions works, apart from the intersections of the domains of the two hyperterms.
 \end{itemize}

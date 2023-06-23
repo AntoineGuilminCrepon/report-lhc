@@ -5,9 +5,13 @@ The main point of the extension is to add an object to the language complementar
 
 This object is defined as such :
 
-$\WPE{\m{t}}{Q} ::= \lambda s. \E s' v. \bigstep t s v {s'} \land Q(v)$
+\begin{equation*}
+\WPE{\m{t}}{Q} ::= \lambda s. \E s' v. \bigstep t s v {s'} \land Q(v)
+\end{equation*}
 
-This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness.
+This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness. Most of the rules can be mirrored as is (just switching a $\mathbf{wp}_{\forall}$ for a $\mathbf{wp}_{\exists}$), but some needs more changes.
+
+\textsc{wp$_{exists}$-exists} mirrors \textsc{wp$_{\forall}$-all}, but uses existential quantifiers instead of universal ones. Without much surprise, $\mathbf{wp}_{\exists}$ works better with existentials. \textsc{wp$_{\exists}$-while$_I$} was modified to take into account the necessity of projectability for $\mathbf{wp}_{\exists}$ statements.
 
 \begin{mathfig}{\small}
     \begin{proofrules}
@@ -52,6 +56,17 @@ An interesting point is that predicates that couldn't be defined in the original
     \proj(t) &:=& \WPE{\m{t}}{\True} \\
     t_1 \semleq t_2 &\lequiv& \WPU{[1: t_1]}{\WPE{[2: t_2]}{v(1) = v(2) \land s(1) = s(2)}}
 \end{eqnarray*}
+
+Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$
+
+\begin{mathfig}{\small}
+    \begin{proofrules}
+        \input{rules/wp-refine.tex}
+
+        \input{rules/wp-proj.tex}
+    \end{proofrules}
+    \caption{Rules rewritten using $\mathbf{wp}_{\exists}$}
+\end{mathfig}
 
 \begin{mathfig}{\small}
     \begin{proofrules}

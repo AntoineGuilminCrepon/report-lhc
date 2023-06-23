@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp-refine]{}{
+  \V
+  \WPU{[1: t_1]}{\WPE{[2: t_2]}{v(1) = v(2) \land s(1) = s(2)}},
+  \WPU {(\m*[i: t_2] \m. \m{t})} {Q}
+  |-
+  \WPU {(\m[i: t_1] \m. \m{t})} {Q}
+}
