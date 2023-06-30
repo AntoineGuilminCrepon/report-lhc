@@ -4,6 +4,97 @@
 This section is inspired by the paper presenting LHC. %insert link here%
 The logic defines, upon an arbitrary toy language, hyperterms, hyperstores, hyperreturn values and hyperproperties.
 
+For the rest of the paper, $\PVar$ is the set of variables, $\Val\is\Int$ the set of values and $\Idx\is\Nat$ the set of indexes for hyperobjects.
+
+For all sets $A, B$, one notes $A \pto B$ a partial function from $A$ to $B$, i.e a function of type $A\rightarrow B_{\bot}$, where $B_{\bot} = B\cup\{\bot\}$.
+
+Then comes the following definitions ($\Store$ is the set of stores, $\Term$ the set of terms in the language).
+
+\begin{definition}
+\begin{grammar}
+  t \in\Term \is x \mid v \mid * \mid e_1 \oplus e_2 \mid \code{if}\ g\ \code{then}\ t1\ \code{else}\ t_2 \mid \code{while}\ g\ \code{do}\ t \\
+\end{grammar}
+\begin{eqnarray*}
+  \Store&\is&\PVar\rightarrow\Val \\
+  \Type{HStore}&\is&\Idx\rightarrow\Store \\
+  \Type{HReturn}&\is&\Idx\rightarrow\Val \\
+  \Assrt&\is&\Store\rightarrow\Prop \\
+  \HAssrt&\is&HStore\rightarrow\Prop \\
+  \Type{PostHAssrt}&\is&\Type{HReturn}\rightarrow\HAssrt \\
+\end{eqnarray*}
+\end{definition}
+
+Furthermore, we define a reindexing as any (potentially non-bijective) function of type $\Idx\rightarrow\Idx$. For any reindexing $\pi$ and any $f\of\Idx\rightarrow A$, one notes $f\isub*{\pi} = \fun i. f(\pi(i))$ the reindexing of $f$ through $\pi$.
+
+Fig. 1 gives notations for hyperassertions that are used later in the paper. Special attention needs to be brought to the $\Pi$ operator, which is the least intuitive. It is semantically a reduction of a given hyperassertion, by reducing its scope to the given set of indexes $I$.
+
+\begin{mathfig}[\small]
+  \begin{align*}
+    (\p{x}(i) = v) &\is
+      \fun \m{s}.
+        \m{s}(i)(\p{x}) = v
+      % && \text{Indexed program variable}
+    &
+    P_1 \implies P_2 &\is
+      \fun \m{s}.
+        P_1(\m{s}) \implies P_2(\m{s})
+      % && \text{Implication}
+    \\
+    P_1 \land P_2 &\is
+      \fun \m{s}. P_1(\m{s}) \land P_2(\m{s})
+      % && \text{Conjunction}
+    &
+    P_1 \lor P_2 &\is
+      \fun \m{s}. P_1(\m{s}) \lor P_2(\m{s})
+      % && \text{Disjunction}
+    \\
+    \E x.P(x) &\is
+      \fun \m{s}.\exists x\st P(x)(\m{s})
+      % && \text{Existential quantification}
+    &
+    \A x.P(x) &\is
+      \fun \m{s}.\forall x\st P(x)(\m{s})
+      % && \text{Universal quantification}
+    \\
+    P\isub*{\pi} &\is
+      \fun \m{s}.
+        % P(\m[i: \m{s}(\pi(i)) | i \in \Idx])
+        P(\m{s}\isub*{\pi})
+    &
+    Q\isub*{\pi} &\is
+      \ret.Q(\ret\isub*{\pi})\isub*{\pi}
+      % && \text{Index substitution}
+    \\
+    \P I.P &\is
+      \fun \m{s}.
+        \exists \pr{\m{s}}\st
+          P(\m{s}\m[i: \m{s}'\!(i) | i \in I])
+    &
+    \PP I.Q &\is \ret.\E \m{v}.\P I.Q(\ret\m[i: \m{v}(i) | i\in I])
+      % && \text{Projection}
+    \\
+    \at{A}{I} &\is
+      \fun \m{s}. \LAnd_{i\in I} A(\m{s}(i))
+      % && \text{Assertion lifting}
+    &
+    Q_1 \land Q_2 &\is \ret. Q_1(\ret) \land Q_2(\ret)
+    % \\
+    % \pure{\phi} &\is \fun \wtv.\phi
+    % &
+    % \T{P}{\m{t}}{Q} &\is \pure*{\J |- {P}{\m{t}}{Q}}
+   \end{align*}
+  \caption{Hyper-assertions}
+  \label{fig:hyper-assertions}
+\end{mathfig}
+
+We now introduces a new object, directly inspired from the original Hoare logic: the weakest precondition operator. Extending it to hyperterms and hyperassertions gives the following definition:
+
+\begin{definition}[Weakest precondition]
+  $\WPU{\m{t}}{Q} ::= \lambda s. \A s' v. \bigstep t s v {s'} \implies Q(v)$
+\end{definition}
+
+
+
 \begin{mathfig}[\small]
   \begin{proofrules}
     \input{rules/wpU-triv.tex}

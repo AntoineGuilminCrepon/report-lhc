@@ -5,9 +5,9 @@ The main point of the extension is to add an object to the language complementar
 
 This object is defined as such :
 
-\begin{equation*}
-\WPE{\m{t}}{Q} ::= \lambda s. \E s' v. \bigstep t s v {s'} \land Q(v)
-\end{equation*}
+\begin{definition}[Weakest existential precondition]
+$\WPE{\m{t}}{Q} := \lambda s. \E s' v. \bigstep t s v {s'} \land Q(v)$
+\end{definition}
 
 This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness. Most of the rules can be mirrored as is (just switching a $\mathbf{wp}_{\forall}$ for a $\mathbf{wp}_{\exists}$), but some needs more changes.
 
