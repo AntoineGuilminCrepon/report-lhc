@@ -3,10 +3,12 @@
 
 \begin{itemize}
     \item \textsc{wp-triv}:
-          \begin{eqnarray*}
-              \V |- \WPU{\m{t}}{\WPE {\m{t}} {\True}} &:=& \A s\ v_1\ s'_1. \E v_2\ s'_2. \bigstep t s {v_1} {s_1'} \Rightarrow \bigstep t s {v_2} {s_2'} \\
-              &\Leftarrow& \A s\ v\ s'. \bigstep t s v {s'} \Rightarrow \bigstep t s v {s'}
-          \end{eqnarray*}
+
+            If $\m{t}$ is deterministic and has a terminating trace, then any terminating trace gives the same output, given the same input. Thus $\mathbf{wp}_{\exists}$ and $\mathbf{wp}_{\forall}$ have the same semantic value.
+%          \begin{eqnarray*}
+ %             \V |- \WPU{\m{t}}{\WPE {\m{t}} {\True}} &:=& \A {s_0}\ v_1\ s_1. \E v_2\ s_2. \bigstep t {s_0} {v_1} {s_1} \Rightarrow \bigstep t {s_1} {v_2} {s_2} \\
+ %             &\Leftarrow& \A s\ v\ s'. \bigstep t s v {s'} \Rightarrow \bigstep t s v {s'}
+ %         \end{eqnarray*}
 
     \item \textsc{wp$_{\exists}$-cons}:
 
@@ -34,6 +36,10 @@
 
     Similar to \textsc{wp$_{\exists}$-frame}.
 
+    \item \textsc{wp$_{\exists}$-subst}:
+
+          Suppose $\p{x}(i) = v \land \WPE{([i: t\subst{\p{x}->v}]\m.\m{t}')}{Q}$. We have therefore a trace of $[i: t\subst{\p{x}->v}]\m.\m{t}'$ that satisfies $Q$ given that we also suppose that $\p{x}(i)=v$ and that $\p{x}$ is not modified by $t$, we can simulate the trace given in the new hyperterm $[i: t]\m.\m{t}'$, by taking the value of $\p{x}$ from the store (where it will be $v$ for the entire execution), instead of having it directly in the term.
+
     \item \textsc{wp$_{\exists}$-idx}:
           
           The proof relies on the fact that the existence of some terminating trace for a certain hyperterm is unchanged by a bijective reindexing of said hyperterm.
@@ -50,4 +56,10 @@
           Suppose $\WPE{\m{t}_1}{Q_1} \land \WPE{\m{t}_2}{Q_2}$. It gives a trace for $\m{t}_1$ satisfying $Q_1$, and a trace for $\m{t}_2$ satisfying $Q_2$.
           
           To prove the result, one should construct a trace of $\m{t}_1 + \m{t}_2$ that satisfies $Q_1 \land Q_2$. To do so, combining the traces given by the assumptions works, apart from the intersections of the domains of the two hyperterms. For this we need the added assumption of determinism, that guarantees the uniqueness of the trace. Therefore we get the result.
+
+    \item \textsc{wp$_{\forall}$-wp$_{\exists}$-swap}:
+
+          Suppose $\WPE {\m{t}_2} {\WPU {\m{t}_1} {Q}}$. It gives us a trace of $\m{t}_2$ such that every trace of $\m{t}_1$ executes afterwards validates $Q$.
+
+          For terms outside of the intersection of $\m{t}_1$ and $\m{t}_2$, the two traces can be executed in any order. For the terms in the intersection, the assumption of determinism allows for switching $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ locally, to give the final result.
 \end{itemize}

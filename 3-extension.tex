@@ -54,7 +54,7 @@ An interesting point is that predicates that couldn't be defined in the original
 
 \begin{eqnarray*}
     \proj(t) &:=& \WPE{\m{t}}{\True} \\
-    t_1 \semleq t_2 &\lequiv& \WPU{[1: t_1]}{\WPE{[2: t_2]}{v(1) = v(2) \land s(1) = s(2)}}
+    t_1 \semleq t_2 &:=& \V s(1)=s(2) |- \WPU{[1: t_1]}{\WPE{[2: t_2]}{v(1) = v(2) \land s(1) = s(2)}}
 \end{eqnarray*}
 
 Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$
