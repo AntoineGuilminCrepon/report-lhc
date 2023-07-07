@@ -44,6 +44,10 @@
           
           The proof relies on the fact that the existence of some terminating trace for a certain hyperterm is unchanged by a bijective reindexing of said hyperterm.
 
+    \item \textsc{wp$_{\exists}$-seq$_I$}:
+          
+          Suppose that $\WPE {\m[i: (t_i\code{;}\ t'_i) | i \in I]} {Q}$. That gives us a trace of $t_i; t_i'$ satisfying $Q$. We can cut this trace in two part, the one executing $t_i$, the other executing $t_i'$. We can then deduce an intermediary store that registers the state of the program between the two terms, allowing use to write $\WPE {\m[i: t_i | i \in I]}{\WPE {\m*[i: \smash{t'_i} | i\in I]} {Q}}$. The reciproqual is straight-forward.
+
     \item \textsc{wp$_{\exists}$-nest}:
     
           Suppose $\WPE{(\m{t}_1 \cdot \m{t}_2)}{Q}$. It says that for all input states, there exists an output state satisfying $Q$.
