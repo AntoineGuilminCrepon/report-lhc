@@ -24,6 +24,12 @@
 \usepackage{natbib}
 \usepackage[inline]{enumitem}
 \usepackage{mathpartir}
+\usepackage{bussproofs}
+
+\newenvironment{scprooftree}[1]%
+  {\gdef\scalefactor{#1}\begin{center}\proofSkipAmount \leavevmode}%
+  {\scalebox{\scalefactor}{\DisplayProof}\proofSkipAmount \end{center} }
+
 \usepackage{style/comments}
 \usepackage{style/notation}
 \usepackage{style/appendix}

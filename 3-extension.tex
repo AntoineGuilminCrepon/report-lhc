@@ -76,3 +76,41 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
     \end{proofrules}
     \caption{Rules combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules}
 \end{mathfig}
+
+With the use of $\mathbf{wp}_{\exists}$, one can write an interesting property:
+\begin{eqnarray*}
+    PDet(t) &:=& \WPE {\m{t}} Q \lequiv \WPU {\m{t}} Q
+\end{eqnarray*}
+
+This property is in fact equivalent to $Det(t) \land \proj(t)$, as is shown below.
+
+\begin{lemma}[$Det(t)\land\proj(t) \iff PDet(t)$]
+\end{lemma} 
+\begin{proof}
+    If $\m{t}$ is deterministic and has a terminating trace, then any terminating trace gives the same output, given the same input. Thus, if there exists a trace that satisfies some property $Q$, then any trace will satisfy the same property. Therefore, we have the direct statement.
+
+    For the reciprocal, we will separate the proof of $PDet(t) \implies Det(t)\land\proj(t)$ in two separate derivations. First off, $PDet(t) \implies \proj(t)$.
+
+    \begin{prooftree}
+        \AxiomC{}
+        \LeftLabel{\scriptsize\textsf{wp$_{\forall}$-triv}}
+        \UnaryInfC{$\V |- \WPU {\m{t}}{\True}$}
+        \AxiomC{}
+        \RightLabel{\scriptsize{$PDet(t)$}}
+        \UnaryInfC{$\V \WPU {\m{t}}{\True} |- \WPE {\m{t}}{\True}$}
+        \BinaryInfC{$\V |- \WPE {\m{t}}{\True}$}
+    \end{prooftree}
+
+    Next, $PDet(t) \implies Det(t)$.
+    \begin{scprooftree}{0.9}
+        \AxiomC{$\V \pv{x}(\I1)=\pv{x}(\I2) |- \WPE {\m<\I1: t, \I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)}$}
+        \AxiomC{}
+        \RightLabel{\scriptsize{$PDet(t)$}}
+        \UnaryInfC{$\V \WPE {\m<\I1: t, \I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)} |- \WPU {\m<\I1: t, \I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)}$}
+        \BinaryInfC{$\V \pv{x}(\I1)=\pv{x}(\I2) |- \WPU {\m<\I1: t,\I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)}$}
+    \end{scprooftree}
+
+    The left-side assumption is proved the following way: given that both terms receive the same input, if we chose the same trace to execute in both terms, we then get the same output (i.e every term is "deterministic" in the context of $\mathbf{wp}_{\exists}$).
+
+    Thus we get an equivalence between $PDet(t)$ and $Det(t)\land\proj(t)$
+\end{proof}
