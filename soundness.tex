@@ -2,9 +2,6 @@
 \section*{Soundness proofs}
 
 \begin{itemize}
-    \item \textsc{wp-triv}:
-
-            If $\m{t}$ is deterministic and has a terminating trace, then any terminating trace gives the same output, given the same input. Thus $\mathbf{wp}_{\exists}$ and $\mathbf{wp}_{\forall}$ have the same semantic value.
 %          \begin{eqnarray*}
  %             \V |- \WPU{\m{t}}{\WPE {\m{t}} {\True}} &:=& \A {s_0}\ v_1\ s_1. \E v_2\ s_2. \bigstep t {s_0} {v_1} {s_1} \Rightarrow \bigstep t {s_1} {v_2} {s_2} \\
  %             &\Leftarrow& \A s\ v\ s'. \bigstep t s v {s'} \Rightarrow \bigstep t s v {s'}
