@@ -1,17 +1,19 @@
 %!TEX root = ../main.tex
-\infer*[lab=wp-while]{
+\infer*[lab=wp-while, Right={$I \cap J = \emptyset$}]{
     \V
     P
     |- 
     \WPU {\m[i: g_i | i \in I]}
+    {\WPE {\m[j: g_j | j \in J']}
     {\fun b. (b =_{I} 0 \land Q) \lor
     (b \ne_{I} 0 \land
-    \WPU {\m[i: t_i | i \in I]}{\WPE {\m[i: t_i' | i \in I]} {P}})
+    \WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}})
+    }
     }
 }{
     \V
     {P}
     |- 
     \WPU {\m[i: \code{while}\ g_i\ \code{do}\ t_i | i \in I]}
-    {\WPE {\m[i: \code{while}\ g_i\ \code{do}\ t_i' | i \in I]} {Q}}
+    {\WPE {\m[j: \code{while}\ g_j\ \code{do}\ t_j' | j \in J]} {Q}}
 }
