@@ -1,0 +1,9 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp-swap-local]
+{
+    t_1 \semeq t_2
+    \\
+    PDet(t_1)\land PDet(t_2)
+}{
+  \V \WPE {\m[i: t_2]} {\WPU {\m[i: t_1]} {Q}}|- \WPU{\m[i: t_1]}{\WPE {\m[i: t_2]} {Q}}
+}

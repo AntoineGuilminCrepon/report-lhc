@@ -71,8 +71,6 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
 \begin{mathfig}{\small}
     \begin{proofrules}
         \input{rules/wp-triv.tex}
-        
-        \input{rules/wpU-wpE-swap.tex}
 
         \input{rules/proj-elim}
 
@@ -118,3 +116,15 @@ This property is in fact equivalent to $Det(t) \land \proj(t)$, as is shown belo
 
     Thus we get an equivalence between $PDet(t)$ and $Det(t)\land\proj(t)$
 \end{proof}
+
+As stated before, $\mathbf{wp}_{\exists}$ behaves more or less the same way as $\mathbf{wp}_{\forall}$, and thus, proofs using it exclusively are very similar in form. Most of the capabilities of this model appears when combining both operators. However, one would need rules to deal with hyperproperties combining the two $\mathbf{wp}$.
+
+A pair of such rules are \textsc{wp-swap} and \textsc{wp-swap-local}.
+
+\begin{mathfig}{\small}
+    \begin{proofrules}        
+        \input{rules/wp-swap.tex}
+
+        \input{rules/wp-swap-local.tex}
+    \end{proofrules}
+\end{mathfig}

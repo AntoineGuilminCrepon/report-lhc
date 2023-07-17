@@ -4,9 +4,9 @@
     P
     |- 
     \WPU {\m[i: g_i | i \in I]}
-    {\WPE {\m[j: g_j | j \in J']}
-    {\fun b. (b =_{I} 0 \land Q) \lor
-    (b \ne_{I} 0 \land
+    {\WPE {\m[j: g_j | j \in J]}
+    {\fun b. (b =_{I\cup J} 0 \land Q) \lor
+    (b \ne_{I\cup J} 0 \land
     \WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}})
     }
     }
