@@ -1,15 +1,18 @@
 %!TEX root = ../main.tex
-\infer*[lab=wp-while, Right={$I \cap J = \emptyset$}]{
+\infer*[lab=wp-while, Right={$I\ne\emptyset$}]{
     \V
     P
     |- 
-    \WPU {\m[i: g_i | i \in I]}
-    {\WPE {\m[j: g_j | j \in J]}
-    {\fun b. (b =_{I\cup J} 0 \land Q) \lor
-    (b \ne_{I\cup J} 0 \land
-    \WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}})
-    }
-    }
+    \WPU {\m[i: g_i | i \in I]}*
+    {\fun b'. \WPE {\m[j: g_j | j \in J]}*
+    {\begin{pmatrix*}[l]
+    \fun b. (b \cdot b' =_{I\cup J} 0 \land Q) \\
+    \lor 
+    \begin{pmatrix*}[l]
+        b \cdot b' \ne_{I\cup J} 0 \\
+        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
+    \end{pmatrix*}
+    \end{pmatrix*}}}
 }{
     \V
     {P}
