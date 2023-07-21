@@ -1,10 +1,11 @@
 %!TEX root = ../main.tex
-\infer*[lab=wp-seq, Right={$I\cap J = \emptyset$}]{
-    \WPU {\m[i: t_i | i \in I]}
-    {\WPE {\m[j: u_j | j \in J]}
+\infer*[lab=wp-seq, Right={$I\cap J = \emptyset$}]{}{
+    \V
+    \WPU {\m[i: t_i | i \in I]}*
+    {\WPEvv {\m[j: u_j | j \in J]}
     {\WPU {\m[i: t'_i | i \in I]}
     {\WPE {\m[j: u'_j | j \in J]}{Q}
     }}}
-}{
-    \WPU {\m[i: t_i; t'_i| i \in I]}{\WPE {\m[j: u_j; u'_j | j \in J]}{Q}}
+    |-
+    \WPUvv {\m[i: t_i; t'_i| i \in I]}{\WPE {\m[j: u_j; u'_j | j \in J]}{Q}}
 }

@@ -214,7 +214,13 @@ Thankfully, there may be a way to deal with this issue, using a certain encoding
 
 From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and *, we can derive the rule for \code{while}. The question is, what did we gain from this encoding ? The short answer is that \code{assume} and * have similar $\mathbf{wp}_{\forall}-\mathbf{wp}_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
 
-We can derive four rules for \code{assume} and * (described in Fig.10).
+We can derive four rules for \code{assume} and * (described in Fig.10). From those rules, one can derive rules of the same form as the \code{if} one:
+
+\begin{proofrules}
+    \input{rules/wp-assume.tex}
+
+    \input{rules/wp-star.tex}
+\end{proofrules}
 
 \begin{mathfig}
     \begin{proofrules}
@@ -228,3 +234,41 @@ We can derive four rules for \code{assume} and * (described in Fig.10).
     \end{proofrules}
     \caption{Rules for \code{assume} and *}
 \end{mathfig}
+
+They are derived thusly:
+
+\begin{prooftree}
+    \AxiomC{$\WPU {\m[i: g_i | i \in I]}
+            {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v}\cdot\m{w}) \land\m{w} = 0}}$}
+    \UnaryInfC{$\WPU {\m[i: \code{assume}(g_i) | i \in I]}
+                {\WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(0\cdot\m{w}) \land\m{w} = 0}}$}
+    \UnaryInfC{$\WPU {\m[i: \code{assume}(g_i) | i \in I]}
+                {\WPE {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(0 \cdot \m{w})}}$}
+\end{prooftree}
+
+\begin{scprooftree}{0.75}
+    \AxiomC{$\V P |- \WPU {\m[i: t_i | i \in I]}
+            {\WPE {\m[j: t'_j | j \in J]} P}$}
+    \AxiomC{}
+    \UnaryInfC{$\A n. \V \WPU {\m[i: t_i^n | i \in I]}
+            {\WPE {\m[j: {t'_j}^n | j \in J]} P}
+            |- \WPU {\m[i: t_i^n | i \in I]}
+            {\WPE {\m[j: {t'_j}^n | j \in J]} P}$}
+    \BinaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n | i \in I]}
+                {\WPE {\m[j: {t'_j}^n | j \in J]} P}
+                |- \WPU {\m[i: t_i | i \in I]}
+                {\WPE {\m[j: t'_j | j \in J]}
+                {\WPU {\m[i: t_i^n | i \in I]}
+                {\WPE {\m[j: {t'_j}^n | j \in J]} P}}}$}
+    \UnaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n | i \in I]}
+                {\WPE {\m[j: {t'_j}^n | j \in J]} P}
+                |- \WPU {\m[i: t_i^{n+1} | i \in I]}
+                {\WPE {\m[j: {t'_j}^{n+1} | j \in J]} P}$}
+    \UnaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n | i \in I]}
+                {\WPE {\m[j: {t'_j}^* | j \in J]} P}
+                |- \WPU {\m[i: t_i^{n+1} | i \in I]}
+                {\WPE {\m[j: {t'_j}^* | j \in J]} P}$}
+    \UnaryInfC{$\V P |- \WPU {\m[i: t_i^* | i \in I]}
+                {\WPE {\m[j: {t'_j}^* | j \in J]} P}$}
+\end{scprooftree}
+
