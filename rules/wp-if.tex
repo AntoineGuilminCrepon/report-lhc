@@ -1,0 +1,21 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp-if]{
+    \WPU {\m[i: g_i | i \in I]}*
+    {\fun b. \WPE {\m[j: g'_j | j \in J]}*
+    {\fun b'. \WPU {
+        \begin{pmatrix*}[l]
+        {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
+        {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
+        \end{pmatrix*}
+        }*{\WPE {
+        \begin{pmatrix*}[l]
+        {\m[i: u_j | j\in I, \m{b}'(i) \neq 0]}{\m.}\\
+        {\m[i: u'_j | j\in I, \m{b}'(i) = 0]}
+        \end{pmatrix*}           
+        }{Q}}
+    }}
+}{
+    \WPU {\m[i: \code{if}\ g_i\ \code{then}\ t_i\ \code{else}\  t'_i| i \in I]}
+    {\WPE {\m[j: \code{if}\ g'_j\ \code{then}\ u_j\ \code{else}\ u'_j | j \in J]}
+    {Q}}
+}

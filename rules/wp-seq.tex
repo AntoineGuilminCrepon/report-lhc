@@ -1,0 +1,10 @@
+%!TEX root = ../main.tex
+\infer*[lab=wp-seq]{
+    \WPU {\m[i: t_i | i \in I]}
+    {\WPE {\m[j: u_j | j \in J]}
+    {\WPU {\m[i: t'_i | i \in I]}
+    {\WPE {\m[j: u'_j | j \in J]}{Q}
+    }}}
+}{
+    \WPU {\m[i: t_i; t'_i| i \in I]}{\WPE {\m[j: u_j; u'_j | j \in J]}{Q}}
+}

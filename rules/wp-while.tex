@@ -4,7 +4,7 @@
     P
     |- 
     \WPU {\m[i: g_i | i \in I]}*
-    {\fun b'. \WPE {\m[j: g_j | j \in J]}*
+    {\fun b'. \WPE {\m[j: g_j' | j \in J]}*
     {\begin{pmatrix*}[l]
     \fun b. (b \cdot b' =_{I\cup J} 0 \land Q) \\
     \lor 
@@ -18,5 +18,5 @@
     {P}
     |- 
     \WPU {\m[i: \code{while}\ g_i\ \code{do}\ t_i | i \in I]}
-    {\WPE {\m[j: \code{while}\ g_j\ \code{do}\ t_j' | j \in J]} {Q}}
+    {\WPE {\m[j: \code{while}\ g'_j\ \code{do}\ t'_j | j \in J]} {Q}}
 }

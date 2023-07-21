@@ -1,5 +1,7 @@
 %TEX root = main.tex
-\section{Description of the extension}
+\section{Existential extension of LHC}
+
+\subsection{New operator}
 
 The main point of the extension is to add an object to the language complementary to the $\mathbf{wp}_{\forall}$ from the original model.
 
@@ -79,6 +81,8 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
     \caption{Rules combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$}
 \end{mathfig}
 
+\subsection{Relation to $\mathbf{wp}_{\forall}$}
+
 With the use of $\mathbf{wp}_{\exists}$, one can write an interesting property:
 \begin{eqnarray*}
     PDet(t) &:=& \WPE {\m{t}} Q \lequiv \WPU {\m{t}} Q
@@ -117,9 +121,9 @@ This property is in fact equivalent to $Det(t) \land \proj(t)$, as is shown belo
     Thus we get an equivalence between $PDet(t)$ and $Det(t)\land\proj(t)$
 \end{proof}
 
-As stated before, $\mathbf{wp}_{\exists}$ behaves more or less the same way as $\mathbf{wp}_{\forall}$, and thus, proofs using it exclusively are very similar in form. Most of the capabilities of this model appears when combining both operators. However, one would need rules to deal with hyperproperties combining the two $\mathbf{wp}$.
+\subsection{Swap rule and lockstep rules}
 
-A pair of such rules are \textsc{wp-swap} and \textsc{wp-swap-local}.
+As stated before, $\mathbf{wp}_{\exists}$ behaves more or less the same way as $\mathbf{wp}_{\forall}$, and thus, proofs using it exclusively are very similar in form. Most of the capabilities of this model appears when combining both operators. However, one would need rules to deal with hyperproperties combining the two $\mathbf{wp}$.
 
 \begin{mathfig}{\small}
     \begin{proofrules}        
@@ -127,4 +131,63 @@ A pair of such rules are \textsc{wp-swap} and \textsc{wp-swap-local}.
 
         \input{rules/wp-swap-local.tex}
     \end{proofrules}
+    \caption{Swap rules}
 \end{mathfig}
+
+A pair of such rules are \textsc{wp-swap} and \textsc{wp-swap-local}. A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\mathbf{wp}_{\exists}$ and $\mathbf{wp}_{\forall}$.
+
+Let's consider two examples: \textsc{wp-if} and \textsc{wp-seq}.
+
+\resizebox{0.8\width}{!}{
+\begin{proofrules}
+    \input{rules/wp-seq.tex}
+
+    \input{rules/wp-if.tex}
+\end{proofrules}
+}
+
+We can derive both rules from \textsc{wp-swap}, as follows:
+
+\bigskip
+
+\begin{prooftree}
+    \AxiomC{$\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: u_j | j \in J]}{\WPU {\m[i: t'_i | i \in I]}{\WPE {\m[j: u'_j | j \in J]}{Q}}}}$}
+    \UnaryInfC{$\WPU {\m[i: t_i | i \in I]}{\WPU {\m[j: t'_i | i \in I]}{\WPE {\m[i: u_j | j \in J]}{\WPE {\m[j: u'_j | j \in J]}{Q}}}}$}
+    \UnaryInfC{$\WPU {\m[i: t_i; t'_i| i \in I]}{\WPE {\m[j: u_j; u'_j | j \in J]}{Q}}$}
+\end{prooftree}
+
+\bigskip
+
+\begin{scprooftree}{0.8}
+    \AxiomC{$\WPU {\m[i: g_i | i \in I]}*
+    {\fun b. \WPE {\m[j: g'_j | j \in J]}*
+    {\fun b'. \WPU {
+        \begin{pmatrix*}[l]
+        {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
+        {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
+        \end{pmatrix*}
+        }*{\WPE {
+        \begin{pmatrix*}[l]
+        {\m[i: u_j | j\in I, \m{b}'(i) \neq 0]}{\m.}\\
+        {\m[i: u'_j | j\in I, \m{b}'(i) = 0]}
+        \end{pmatrix*}           
+        }{Q}}
+    }}$}
+    \UnaryInfC{$\WPU {\m[i: g_i | i \in I]}*
+    {\fun b. \WPU {
+        \begin{pmatrix*}[l]
+        {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
+        {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
+        \end{pmatrix*}}*
+        {\WPE {\m[j: g'_j | j \in J]
+        }*{\fun b'. \WPE {
+        \begin{pmatrix*}[l]
+        {\m[i: u_j | j\in I, \m{b}'(i) \neq 0]}{\m.}\\
+        {\m[i: u'_j | j\in I, \m{b}'(i) = 0]}
+        \end{pmatrix*}           
+        }{Q}}
+    }}$}
+    \UnaryInfC{$\WPU {\m[i: \code{if}\ g_i\ \code{then}\ t_i\ \code{else}\  t'_i| i \in I]}{\WPE {\m[j: \code{if}\ g'_j\ \code{then}\ u_j\ \code{else}\ u'_j | j \in J]}{Q}}$}
+\end{scprooftree}
+
+In both cases, we simply "unfold" the terms using the corresponding $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules, and then a number \textsc{wp-swap} to complete the proof.
