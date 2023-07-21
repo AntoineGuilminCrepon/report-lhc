@@ -294,3 +294,85 @@ They are derived as follows:
 \end{scprooftree}
 
 Both leaves can be derived from the premisse of \textsc{wp-while} by applying \textsc{assume} (after negating the guards for the righthand leave), and collapsing the postcondition according to the return value being forced by the rule.
+
+\begin{scprooftree}{0.75}
+    \AxiomC{$\V
+    P
+    |- 
+    \WPU {\m[i: g_i | i \in I]}*
+    {\fun b'. \WPE {\m[j: g_j' | j \in J]}*
+    {\begin{pmatrix*}[l]
+    \fun b. (b \cdot b' =_{I\cup J} 0 \land Q) \\
+    \lor 
+    \begin{pmatrix*}[l]
+        b \cdot b' \ne_{I\cup J} 0 \\
+        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
+    \end{pmatrix*}
+    \end{pmatrix*}}}$}
+    \UnaryInfC{$\V
+    P
+    |- 
+    \WPU {\m[i: \code{assume}(g_i) | i \in I]}*
+    {\fun b'. \WPE {\m[j: \code{assume}(g_j') | j \in J]}*
+    {\begin{pmatrix*}[l]
+    \fun b. (b \cdot b' =_{I\cup J} 0 \land Q) \\
+    \lor 
+    \begin{pmatrix*}[l]
+        b \cdot b' \ne_{I\cup J} 0 \\
+        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
+    \end{pmatrix*} \land (b \cdot b' \ne_{I\cup J} 0)
+    \end{pmatrix*}}}$}
+    \UnaryInfC{$\V
+    P
+    |- 
+    \WPU {\m[i: \code{assume}(g_i) | i \in I]}*
+    {\WPE {\m[j: \code{assume}(g_j') | j \in J]}*
+    {\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}}}$}
+\end{scprooftree}
+
+\begin{scprooftree}{0.75}
+    \AxiomC{$\V
+    P
+    |- 
+    \WPU {\m[i: g_i | i \in I]}*
+    {\fun b'. \WPE {\m[j: g_j' | j \in J]}*
+    {\begin{pmatrix*}[l]
+    \fun b. (b \cdot b' =_{I\cup J} 0 \land Q) \\
+    \lor 
+    \begin{pmatrix*}[l]
+        b \cdot b' \ne_{I\cup J} 0 \\
+        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
+    \end{pmatrix*}
+    \end{pmatrix*}}}$}
+    \UnaryInfC{$\V
+    P
+    |- 
+    \WPU {\m[i: \lnot g_i | i \in I]}*
+    {\fun b'. \WPE {\m[j: \lnot g_j' | j \in J]}*
+    {\begin{pmatrix*}[l]
+    \fun b. (b \cdot b' \ne_{I\cup J} 0 \land Q) \\
+    \lor 
+    \begin{pmatrix*}[l]
+        b \cdot b' =_{I\cup J} 0 \\
+        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
+    \end{pmatrix*}
+    \end{pmatrix*}}}$}
+    \UnaryInfC{$\V
+    P
+    |- 
+    \WPU {\m[i: \code{assume}(\lnot g_i) | i \in I]}*
+    {\fun b'. \WPE {\m[j: \code{assume}(\lnot g_j') | j \in J]}*
+    {\begin{pmatrix*}[l]
+    \fun b. (b \cdot b' \ne_{I\cup J} 0 \land Q) \\
+    \lor 
+    \begin{pmatrix*}[l]
+        b \cdot b' =_{I\cup J} 0 \\
+        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
+    \end{pmatrix*} \land (b \cdot b' \ne_{I\cup J} 0)
+    \end{pmatrix*}}}$}
+    \UnaryInfC{$\V
+    P
+    |- 
+    \WPU {\m[i: \code{assume}(\lnot g_i) | i \in I]}*
+    {\WPE {\m[j: \code{assume}(\lnot g_j') | j \in J]} Q}$}
+\end{scprooftree}
