@@ -207,7 +207,7 @@ However, the proof strategy used previously doesn't work for this rule. It comes
 Thankfully, there may be a way to deal with this issue, using a certain encoding of \code{while}. We will add to construct to the language: \code{assume} and *. Their semantic value can be defined as follows, with $t^n$ a notation for a sequence of $n$ terms $t$.
 
 \begin{proofrules}
-    \infer*{\bigstep g s 0 {s'}}{\bigstep {\code{assume}(g)} s 0 {s'}}
+    \infer*{\E v\ne 0. \bigstep g s v {s'}}{\bigstep {\code{assume}(g)} s 1 {s'}}
 
     \infer*{\E n. \bigstep {t^n} s v {s'}}{\bigstep {t^*} s v {s'}}
 \end{proofrules}
@@ -239,11 +239,11 @@ They are derived thusly:
 
 \begin{prooftree}
     \AxiomC{$\WPU {\m[i: g_i | i \in I]}
-            {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v}\cdot\m{w}) \land\m{w} = 0}}$}
+            {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v}\cdot\m{w}) \land\m{w} \ne 0}}$}
     \UnaryInfC{$\WPU {\m[i: \code{assume}(g_i) | i \in I]}
-                {\WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(0\cdot\m{w}) \land\m{w} = 0}}$}
+                {\WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(1\cdot\m{w}) \land\m{w} \ne 0}}$}
     \UnaryInfC{$\WPU {\m[i: \code{assume}(g_i) | i \in I]}
-                {\WPE {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(0 \cdot \m{w})}}$}
+                {\WPE {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(1 \cdot \m{w})}}$}
 \end{prooftree}
 
 \begin{scprooftree}{0.75}
