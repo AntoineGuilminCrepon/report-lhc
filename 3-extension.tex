@@ -8,7 +8,7 @@ The main point of the extension is to add an object to the language complementar
 This object is defined as such :
 
 \begin{definition}[Weakest existential precondition]
-$\WPE{\m{t}}{Q} := \lambda s. \E s' v. \bigstep t s v {s'} \land Q(v)$
+$\WPE{\m{t}}{Q} := \lambda \m{s}. \E \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \land Q(\m{v})$
 \end{definition}
 
 This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness. Most of the rules can be mirrored as is (just switching a $\mathbf{wp}_{\forall}$ for a $\mathbf{wp}_{\exists}$), but some needs more changes.
@@ -75,8 +75,6 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
         \input{rules/wp-triv.tex}
 
         \input{rules/proj-elim}
-
-        \input{rules/wp-while.tex}
     \end{proofrules}
     \caption{Rules combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$}
 \end{mathfig}
@@ -146,6 +144,8 @@ Let's consider two examples: \textsc{wp-if} and \textsc{wp-seq}.
 \end{proofrules}
 }
 
+\bigskip
+
 We can derive both rules from \textsc{wp-swap}, as follows:
 
 \bigskip
@@ -191,3 +191,40 @@ We can derive both rules from \textsc{wp-swap}, as follows:
 \end{scprooftree}
 
 In both cases, we simply "unfold" the terms using the corresponding $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules, and then a number \textsc{wp-swap} to complete the proof.
+
+\subsection{The while rule}
+
+There, of course, exists a rule for \code{while} statements of the same type than for \code{if} and sequential statements.
+
+\begin{proofrules}
+    \input{rules/wp-while.tex}
+\end{proofrules}
+
+\bigskip
+
+However, the proof strategy used previously doesn't work for this rule. It comes down to the fact that if we simply unfold \code{while} ($\code{while}\ g\ \code{do}\ t \implies \code{if}\ g\ \code{then}\ \code{skip}\ \code{else}\ \code{while}\ g\ \code{do}\ t$), we can't get a terminating proof, because we get the conclusion as a premisse. The main issue is that we're missing a way to do induction proofs on the length of the loop inside the logic.
+
+Thankfully, there may be a way to deal with this issue, using a certain encoding of \code{while}. We will add to construct to the language: \code{assume} and *. Their semantic value can be defined as follows, with $t^n$ a notation for a sequence of $n$ terms $t$.
+
+\begin{proofrules}
+    \infer*{\bigstep g s 0 {s'}}{\bigstep {\code{assume}(g)} s 0 {s'}}
+
+    \infer*{\E n. \bigstep {t^n} s v {s'}}{\bigstep {t^*} s v {s'}}
+\end{proofrules}
+
+From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and *, we can derive the rule for \code{while}. The question is, what did we gain from this encoding ? The short answer is that \code{assume} and * have similar $\mathbf{wp}_{\forall}-\mathbf{wp}_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
+
+We can derive four rules for \code{assume} and * (described in Fig.10).
+
+\begin{mathfig}
+    \begin{proofrules}
+        \input{rules/wpU-assume.tex}
+
+        \input{rules/wpE-assume.tex}
+
+        \input{rules/wpU-star.tex}
+
+        \input{rules/wpE-star.tex}
+    \end{proofrules}
+    \caption{Rules for \code{assume} and *}
+\end{mathfig}

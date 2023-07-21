@@ -90,7 +90,7 @@ Fig. 1 gives notations for hyperassertions that are used later in the paper. Spe
 We now introduces a new object, directly inspired from the original Hoare logic: the weakest precondition operator. Extending it to hyperterms and hyperassertions gives the following definition:
 
 \begin{definition}[Weakest precondition]
-  $\WPU{\m{t}}{Q} ::= \lambda s. \A s' v. \bigstep t s v {s'} \implies Q(v)$
+  $\WPU{\m{t}}{Q} ::= \lambda \m{s}. \A \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \implies Q(\m{v})$
 \end{definition}
 
 
