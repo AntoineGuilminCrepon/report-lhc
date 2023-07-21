@@ -235,7 +235,7 @@ We can derive four rules for \code{assume} and * (described in Fig.10). From tho
     \caption{Rules for \code{assume} and *}
 \end{mathfig}
 
-They are derived thusly:
+They are derived as follows:
 
 \begin{prooftree}
     \AxiomC{$\WPU {\m[i: g_i | i \in I]}
@@ -272,3 +272,25 @@ They are derived thusly:
                 {\WPE {\m[j: {t'_j}^* | j \in J]} P}$}
 \end{scprooftree}
 
+\textsc{wp-while} can be derived from \textsc{wp-star} and \textsc{wp-assume} this way:
+
+\begin{scprooftree}{0.8}
+    \AxiomC{$\V P |-
+                \WPU {\m[i: \code{assume}(g_i)]}
+                {\WPE {\m[j: \code{assume}(g'_j)]}
+                {\WPU {\m[i: t_i]} {\WPE {\m[j: t'_j]} {P}}}}$}
+    \UnaryInfC{$\V P |- 
+                \WPU {\m[i: \code{assume}(g_i); t_i]}
+                {\WPE {\m[j: \code{assume}(g'_j); t'_j]} P}$}
+    \UnaryInfC{$\V P |- 
+                \WPU {\m[i: (\code{assume}(g_i); t_i)^*]}
+                {\WPE {\m[j: (\code{assume}(g'_j); t'_j)^*]} P}$}
+    \AxiomC{$\V P |-
+                \WPU {\m[i: \code{assume}(\lnot g_i)]}
+                {\WPE {\m[j: \code{assume}(\lnot g'_j)]} Q}$}
+    \BinaryInfC{$\V P |- 
+                \WPU {\m[i: (\code{assume}(g_i); t_i)^*; \code{assume}(\lnot g_i)]}
+                {\WPE {\m[j: (\code{assume}(g'_j); t'_j)^*; \code{assume}(\lnot g'_j)]} Q}$}
+\end{scprooftree}
+
+Both leaves can be derived from the premisse of \textsc{wp-while} by applying \textsc{assume} (after negating the guards for the righthand leave), and collapsing the postcondition according to the return value being forced by the rule.
