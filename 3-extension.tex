@@ -63,16 +63,16 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
 
 \begin{mathfig}{\small}
     \begin{proofrules}
-        \input{rules/wp-refine.tex}
+        \input{rules/lockstep-refine.tex}
 
-        \input{rules/wp-proj.tex}
+        \input{rules/lockstep-proj.tex}
     \end{proofrules}
     \caption{Rules rewritten using $\mathbf{wp}_{\exists}$}
 \end{mathfig}
 
 \begin{mathfig}{\small}
     \begin{proofrules}
-        \input{rules/wp-triv.tex}
+        \input{rules/lockstep-triv.tex}
 
         \input{rules/proj-elim}
     \end{proofrules}
@@ -125,28 +125,28 @@ As stated before, $\mathbf{wp}_{\exists}$ behaves more or less the same way as $
 
 \begin{mathfig}{\small}
     \begin{proofrules}        
-        \input{rules/wp-swap.tex}
+        \input{rules/lockstep-swap.tex}
 
-        \input{rules/wp-swap-local.tex}
+        \input{rules/lockstep-swap-local.tex}
     \end{proofrules}
     \caption{Swap rules}
 \end{mathfig}
 
-A pair of such rules are \textsc{wp-swap} and \textsc{wp-swap-local}. A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\mathbf{wp}_{\exists}$ and $\mathbf{wp}_{\forall}$.
+A pair of such rules are \textsc{lockstep-swap} and \textsc{lockstep-swap-local}. A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\mathbf{wp}_{\exists}$ and $\mathbf{wp}_{\forall}$.
 
-Let's consider two examples: \textsc{wp-if} and \textsc{wp-seq}.
+Let's consider two examples: \textsc{lockstep-if} and \textsc{lockstep-seq}.
 
 \resizebox{0.8\width}{!}{
 \begin{proofrules}
-    \input{rules/wp-seq.tex}
+    \input{rules/lockstep-seq.tex}
 
-    \input{rules/wp-if.tex}
+    \input{rules/lockstep-if.tex}
 \end{proofrules}
 }
 
 \bigskip
 
-We can derive both rules from \textsc{wp-swap}, as follows:
+We can derive both rules from \textsc{lockstep-swap}, as follows:
 
 \bigskip
 
@@ -190,14 +190,14 @@ We can derive both rules from \textsc{wp-swap}, as follows:
     \UnaryInfC{$\WPU {\m[i: \code{if}\ g_i\ \code{then}\ t_i\ \code{else}\  t'_i| i \in I]}{\WPE {\m[j: \code{if}\ g'_j\ \code{then}\ u_j\ \code{else}\ u'_j | j \in J]}{Q}}$}
 \end{scprooftree}
 
-In both cases, we simply "unfold" the terms using the corresponding $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules, and then a number \textsc{wp-swap} to complete the proof.
+In both cases, we simply "unfold" the terms using the corresponding $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules, and then a number \textsc{lockstep-swap} to complete the proof.
 
 \subsection{The while rule}
 
 There, of course, exists a rule for \code{while} statements of the same type than for \code{if} and sequential statements.
 
 \begin{proofrules}
-    \input{rules/wp-while.tex}
+    \input{rules/lockstep-while.tex}
 \end{proofrules}
 
 \bigskip
@@ -217,9 +217,9 @@ From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t
 We can derive four rules for \code{assume} and * (described in Fig.10). From those rules, one can derive rules of the same form as the \code{if} one:
 
 \begin{proofrules}
-    \input{rules/wp-assume.tex}
+    \input{rules/lockstep-assume.tex}
 
-    \input{rules/wp-star.tex}
+    \input{rules/lockstep-star.tex}
 \end{proofrules}
 
 \begin{mathfig}
@@ -272,7 +272,7 @@ They are derived as follows:
                 {\WPE {\m[j: {t'_j}^* | j \in J]} P}$}
 \end{scprooftree}
 
-\textsc{wp-while} can be derived from \textsc{wp-star} and \textsc{wp-assume} this way:
+\textsc{lockstep-while} can be derived from \textsc{lockstep-star} and \textsc{lockstep-assume} this way:
 
 \begin{scprooftree}{0.8}
     \AxiomC{$\V P |-
@@ -293,7 +293,7 @@ They are derived as follows:
                 {\WPE {\m[j: (\code{assume}(g'_j); t'_j)^*; \code{assume}(\lnot g'_j)]} Q}$}
 \end{scprooftree}
 
-Both leaves can be derived from the premisse of \textsc{wp-while} by applying \textsc{assume} (after negating the guards for the righthand leave), and collapsing the postcondition according to the return value being forced by the rule.
+Both leaves can be derived from the premisse of \textsc{lockstep-while} by applying \textsc{assume} (after negating the guards for the righthand leave), and collapsing the postcondition according to the return value being forced by the rule.
 
 \begin{scprooftree}{0.75}
     \AxiomC{$\V
