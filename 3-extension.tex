@@ -160,8 +160,8 @@ We can derive both rules from \textsc{lockstep-swap}, as follows:
 
 \begin{scprooftree}{0.8}
     \AxiomC{$\WPU {\m[i: g_i | i \in I]}*
-    {\fun b. \WPE {\m[j: g'_j | j \in J]}*
-    {\fun b'. \WPU {
+    {\fun \m{b}. \WPE {\m[j: g'_j | j \in J]}*
+    {\fun \m{b}'. \WPU {
         \begin{pmatrix*}[l]
         {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
         {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
@@ -174,13 +174,13 @@ We can derive both rules from \textsc{lockstep-swap}, as follows:
         }{Q}}
     }}$}
     \UnaryInfC{$\WPU {\m[i: g_i | i \in I]}*
-    {\fun b. \WPU {
+    {\fun \m{b}. \WPU {
         \begin{pmatrix*}[l]
         {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
         {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
         \end{pmatrix*}}*
         {\WPE {\m[j: g'_j | j \in J]
-        }*{\fun b'. \WPE {
+        }*{\fun \m{b}'. \WPE {
         \begin{pmatrix*}[l]
         {\m[i: u_j | j\in I, \m{b}'(i) \neq 0]}{\m.}\\
         {\m[i: u'_j | j\in I, \m{b}'(i) = 0]}
@@ -300,27 +300,27 @@ Both leaves can be derived from the premisse of \textsc{lockstep-while} by apply
     P
     |- 
     \WPU {\m[i: g_i | i \in I]}*
-    {\fun b'. \WPE {\m[j: g_j' | j \in J]}*
+    {\fun \m{b}'. \WPE {\m[j: g_j' | j \in J]}*
     {\begin{pmatrix*}[l]
-    \fun b. (b \cdot b' =_{I\cup J} 0 \land Q) \\
+    \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
     \lor 
     \begin{pmatrix*}[l]
-        b \cdot b' \ne_{I\cup J} 0 \\
-        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
+        (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
+        \land \WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
     \end{pmatrix*}
     \end{pmatrix*}}}$}
     \UnaryInfC{$\V
     P
     |- 
     \WPU {\m[i: \code{assume}(g_i) | i \in I]}*
-    {\fun b'. \WPE {\m[j: \code{assume}(g_j') | j \in J]}*
+    {\fun \m{b}'. \WPE {\m[j: \code{assume}(g_j') | j \in J]}*
     {\begin{pmatrix*}[l]
-    \fun b. (b \cdot b' =_{I\cup J} 0 \land Q) \\
+    \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
     \lor 
     \begin{pmatrix*}[l]
-        b \cdot b' \ne_{I\cup J} 0 \\
+        (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
         \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
-    \end{pmatrix*} \land (b \cdot b' \ne_{I\cup J} 0)
+    \end{pmatrix*} \land (\m{b} \cdot \m{b}' \ne_{I\cup J} 0)
     \end{pmatrix*}}}$}
     \UnaryInfC{$\V
     P
@@ -335,12 +335,12 @@ Both leaves can be derived from the premisse of \textsc{lockstep-while} by apply
     P
     |- 
     \WPU {\m[i: g_i | i \in I]}*
-    {\fun b'. \WPE {\m[j: g_j' | j \in J]}*
+    {\fun \m{b}'. \WPE {\m[j: g_j' | j \in J]}*
     {\begin{pmatrix*}[l]
-    \fun b. (b \cdot b' =_{I\cup J} 0 \land Q) \\
+    \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
     \lor 
     \begin{pmatrix*}[l]
-        b \cdot b' \ne_{I\cup J} 0 \\
+        (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
         \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
     \end{pmatrix*}
     \end{pmatrix*}}}$}
@@ -348,12 +348,12 @@ Both leaves can be derived from the premisse of \textsc{lockstep-while} by apply
     P
     |- 
     \WPU {\m[i: \lnot g_i | i \in I]}*
-    {\fun b'. \WPE {\m[j: \lnot g_j' | j \in J]}*
+    {\fun \m{b}'. \WPE {\m[j: \lnot g_j' | j \in J]}*
     {\begin{pmatrix*}[l]
-    \fun b. (b \cdot b' \ne_{I\cup J} 0 \land Q) \\
+    \fun \m{b}. (\m{b} \cdot \m{b}' \ne_{I\cup J} 0 \land Q) \\
     \lor 
     \begin{pmatrix*}[l]
-        b \cdot b' =_{I\cup J} 0 \\
+        (\m{b} \cdot \m{b}') =_{I\cup J} 0 \\
         \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
     \end{pmatrix*}
     \end{pmatrix*}}}$}
@@ -361,14 +361,14 @@ Both leaves can be derived from the premisse of \textsc{lockstep-while} by apply
     P
     |- 
     \WPU {\m[i: \code{assume}(\lnot g_i) | i \in I]}*
-    {\fun b'. \WPE {\m[j: \code{assume}(\lnot g_j') | j \in J]}*
+    {\fun \m{b}'. \WPE {\m[j: \code{assume}(\lnot g_j') | j \in J]}*
     {\begin{pmatrix*}[l]
-    \fun b. (b \cdot b' \ne_{I\cup J} 0 \land Q) \\
+    \fun \m{b}. (\m{b} \cdot \m{b}' \ne_{I\cup J} 0 \land Q) \\
     \lor 
     \begin{pmatrix*}[l]
-        b \cdot b' =_{I\cup J} 0 \\
+        (\m{b} \cdot \m{b}') =_{I\cup J} 0 \\
         \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
-    \end{pmatrix*} \land (b \cdot b' \ne_{I\cup J} 0)
+    \end{pmatrix*} \land (\m{b} \cdot \m{b}' \ne_{I\cup J} 0)
     \end{pmatrix*}}}$}
     \UnaryInfC{$\V
     P

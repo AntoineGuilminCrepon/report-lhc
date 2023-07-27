@@ -1,0 +1,105 @@
+%!TEX root = main.tex
+\section{Applications of the extended model}
+
+\subsection{Writing specifications inside the logic}
+
+When writing down specifications for a program (which are most of the time defined informally), we can stumble upon ambiguity for how to implement it in the logic. One of the strength of LHC is being able to discuss the relationship of those implementations inside of the logic itself.
+
+As an overarching example, consider idempotence. Semi-formally, one defines a term $t$ as idempotent if $t \simeq (t;t)$. This specification can be divided into two refinement statements: $t \semleq (t;t)$ and $(t;t) \semleq t$. Thanks to the new extension, one can now formalize such refinement statements inside the logic:
+
+\begin{align}
+    \V \pv{x}(\I 1) = \pv{x}(\I 2) &|- \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t;t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}} 
+    \tag{\textsc{IdemSeq}$_{12}$}
+    \\
+    \V \pv{x}(\I 1) = \pv{x}(\I 2), \pv{x}(\I 3) = \pv{v} &|- \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t]} {\WPE {\m[\I 3: t]} {\pv{x}(\I 2) = \pv{v} \implies \pv{x}(\I 1) = \pv{x}(\I 3)}}} 
+    \tag{\textsc{Idem}$^3_{12}$}
+    \\
+    \V \pv{x}(\I 1) = \pv{x}(\I 2) &|- \WPU {\m[\I 1: t; t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}} 
+    \tag{\textsc{IdemSeq}$_{21}$}
+    \\
+    \V \pv{x}(\I 1) = \pv{x}(\I 3), \pv{x}(\I 2) = \pv{v} &|- \WPU {\m[\I 1: t]} {\WPU {\m[\I 2: t]} {\WPE {\m[\I 3: t]} {\pv{x}(\I 1) = \pv{v} \implies \pv{x}(\I 2) = \pv{x}(\I 3)}}} 
+    \tag{\textsc{Idem}$^3_{21}$}
+\end{align}
+
+Of this four formalizations, the top two implement $t \semleq (t;t)$ and the bottoom two $(t;t) \semleq t$. Moreover, we have a formal definition of refinement outside of the logic:
+
+\[
+    t_1 \semleq t_2 \is \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'}
+\]
+
+And we can prove the following implications:
+
+\begin{align*}
+    t \semleq (t;t) \Leftarrow \textsc{IdemSeq}_{12} \Leftarrow \textsc{Idem}^3_{12} \\
+    (t;t) \semleq t \Leftarrow \textsc{IdemSeq}_{21} \Leftarrow \textsc{Idem}^3_{21}
+\end{align*}
+
+\begin{proof}
+    The leftmost implications are derived from this more general result on refinements :
+
+    \begin{eqnarray*}
+        t_1 \semleq t_2 &\is& \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'} \\
+        &\Leftarrow& \A s\ v_1\ s_1'. \bigstep {t_1} s {v_1} {s_1'} \implies (\E v_2\ s_2'. \bigstep {t_2} s {v_2} {s_2'} \land s_2' = s_1') \\
+        &\Leftarrow& \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t_1]} {\WPE {\m[\I 2: t_2]} {\pv{x}(\I 1) = \pv{x}(\I 2)}} \\
+    \end{eqnarray*}
+\end{proof}
+
+\subsection{Loop Hoisting example}
+
+Loop hoisting is a common compiler optimization that consists in reducing loops that are redundant in their action, because their body is idempotent (in the sense discussed in the previous part). To check the soundness of this optimization, we have to prove that if $t$ is idempotent (i.e $t \simeq (t;t)$) then $t^*;t \simeq t$ (some would argue that $t;t^*$ is mmore appropriate, but we will show later that this term is in fact equivalent to $t^*;t$, and the latter makes the derivation less cumbersome).
+
+The refinement $t \semleq t^*;t$ is straightforward, by the following derivation:
+
+\begin{prooftree}
+    \AxiomC{}
+    \UnaryInfC{$
+        \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPE {\m[\I 2: t^0]} {\pv{x}(\I 1) = \pv{x}(\I 2)}
+    $}
+    \UnaryInfC{$
+        \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPE {\m[\I 2: t^*]} {\pv{x}(\I 1) = \pv{x}(\I 2)}
+    $}
+    \AxiomC{$
+        \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}
+    $}
+    \BinaryInfC{$
+    \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t^*;t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}} 
+    $}
+\end{prooftree}
+
+The refinement $t^*;t \semleq t$ is derived as follows:
+
+\begin{prooftree}
+    \AxiomC{$
+        \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t^*]} {P}
+    $}
+    \AxiomC{$
+        \V P |- \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}
+    $}
+    \BinaryInfC{$
+    \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t^*;t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}} 
+    $}
+\end{prooftree}
+
+If we set $P := \E \pv{v}. \pv{x}(\I 1) = \pv{v} \land \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}$, the right-hand side becomes a tautology, and the left-hand side is derived as follows:
+
+\begin{prooftree}
+    \AxiomC{$
+        \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t; t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}
+    $}
+    \UnaryInfC{$
+    \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t]}*
+    {\begin{pmatrix*}[l]
+        \E \pv{v}. \pv{x}(\I 1) = \pv{v} \land \\
+        \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}
+    \end{pmatrix*}}
+    $}
+    \UnaryInfC{$
+    \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t^*]}*
+    {\begin{pmatrix*}[l]
+        \E \pv{v}. \pv{x}(\I 1) = \pv{v} \land \\
+        \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}
+    \end{pmatrix*}}
+    $}
+\end{prooftree}
+
+It is of note that, for loop hoisting to be sound, one only needs to have the refinement $(t; t) \semleq t$
