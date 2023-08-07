@@ -42,6 +42,26 @@ And we can prove the following implications:
         &\Leftarrow& \A s\ v_1\ s_1'. \bigstep {t_1} s {v_1} {s_1'} \implies (\E v_2\ s_2'. \bigstep {t_2} s {v_2} {s_2'} \land s_2' = s_1') \\
         &\Leftarrow& \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t_1]} {\WPE {\m[\I 2: t_2]} {\pv{x}(\I 1) = \pv{x}(\I 2)}} \\
     \end{eqnarray*}
+
+    The rightmost implications can be derived this way (the derivation is for $\textsc{Idem}_{12}^3 \implies \textsc{IdemSed}_{12}$, the other derivation is similar):
+
+    \begin{prooftree}
+        \AxiomC{$\V \pv{x}(\I 1) = \pv{x}(\I 2), \pv{x}(\I 3) = \pv{v} |- 
+                \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t]} {
+                \WPE {\m[\I 3: t]} {
+                \pv{x}(\I 2) = \pv{v} \implies \pv{x}(\I 1) = \pv{x}(\I 3)}}}
+        $}
+        \UnaryInfC{$\V \pv{x}(\I 1) = \pv{x}(\I 2) |-
+                \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t]} {\pv{x}(\I 2) = \pv{v} \land
+                \WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}}
+        $}
+        \UnaryInfC{$\V \pv{x}(\I 1) = \pv{x}(\I 2) |- 
+                \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t;t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}} 
+        $}
+    \end{prooftree}
 \end{proof}
 
 \subsection{Loop Hoisting example}
