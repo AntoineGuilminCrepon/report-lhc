@@ -102,4 +102,66 @@ If we set $P := \E \pv{v}. \pv{x}(\I 1) = \pv{v} \land \WPU {\m[\I 1: t]} {\WPE 
     $}
 \end{prooftree}
 
-It is of note that, for loop hoisting to be sound, one only needs to have the refinement $(t; t) \semleq t$
+It is of note that, for loop hoisting to be sound, one only needs to have the refinement $(t; t) \semleq t$.
+
+As said before, the equivalence $t^*;t \simeq t;t^*$ is derivable. The first refinement $t;t^* \semleq t^*;t$ is derived this way:
+
+\begin{prooftree}
+    \AxiomC{$\V \pv{x}(\I 1) = \pv{x}(\I 2) |-
+        \WPU {\m[\I 1: t]} {
+        \overbrace{\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}^P}
+        $}
+    \AxiomC{$\V \pv{x}(\I 1) = \pv{x}(\I 2) |-
+    \WPU {\m[\I 1: t]} P$}
+    \UnaryInfC{$\V P |- \WPE {\m[\I 1: t]} {\WPU {\m[\I 2: t]} P}$}
+    \UnaryInfC{$\V P |- \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t]} P}$}
+    \UnaryInfC{$\V P |- \WPU {\m[\I 1: t^*]} {\WPE {\m[\I 2: t^*]} P}$}
+    \UnaryInfC{$\V \WPU {\m[\I 1: t]} P |- \WPU {\m[\I 1: t]} Q$}
+    \BinaryInfC{$\V \pv{x}(\I 1) = \pv{x}(\I 2) |-
+        \WPU {\m[\I 1: t]} {
+        \underbrace{
+        \WPU {\m[\I 1:t^*]} {
+        \WPE {\m[\I 2:t^*]} {
+        \WPE {\m[\I 2:t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}}}_Q}
+        $}
+\end{prooftree}
+
+And the refinement $t^*;t \semleq t;t^*$ is derived that way:
+
+\begin{prooftree}
+    \AxiomC{$\V \pv{x}(\I 1) = \pv{x}(\I 2) |- Q$}
+    \AxiomC{$\V Q |- \WPU {\m[\I 1: t]} Q$}
+    \BinaryInfC{$\V \pv{x}(\I 1) = \pv{x}(\I 2) |-
+        \WPU {\m[\I 1: t^*]} {
+        \underbrace{
+        \WPU {\m[\I 1:t]} {
+        \WPE {\m[\I 2:t]} {
+        \WPE {\m[\I 2:t^*]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}}}_Q}
+        $}
+\end{prooftree}
+
+The left-hand side, after choosing 0 iterations for the existential star, boils down to $\V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t]} {\WPE {\m[\I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}$. The right-hand side is derived this way:
+
+\begin{prooftree}
+    \AxiomC{$\V \pv{x}(\I 1) = \pv{x}(\I 2) |-
+                \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t]} {
+                \pv{x}(\I 1) = \pv{x}(\I 2)}}$}
+    \UnaryInfC{$\V \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t]} {
+                \pv{x}(\I 1) = \pv{x}(\I 2)}}
+            |- \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t]} {
+                \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t]} {
+                \pv{x}(\I 1) = \pv{x}(\I 2)}}}}$}
+    \UnaryInfC{$\V \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t]} {
+                \pv{x}(\I 1) = \pv{x}(\I 2)}}
+            |- \WPU {\m[\I 1: t]} {
+                \WPU {\m[\I 1: t]} {
+                \WPE {\m[\I 2: t]} {
+                \WPE {\m[\I 2: t]} {
+                \pv{x}(\I 1) = \pv{x}(\I 2)}}}}$}
+    \UnaryInfC{$\V Q |- \WPU {\m[\I 1: t]} Q$}
+\end{prooftree}
