@@ -1,8 +1,0 @@
-%!TEX root = main.tex
-\section{State of the Art}
-
-Hoare logic was one of the first attempt at creating a formal framework for proving statements on programs. However, it proved itself limited for proving certain properties. In particular, dealing with non-determinism can become tricky, since basic Hoare logic can only deal with a given execution at a time. More generally, hyperproperties are an issue for basic Hoare logic, as they require to reason on multiple executions of the same program, or the execution of different programs.
-
-Thus, multiple frameworks have been designed over the years to deal with those hyperproperties, mainly by extending Hoare logic to directly work on so-called hyperterms, i.e finite sets of terms, instead of regular terms.
-
-LHC (for Logic for Hypertriple Composition) is one of those frameworks, that distinguishes itself by insisting on a relational system: the goal is to prove hyperproperties on general program patterns, without having to care that much about the implementation of other functions that are called, instead relying on assumptions about their exteernal behaviour.
