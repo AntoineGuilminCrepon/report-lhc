@@ -37,6 +37,9 @@
 \usepackage[figuresleft]{rotating}
 \setlength\rotFPtop{0pt plus 1fil}
 
+\bibliographystyle{ACM-Reference-Format}
+\citestyle{acmauthoryear}
+
 % Alter some LaTeX defaults for better treatment of figures:
 \renewcommand{\floatpagefraction}{0.7}  % require fuller float pages
 \renewcommand{\dblfloatpagefraction}{0.7}  % require fuller float pages
@@ -54,12 +57,20 @@
 }
 \begin{document}
 
+\begin{abstract}
+  \emph{Logic for Hypertriple Composition} (LHC) has been proposed in \citet{DOsualdo22} as a relational program logic, aimed at solving hypersafety properties. However, this logic leaves most hyperproperties unexpressable, and thus unprovable. We propose an extension of LHC that is able to express those hyperproperties, and apply it to multiple examples. 
+\end{abstract}
+
 \maketitle
 
+
+\input{0-intro}
 \input{1-SoA}
 \input{2-LHC}
 \input{3-extension}
 \input{4-applications}
+
+\bibliography{biblio}
 
 \newpage
 \input{soundness}
