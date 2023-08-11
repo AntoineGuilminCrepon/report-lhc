@@ -14,41 +14,57 @@ $\WPE{\m{t}}{Q} := \lambda \m{s}. \E \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v
 
 This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness. Most of the rules can be mirrored as is (just switching a $\mathbf{wp}_{\forall}$ for a $\mathbf{wp}_{\exists}$), but some needs more changes.
 
-\textsc{wp$_{exists}$-exists} mirrors \textsc{wp$_{\forall}$-all}, but uses existential quantifiers instead of universal ones. Without much surprise, $\mathbf{wp}_{\exists}$ works better with existentials. \textsc{wp$_{\exists}$-while$_I$} was modified to take into account the necessity of projectability for $\mathbf{wp}_{\exists}$ statements.
+\Cref{rule:wpE-exists} mirrors \cref{rule:wpU-all}, but uses existential quantifiers instead of universal ones. Without much surprise, $\mathbf{wp}_{\exists}$ works better with existentials. \Cref{rule:wpE-while} was modified to take into account the necessity of projectability for $\mathbf{wp}_{\exists}$ statements.
 
 \begin{mathfig}{\small}
     \begin{proofrules}
         \input{rules/wpE-cons.tex}
+        \label{rule:wpE-cons}
 
         \input{rules/wpE-exists.tex}
+        \label{rule:wpE-exists}
 
         \input{rules/wpE-frame.tex}
+        \label{rule:wpE-frame}
 
         \input{rules/wpE-impl-r.tex}
+        \label{rule:wpE-impl-r}
 
         \input{rules/wpE-subst.tex}
+        \label{rule:wpE-subst}
 
         \input{rules/wpE-idx.tex}
+        \label{rule:wpE-idx}
 
         \input{rules/wpE-seq.tex}
+        \label{rule:wpE-seq}
 
         \input{rules/wpE-assign.tex}
+        \label{rule:wpE-assign}
 
         \input{rules/wpE-if.tex}
+        \label{rule:wpE-if}
 
         \input{rules/wpE-while.tex}
+        \label{rule:wpE-while}
 
         \input{rules/wpE-nest.tex}
+        \label{rule:wpE-nest}
 
         \input{rules/wpE-conj.tex}
+        \label{rule:wpE-conj}
 
         \input{rules/wpE-idx-pass.tex}
+        \label{rule:wpE-idx-pass}
 
         \input{rules/wpE-idx-swap.tex}
+        \label{rule:wpE-idx-swap}
 
         \input{rules/wpE-idx-merge.tex}
+        \label{rule:wpE-idx-merge}
 
         \input{rules/wpE-idx-post.tex}
+        \label{rule:wpE-idx-post}
     \end{proofrules}
     \caption{Rules for $\mathbf{wp}_{\exists}$ mirrored on $\mathbf{wp}_{\forall}$}
 \end{mathfig}
@@ -65,8 +81,10 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
 \begin{mathfig}{\small}
     \begin{proofrules}
         \input{rules/lockstep-refine.tex}
+        \label{rule:lockstep-refine}
 
         \input{rules/lockstep-proj.tex}
+        \label{rule:lockstep-proj}
     \end{proofrules}
     \caption{Rules rewritten using $\mathbf{wp}_{\exists}$}
 \end{mathfig}
@@ -74,8 +92,10 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
 \begin{mathfig}{\small}
     \begin{proofrules}
         \input{rules/lockstep-triv.tex}
+        \label{rule:lockstep-triv}
 
         \input{rules/proj-elim}
+        \label{rule:proj-elim}
     \end{proofrules}
     \caption{Rules combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$}
 \end{mathfig}
@@ -127,27 +147,31 @@ As stated before, $\mathbf{wp}_{\exists}$ behaves more or less the same way as $
 \begin{mathfig}{\small}
     \begin{proofrules}        
         \input{rules/lockstep-swap.tex}
+        \label{rule:lockstep-swap}
 
         \input{rules/lockstep-swap-local.tex}
+        \label{rule:lockstep-swap-local}
     \end{proofrules}
     \caption{Swap rules}
 \end{mathfig}
 
-A pair of such rules are \textsc{lockstep-swap} and \textsc{lockstep-swap-local}. A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\mathbf{wp}_{\exists}$ and $\mathbf{wp}_{\forall}$.
+A pair of such rules are \cref{rule:lockstep-swap} and \cref{rule:lockstep-swap-local}. A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\mathbf{wp}_{\exists}$ and $\mathbf{wp}_{\forall}$.
 
-Let's consider two examples: \textsc{lockstep-if} and \textsc{lockstep-seq}.
+Let's consider two examples: \cref{rule:lockstep-if} and \cref{rule:lockstep-seq}.
 
 \resizebox{0.8\width}{!}{
 \begin{proofrules}
     \input{rules/lockstep-seq.tex}
+    \label{rule:lockstep-seq}
 
     \input{rules/lockstep-if.tex}
+    \label{rule:lockstep-if}
 \end{proofrules}
 }
 
 \bigskip
 
-We can derive both rules from \textsc{lockstep-swap}, as follows:
+We can derive both rules from \cref{rule:lockstep-swap}, as follows:
 
 \bigskip
 
@@ -191,7 +215,7 @@ We can derive both rules from \textsc{lockstep-swap}, as follows:
     \UnaryInfC{$\WPU {\m[i: \code{if}\ g_i\ \code{then}\ t_i\ \code{else}\  t'_i| i \in I]}{\WPE {\m[j: \code{if}\ g'_j\ \code{then}\ u_j\ \code{else}\ u'_j | j \in J]}{Q}}$}
 \end{scprooftree}
 
-In both cases, we simply "unfold" the terms using the corresponding $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules, and then a number \textsc{lockstep-swap} to complete the proof.
+In both cases, we simply "unfold" the terms using the corresponding $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules, and then a number \cref{rule:lockstep-swap} to complete the proof.
 
 \subsection{The while rule}
 
@@ -199,6 +223,7 @@ There, of course, exists a rule for \code{while} statements of the same type tha
 
 \begin{proofrules}
     \input{rules/lockstep-while.tex}
+    \label{rule:lockstep-while}
 \end{proofrules}
 
 \bigskip
@@ -215,25 +240,32 @@ Thankfully, there may be a way to deal with this issue, using a certain encoding
 
 From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and *, we can derive the rule for \code{while}. The question is, what did we gain from this encoding ? The short answer is that \code{assume} and * have similar $\mathbf{wp}_{\forall}-\mathbf{wp}_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
 
-We can derive four rules for \code{assume} and * (described in Fig.10). From those rules, one can derive rules of the same form as the \code{if} one:
+We can derive four rules for \code{assume} and * (described in \cref{fig:assume-*-rules}). From those rules, one can derive rules of the same form as the \code{if} one:
 
 \begin{proofrules}
     \input{rules/lockstep-assume.tex}
+    \label{rule:lockstep-assume}
 
     \input{rules/lockstep-star.tex}
+    \label{rule:lockstep-star}
 \end{proofrules}
 
 \begin{mathfig}
     \begin{proofrules}
         \input{rules/wpU-assume.tex}
+        \label{rule:wpU-assume}
 
         \input{rules/wpE-assume.tex}
+        \label{rule:wpE-assume}
 
         \input{rules/wpU-star.tex}
+        \label{rule:wpU-star}
 
         \input{rules/wpE-star.tex}
+        \label{rule:wpE-star}
     \end{proofrules}
     \caption{Rules for \code{assume} and *}
+    \label{fig:assume-*-rules}
 \end{mathfig}
 
 They are derived as follows:
@@ -273,9 +305,9 @@ They are derived as follows:
                 {\WPE {\m[j: {t'_j}^* | j \in J]} P}$}
 \end{scprooftree}
 
-\textsc{lockstep-while} can be derived from \textsc{lockstep-star} and \textsc{lockstep-assume} this way:
+\Cref{rule:lockstep-while} can be derived from \cref{rule:lockstep-star} and \cref{rule:lockstep-assume} this way:
 
-\begin{scprooftree}{0.8}
+\begin{scprooftree}{0.7}
     \AxiomC{$\V P |-
                 \WPU {\m[i: \code{assume}(g_i)]}
                 {\WPE {\m[j: \code{assume}(g'_j)]}
@@ -294,7 +326,7 @@ They are derived as follows:
                 {\WPE {\m[j: (\code{assume}(g'_j); t'_j)^*; \code{assume}(\lnot g'_j)]} Q}$}
 \end{scprooftree}
 
-Both leaves can be derived from the premisse of \textsc{lockstep-while} by applying \textsc{assume} (after negating the guards for the righthand leave), and collapsing the postcondition according to the return value being forced by the rule.
+Both leaves can be derived from the premisse of \cref{rule:lockstep-while} by applying \cref{rule:lockstep-assume} (after negating the guards for the righthand leave), and collapsing the postcondition according to the return value being forced by the rule.
 
 \begin{scprooftree}{0.75}
     \AxiomC{$\V

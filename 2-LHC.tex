@@ -17,17 +17,17 @@ Then comes the following definitions ($\Store$ is the set of stores, $\Term$ the
 \end{grammar}
 \begin{eqnarray*}
   \Store&\is&\PVar\rightarrow\Val \\
-  \Type{HStore}&\is&\Idx\rightarrow\Store \\
-  \Type{HReturn}&\is&\Idx\rightarrow\Val \\
+  \Type{HStore}&\is&\Idx\pto\Store \\
+  \Type{HReturn}&\is&\Idx\pto\Val \\
   \Assrt&\is&\Store\rightarrow\Prop \\
-  \HAssrt&\is&HStore\rightarrow\Prop \\
+  \HAssrt&\is&\Type{HStore}\rightarrow\Prop \\
   \Type{PostHAssrt}&\is&\Type{HReturn}\rightarrow\HAssrt \\
 \end{eqnarray*}
 \end{definition}
 
-Furthermore, we define a reindexing as any (potentially non-bijective) function of type $\Idx\rightarrow\Idx$. For any reindexing $\pi$ and any $f\of\Idx\rightarrow A$, one notes $f\isub*{\pi} = \fun i. f(\pi(i))$ the reindexing of $f$ through $\pi$.
+Furthermore, we define a \emph{reindexing} as any (potentially non-bijective) function of type $\Idx\rightarrow\Idx$. For any reindexing $\pi$ and any $f\of\Idx\rightarrow A$, one notes $f\isub*{\pi} = \fun i. f(\pi(i))$ the reindexing of $f$ through $\pi$.
 
-Fig. 1 gives notations for hyperassertions that are used later in the paper. Special attention needs to be brought to the $\Pi$ operator, which is the least intuitive. It is semantically a reduction of a given hyperassertion, by reducing its scope to the given set of indexes $I$.
+\cref{fig:hyper-assertions} gives notations for hyperassertions that are used later in the paper. Special attention needs to be brought to the $\Pi$ operator, which is the least intuitive. It is semantically a reduction of a given hyperassertion, by reducing its scope to the given set of indexes $I$.
 
 \begin{mathfig}[\small]
   \begin{align*}
@@ -99,63 +99,89 @@ We now introduces a new object, directly inspired from the original Hoare logic:
 \begin{mathfig}[\small]
   \begin{proofrules}
     \input{rules/wpU-triv.tex}
+    \label{rule:wpU-triv}
 
     \input{rules/wpU-cons.tex}
+    \label{rule:wpU-cons}
 
     \input{rules/wpU-all.tex}
+    \label{rule:wpU-all}
 
     \input{rules/wpU-frame.tex}
+    \label{rule:wpU-frame}
 
     \input{rules/wpU-impl-r.tex}
+    \label{rule:wpU-impl-r}
 
     \input{rules/wpU-subst.tex}
+    \label{rule:wpU-subst}
 
     \input{rules/wpU-idx.tex}
+    \label{rule:wpU-idx}
   \end{proofrules}
   \caption{Base rules for $\mathbf{wp}_{\forall}$ from LHC}
+  \label{fig:base-wpU(rules)}
 \end{mathfig}
 
 \begin{mathfig}{\small}
   \begin{proofrules}
     \input{rules/wpU-var.tex}
+    \label{rule:wpU-var}
 
     \input{rules/wpU-val.tex}
+    \label{rule:wpU-val}
 
     \input{rules/wpU-skip.tex}
+    \label{rule:wpU-skip}
 
     \input{rules/wpU-primop.tex}
+    \label{rule:wpU-primop}
 
     \input{rules/wpU-seq.tex}
+    \label{rule:wpU-seq}
 
     \input{rules/wpU-assign.tex}
+    \label{rule:wpU-assign}
 
     \input{rules/wpU-if.tex}
+    \label{rule:wpU-if}
 
     \input{rules/wpU-while.tex}
+    \label{rule:wpU-while}
   \end{proofrules}
   \caption{Lockstep rules for $\mathbf{wp}_{\forall}$ from LHC}
+  \label{fig:lockstep-wpU-rules}
 \end{mathfig}
 
 \begin{mathfig}{\small}
   \begin{proofrules}
     \input{rules/wpU-nest.tex}
+    \label{rule:wpU-nest}
 
     \input{rules/wpU-conj.tex}
+    \label{rule:wpU-conj}
 
     \input{rules/wpU-proj.tex}
+    \label{rule:wpU-proj}
   \end{proofrules}
   \caption{Hyper-structure laws from LHC}
+  \label{fig:hyperstructure-rules}
 \end{mathfig}
 
 \begin{mathfig}{\small}
   \begin{proofrules}
     \input{rules/wpU-idx-pass.tex}
+    \label{rule:wpU-idx-pass}
 
     \input{rules/wpU-idx-swap.tex}
+    \label{rule:wpU-idx-swap}
 
     \input{rules/wpU-idx-merge.tex}
+    \label{rule:wpU-idx-merge}
 
     \input{rules/wpU-idx-post.tex}
+    \label{rule:wpU-idx-post}
   \end{proofrules}
   \caption{Reindexing rules from LHC}
+  \label{redindexing-rules}
 \end{mathfig}
