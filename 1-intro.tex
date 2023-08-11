@@ -15,16 +15,16 @@ A naïve way of proving those hyperproperties whould be to compute $\sem{t}$ for
 
 To solve this issue, it is easier to reason directly on judgements we will now call \emph{hyper-triples}, which are an extension of Hoare triples, that take multiple programs as arguments. An hyper-triple (of arity $n$) could be written (a bit more formally) as follows:
 \[
-    \J |- {P} {\m[\I 1: t_1; \dots; \I n: t_n]} {Q}    
+    \J |- {P} {\m[\I 1: t_1]^{Q_1} \dots \m[\I n: t_n]^{Q_n}} {Q}    
 \]
-This notation is lacking, because it does not take the variety of quantifiers into account, but it is sufficient for the scope of this introduction. A more formal notation will be developed later in this paper to solve this issue.
+where every program $t_i$ is quantified universally or existentially, following $Q_i$
 
 Several relational logics have already been built using those hyper-triples in \cite{Yang07, SousaD16, Benton04, BartheCK16}. Those relational logics center around so-called "lockstep" proofs, that relies on the similarity in structure between the different terms used inside hyper-triples. For example, they can deal with sequential composition using a rule that might look as follows:
 
 \begin{prooftree}
-    \AxiomC{$\J |- {P} {\m[\I 1: t_1, \I 2: t_2]} {Q}$}
-    \AxiomC{$\J |- {Q} {\m[\I 1: t'_1, \I 2: t'_2]} {R}$}
-    \BinaryInfC{$\J |- {P} {\m[\I 1: (t_1; t'_1), \I 2: (t_2, t'_2)]} {R}$}
+    \AxiomC{$\J |- {P} {\m[\I 1: t_1, \I 2: t_2]^{\forall}} {Q}$}
+    \AxiomC{$\J |- {Q} {\m[\I 1: t'_1, \I 2: t'_2]^{\forall}} {R}$}
+    \BinaryInfC{$\J |- {P} {\m[\I 1: (t_1; t'_1), \I 2: (t_2, t'_2)]^{\forall}} {R}$}
 \end{prooftree}
 
 This rule is useful when $t_1$ and $t_2$ (resp. $t'_1$ and $t'_2$) are related, allowing $Q$ to only formalize a relational statement between the two separated hyper-triples, without supposing anything on their internals.
@@ -35,3 +35,14 @@ But we would now like to point a new example: suppose a library with a certain s
 
 To come around this issue, \citet{DOsualdo22} proposes LHC (for \emph{Logic for Hyper-Triple Composition}), which adds rules allowing the composition of such hyper-triples. \cref{sec:lhc} gives a more complete description of LHC, upon which this work is built.
 
+As is, LHC only deals with hypersafety, i.e $\forall^*$ hyperproperties. But, ideally, we would like to deal with any hyperproperty, more precisely, any alternation of quantifiers on traces. Some recent work has been done on those hyperproperties in \cite{Dickerson22, Dardinier23, Beutner22}, but the logics presented there suffer the same issues regarding their rigidity. Furthermore, they have a limited expressivity, by creating specific judgments enshrining certain alternations of quantifiers. This is done because those logics aim at being automated, which is a worthy goal. However, we argue that a more expressive logic serving as a foundational base for those other, more specialized, works, would be a nice addition.
+
+Therefore, starting with LHC as a base, we aim at extending it, so that it could express any hyperproperty, and adding the relevant rules to prove them.
+
+The remainder of this paper is structured as follows:
+
+\begin{itemize}
+    \item In \cref{sec:lhc}, we give an overview of LHC in its current state, to better understand the extension.
+    \item In \cref{sec:extension}, we create a dual to the $\mathbf{wp}$ operator from LHC, allowing us to describe hyperliveness properties, and we give the rules describing its behaviour.
+    \item In \cref{sec:applications}, we look at some applications of this new extension, to showcase its value.
+\end{itemize}
