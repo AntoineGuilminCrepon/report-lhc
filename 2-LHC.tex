@@ -1,23 +1,44 @@
 %!TEX root = main.tex
-\section{Presentation of LHC}
+\section{Overview of LHC}
 \label{sec:lhc}
 
-This section is inspired by the paper presenting LHC. %insert link here%
-The logic defines, upon an arbitrary toy language, hyperterms, hyperstores, hyperreturn values and hyperproperties.
+This section is a summary of \citet{DOsualdo22}. We invite to refer to this paper for a more detailed overview.
 
-For the rest of the paper, $\PVar$ is the set of variables, $\Val\is\Int$ the set of values and $\Idx\is\Nat$ the set of indexes for hyperobjects.
+\subsection{Preliminaries}
 
-For all sets $A, B$, one notes $A \pto B$ a partial function from $A$ to $B$, i.e a function of type $A\rightarrow B_{\bot}$, where $B_{\bot} = B\cup\{\bot\}$.
+This section deals with notations, and defines hyperterms, and hyperassertions defining properties on these hyperprograms.
 
-Then comes the following definitions ($\Store$ is the set of stores, $\Term$ the set of terms in the language).
+For the remainder of this paper, $\PVar$ is the set of variables, $\Val\is\Int$ the set of values and $\Idx\is\Nat$ the set of indexes for hyperobjects.
 
-\begin{definition}
+\begin{definition}[Finite maps]
+For all sets $A, B$, we note $f: A \pto B$ a partial function from $A$ to $B$, \ie a function $f: A\rightarrow B_{\bot}$, where $B_{\bot} = B\cup\{\bot\}$. If $\supp(f) \is \{a \in A \mid f(a) \ne \bot\}$ is finite, we call it a \emph{finite map from $A$ to $B$}.
+\end{definition}
+
+We note $[a_1: b_1,\dots,a_n:b_n]$ the finite map associating each $a_i$ to the corresponding $b_i$. We define on the set of finite maps $A \pto B$ an opertion of union (noted $+$) in the following way.
+
+\[
+  (f + g)(x) = 
+    \begin{cases}
+      f(x) \CASE x \in \supp(f) \setminus g(x) \\
+      g(x) \CASE x \in \supp(g) \\
+      \bot \OTHERWISE \\
+    \end{cases}
+\]
+
+The union is considered undefined if there exists $x \in \supp(f)\cap\supp(g)$ such that $f(x) \ne g(x)$. If $\supp(f)\cap\supp(g) = \emptyset$, we denote the union by $f \cdot g$. We define $f\m[a:b] \is \fun x. \code{if}\ x=a\ \code{then}\ b\ \code{else}\ f(x)$.
+
+Furthermore, we define a \emph{reindexing} as any (potentially non-bijective) function of type $\Idx\rightarrow\Idx$. For any reindexing $\pi$ and any $f\of\Idx\rightarrow A$, one notes $f\isub*{\pi} = \fun i. f(\pi(i))$ the reindexing of $f$ through $\pi$.
+
+We can now define the following types (with $\Store$ the type of stores, and $\Term$ the type of Terms).
+
+\begin{definition}[Hyperobjects]
 \begin{grammar}
-  t \in\Term \is x \mid v \mid * \mid e_1 \oplus e_2 \mid \code{if}\ g\ \code{then}\ t1\ \code{else}\ t_2 \mid \code{while}\ g\ \code{do}\ t \\
+  t \in\Term \is x \mid v \mid \code{rand} \mid e_1 \oplus e_2 \mid \code{if}\ g\ \code{then}\ t1\ \code{else}\ t_2 \mid \code{while}\ g\ \code{do}\ t \\
 \end{grammar}
 \begin{eqnarray*}
   \Store&\is&\PVar\rightarrow\Val \\
   \Type{HStore}&\is&\Idx\pto\Store \\
+  \Type{HTerm}&\is&\Idx\pto\Term \\
   \Type{HReturn}&\is&\Idx\pto\Val \\
   \Assrt&\is&\Store\rightarrow\Prop \\
   \HAssrt&\is&\Type{HStore}\rightarrow\Prop \\
@@ -25,7 +46,60 @@ Then comes the following definitions ($\Store$ is the set of stores, $\Term$ the
 \end{eqnarray*}
 \end{definition}
 
-Furthermore, we define a \emph{reindexing} as any (potentially non-bijective) function of type $\Idx\rightarrow\Idx$. For any reindexing $\pi$ and any $f\of\Idx\rightarrow A$, one notes $f\isub*{\pi} = \fun i. f(\pi(i))$ the reindexing of $f$ through $\pi$.
+Each term evaluates to a value and can mutate a store. We note $g$ the terms evaluating to booleans (\ie guards), and $e$ the terms evaluating to integers (\ie expressions). \code{rand} evaluates non-deterministically to an integer. Commands evaluates to an arbitrary (and irrelevant) value.
+
+\begin{definition}[Semantics]
+  For $t\in\Term$, $s,s'\in\Store$, $v\in\Val$, we define the judgment $\bigstep{t}{s}{v}{s'}$, indicating that an execution of $t$ with input store $s$ terminates and evaluates to $v$ with ouput store $s'$. The judgment is evaluated using a common bigstep semantics.
+
+  This judgment can be extended to the hyperobjects; for $\m{t}\in\Type{HTerm}$, $\m{s},\m{s'}\in\Type{HStore}$, $\m{v}\in\Type{HReturn}$:
+  \[
+    \bigstep{\m{t}}{\m{s}}{\m{v}}{\m{s'}} \is \A i\in\Idx.
+    \begin{cases}
+      \bigstep{\m{t}(i)}{\m{s}(i)}{\m{v}(i)}{\m{s'}(i)} \CASE i\in\supp(\m{t}) \\
+      \bot \OTHERWISE
+    \end{cases}
+  \]
+
+  We also note $\bigstep{t}{s} \is \E v,s'. \bigstep{t}{s}{v}{s'}$ the judgment that $t$ may terminate with input store $s$. Note that it is equivalent to termination if $t$ is deterministic. This judgment is naturally extended to hyperterms.
+\end{definition}
+
+For any term $t$, $\pvar(t)$ (resp. $\mods(t)$) refers to the set of variables used (resp. modified) by $t$. They are extended to hyperterms as follows : $\pvar(\m{t}) \is \{(x,i) \mid i \in\supp(\m{t}), x\in\pvar(\m{t}(i))\}$ (defined similarly for mods).
+
+Hyperassertions (of type $\HAssrt$) and posthyperassertions (of type $\Type{PHAssrt}$) are used in the hypertriple, respectively as pre- and postassertions.
+
+For every hyperassertion $P$ and posthyperassertion $Q$, we define $\idx$ the set of indices relevant to them and $\pvar$ the set of variables relevant to them:
+
+\begin{definition}[\/$\idx$]
+\label{def:assrt-idx}
+  \begin{align*}
+    \idx(P) &\is
+      \Idx \setminus
+        \set{ i \in \Idx |
+                \forall \m{s},s'\st P(\m{s}) \iff P(\m{s}\m[i: s']) }
+    \\
+    \idx(Q) &\is
+      \Idx \setminus
+        \set{ i \in \Idx |
+                \forall \ret,\m{s},s'\st
+                  Q(\ret)(\m{s}) \iff Q(\ret\m[i: \bot])(\m{s}\m[i: s']) }
+  \end{align*}
+\end{definition}
+
+\begin{definition}[\/$\pvar$]
+    \begin{align*}
+    \pvar(P) &\is
+      ( \PVar \times \Idx )
+      \setminus
+      \set*{
+        (\p{x}, i) |
+          \forall \m{s}, v\st
+            P(\m{s}) \iff P\bigl(\m{s}\m[i: \m{s}(i){\m[\p{x}: v]} ]\bigr)
+      }
+    \\
+    \pvar(Q) &\is\textstyle
+      \Union_{\ret \from \Type{HReturn}} \pvar(Q(\ret))
+  \end{align*}
+\end{definition}
 
 \cref{fig:hyper-assertions} gives notations for hyperassertions that are used later in the paper. Special attention needs to be brought to the $\Pi$ operator, which is the least intuitive. It is semantically a reduction of a given hyperassertion, by reducing its scope to the given set of indexes $I$.
 
@@ -88,10 +162,12 @@ Furthermore, we define a \emph{reindexing} as any (potentially non-bijective) fu
   \label{fig:hyper-assertions}
 \end{mathfig}
 
-We now introduces a new object, directly inspired from the original Hoare logic: the weakest precondition operator. Extending it to hyperterms and hyperassertions gives the following definition:
+\subsection{The $\mathbf{wp}_{\forall}$ predicate}
+
+We now introduces a new modality to the logic, directly inspired from the original Hoare logic: the weakest precondition predicate. Extending it to hyperterms and hyperassertions gives the following definition:
 
 \begin{definition}[Weakest precondition]
-  $\WPU{\m{t}}{Q} ::= \lambda \m{s}. \A \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \implies Q(\m{v})$
+  $\WPU{\m{t}}{Q} \is \fun \m{s}. \A \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \implies Q(\m{v})$
 \end{definition}
 
 
