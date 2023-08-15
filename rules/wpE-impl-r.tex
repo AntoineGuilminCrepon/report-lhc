@@ -2,7 +2,8 @@
 \infer*[lab=wp$_{\exists}$-impl-r]{
   \pvar(P) \inters \mods(\m{t}) = \emptyset
 }{
+  \V \proj(\m{t}),
   P \implies \WPE{\m{t}}{Q}
-  \lequiv
+  |-
   \WPE{\m{t}}{\ret. P \implies Q(\ret)}
 }

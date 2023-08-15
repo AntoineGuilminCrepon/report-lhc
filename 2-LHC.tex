@@ -101,7 +101,7 @@ For every hyperassertion $P$ and posthyperassertion $Q$, we define $\idx$ the se
   \end{align*}
 \end{definition}
 
-\cref{fig:hyper-assertions} gives notations for hyperassertions that are used later in the paper. Special attention needs to be brought to the $\Pi$ operator, which is the least intuitive. It is semantically a reduction of a given hyperassertion, by reducing its scope to the given set of indexes $I$.
+\cref{fig:hyper-assertions} gives notations for hyperassertions that are used later in the paper. Most of them are straightforward extension of common properties operators, but two of them deserves some precision. If we have an property $A$, it can be made into an hyperproperty, by precising the set of indices $I$ where it should hold, by noting $\at{A}{I}$. And if we consider an hyperassertion $P$, then $\P I. P$ is the hyperassertion obtained by ignoring any precision given by $P$ on indices outside of $I$ (as an example, $\P \{1, 2\}. (x(\I 1) = y(\I 2) \land x(\I 2) = y(\I 3)) \iff (x(\I 1) = y(\I 2) \land \E v. x(\I Q2) = v)$)
 
 \begin{mathfig}[\small]
   \begin{align*}
@@ -164,13 +164,15 @@ For every hyperassertion $P$ and posthyperassertion $Q$, we define $\idx$ the se
 
 \subsection{The $\mathbf{wp}_{\forall}$ predicate}
 
-We now introduces a new modality to the logic, directly inspired from the original Hoare logic: the weakest precondition predicate. Extending it to hyperterms and hyperassertions gives the following definition:
+We now introduces a new modality to the logic, directly inspired from the original Hoare logic: the weakest precondition predicate. This modality intuitevily means that all terminating traces of $\m{t}$ give values $\m{v}$ and output states $\m{s'}$ such that $Q(\m{v})(\m{s'})$ holds. More formally:
 
 \begin{definition}[Weakest precondition]
   $\WPU{\m{t}}{Q} \is \fun \m{s}. \A \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \implies Q(\m{v})$
 \end{definition}
 
+We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} Q$. LHC mainly revolves around the behaviour of this $\mathbf{wp}$ predicate, and the rules defining this behavior. We can divide them into four categories.
 
+\Cref{fig:structure-wpU-rules} describes \emph{structural} rules, that are direct adaptations of regular Hoare logic. \Cref{rule:wpU-triv,rule:wpU-cons,rule:wpU-all,rule:wpU-frame,rule:wpU-impl-r} state that $\mathbf{wp}_{\forall}$ commmutes with $\True$, $\vdash$, $\forall$, $\land$, and ($P \implies$). \Cref{rule:wpU-subst} allows substitution and \cref{rule:wpU-idx} allows bijective reindexing.
 
 \begin{mathfig}[\small]
   \begin{proofrules}
@@ -195,9 +197,11 @@ We now introduces a new modality to the logic, directly inspired from the origin
     \input{rules/wpU-idx.tex}
     \label{rule:wpU-idx}
   \end{proofrules}
-  \caption{Base rules for $\mathbf{wp}_{\forall}$ from LHC}
-  \label{fig:base-wpU(rules)}
+  \caption{Structural rules for $\mathbf{wp}_{\forall}$ from LHC}
+  \label{fig:structure-wpU-rules}
 \end{mathfig}
+
+\Cref{fig:lockstep-wpU-rules} describes \emph{lockstep} rules, \ie rules allowing for lockstep proofs, as described before. They are similar to Hoare logic rules, and we can in fact recover these corresponding Hoare logic rules by taking the arity-1 case. The \cref{rule:wpU-while} is stated as a rule, but we will discuss 
 
 \begin{mathfig}{\small}
   \begin{proofrules}
@@ -240,7 +244,7 @@ We now introduces a new modality to the logic, directly inspired from the origin
     \input{rules/wpU-proj.tex}
     \label{rule:wpU-proj}
   \end{proofrules}
-  \caption{Hyper-structure laws from LHC}
+  \caption{Hyper-structure rules from LHC}
   \label{fig:hyperstructure-rules}
 \end{mathfig}
 

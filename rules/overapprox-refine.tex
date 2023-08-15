@@ -1,0 +1,8 @@
+%!TEX root = ../main.tex
+\infer*[lab=overapprox-refine]{}{
+  \V
+  \pv{x}(\I 1) = \pv{x}(\I 2) \implies \WPU{[1: t_1]}{\WPE{[2: t_2]}{\pv{x}(\I 1) = \pv{x}(\I 2)}},
+  \WPU {(\m*[i: t_2] \m. \m{t})} {Q}
+  |-
+  \WPU {(\m[i: t_1] \m. \m{t})} {Q}
+}
