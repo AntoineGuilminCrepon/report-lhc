@@ -1,0 +1,15 @@
+%!TEX root = main.tex
+\section{Coq implementation}
+\label{sec:coq-code}
+
+The implementation as is, is separated in three different files. \code{structures.v} describes the different types needed for the logic.
+
+\inputminted[breaklines]{Coq}{code/structures.v}
+
+\code{notation.v} defines the notations for hyper-assertions, useful definitions to manage the soundess proofs.
+
+\inputminted[breaklines]{Coq}{code/notation.v}
+
+\code{prelude.v} contains the soundness proofs of the different rule of the logic. A portion of the rules are left as axioms, by lack of time to prove them all. A more comprehensive formalisation is under way at time of writing.
+
+\inputminted[breaklines]{Coq}{code/prelude.v}

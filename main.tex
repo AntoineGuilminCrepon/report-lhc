@@ -26,6 +26,10 @@
 \usepackage{mathpartir}
 \usepackage{bussproofs}
 
+\usepackage{minted}
+\usemintedstyle{tango}
+\setmonofont{DejaVu Sans Mono}
+
 \newenvironment{scprooftree}[1]%
   {\gdef\scalefactor{#1}\begin{center}\proofSkipAmount \leavevmode}%
   {\scalebox{\scalefactor}{\DisplayProof}\proofSkipAmount \end{center} }
@@ -71,7 +75,9 @@
 
 \bibliography{biblio}
 
-\newpage
+\appendix
+
+\input{coq-code}
 \input{soundness}
 
 \end{document}

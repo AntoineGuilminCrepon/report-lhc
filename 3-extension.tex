@@ -4,7 +4,7 @@
 
 \subsection{New operator}
 
-The main point of the extension is to add an object to the language complementary to the $\mathbf{wp}_{\forall}$ from the original model.
+The main point of the extension is to add an object to the language complementary to the $\wpsymb_{\forall}$ from the original model.
 
 This object is defined as such :
 
@@ -12,9 +12,9 @@ This object is defined as such :
 $\WPE{\m{t}}{Q} := \lambda \m{s}. \E \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \land Q(\m{v})$
 \end{definition}
 
-This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the rules previously described. Those rules are written down for completeness. Most of the rules can be mirrored as is (just switching a $\mathbf{wp}_{\forall}$ for a $\mathbf{wp}_{\exists}$), but some needs more changes.
+This object behaves in the same way as $\wpsymb_{\forall}$ for most of the rules previously described. Those rules are written down for completeness. Most of the rules can be mirrored as is (just switching a $\wpsymb_{\forall}$ for a $\wpsymb_{\exists}$), but some needs more changes.
 
-\Cref{rule:wpE-exists} mirrors \cref{rule:wpU-all}, but uses existential quantifiers instead of universal ones. Without much surprise, $\mathbf{wp}_{\exists}$ works better with existentials. \Cref{rule:wpE-while} was modified to take into account the necessity of projectability for $\mathbf{wp}_{\exists}$ statements.
+\Cref{rule:wpE-exists} mirrors \cref{rule:wpU-all}, but uses existential quantifiers instead of universal ones. Without much surprise, $\wpsymb_{\exists}$ works better with existentials. \Cref{rule:wpE-while} was modified to take into account the necessity of projectability for $\wpsymb_{\exists}$ statements.
 
 \begin{mathfig}{\small}
     \begin{proofrules}
@@ -66,17 +66,17 @@ This object behaves in the same way as $\mathbf{wp}_{\forall}$ for most of the r
         \input{rules/wpE-idx-post.tex}
         \label{rule:wpE-idx-post}
     \end{proofrules}
-    \caption{Rules for $\mathbf{wp}_{\exists}$ mirrored on $\mathbf{wp}_{\forall}$}
+    \caption{Rules for $\wpsymb_{\exists}$ mirrored on $\wpsymb_{\forall}$}
 \end{mathfig}
 
-An interesting point is that predicates that couldn't be defined in the original theory using the base langugage, and thus needed to be explicitly defined to be used, can now be defined using this new $\mathbf{wp}_{\exists}$ object.
+An interesting point is that predicates that couldn't be defined in the original theory using the base langugage, and thus needed to be explicitly defined to be used, can now be defined using this new $\wpsymb_{\exists}$ object.
 
 \begin{eqnarray*}
     \proj(t) &:=& \WPE{\m{t}}{\True} \\
     t_1 \semleq t_2 &:=& \V s(1)=s(2) |- \WPU{[1: t_1]}{\WPE{[2: t_2]}{v(1) = v(2) \land s(1) = s(2)}}
 \end{eqnarray*}
 
-Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$
+Thus certain rules from LHC can now be rewritten by combining $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$
 
 \begin{mathfig}{\small}
     \begin{proofrules}
@@ -89,7 +89,7 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
         \input{rules/lockstep-proj.tex}
         \label{rule:lockstep-proj}
     \end{proofrules}
-    \caption{Rules rewritten using $\mathbf{wp}_{\exists}$}
+    \caption{Rules rewritten using $\wpsymb_{\exists}$}
 \end{mathfig}
 
 \begin{mathfig}{\small}
@@ -100,12 +100,12 @@ Thus certain rules from LHC can now be rewritten by combining $\mathbf{wp}_{\for
         \input{rules/proj-elim}
         \label{rule:proj-elim}
     \end{proofrules}
-    \caption{Rules combining $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$}
+    \caption{Rules combining $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$}
 \end{mathfig}
 
-\subsection{Relation to $\mathbf{wp}_{\forall}$}
+\subsection{Relation to $\wpsymb_{\forall}$}
 
-With the use of $\mathbf{wp}_{\exists}$, one can write an interesting property:
+With the use of $\wpsymb_{\exists}$, one can write an interesting property:
 \begin{eqnarray*}
     PDet(t) &:=& \WPE {\m{t}} Q \lequiv \WPU {\m{t}} Q
 \end{eqnarray*}
@@ -138,14 +138,14 @@ This property is in fact equivalent to $Det(t) \land \proj(t)$, as is shown belo
         \BinaryInfC{$\V \pv{x}(\I1)=\pv{x}(\I2) |- \WPU {\m<\I1: t,\I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)}$}
     \end{scprooftree}
 
-    The left-side assumption is proved the following way: given that both terms receive the same input, if we chose the same trace to execute in both terms, we then get the same output (\ie every term is "deterministic" in the context of $\mathbf{wp}_{\exists}$).
+    The left-side assumption is proved the following way: given that both terms receive the same input, if we chose the same trace to execute in both terms, we then get the same output (\ie every term is "deterministic" in the context of $\wpsymb_{\exists}$).
 
     Thus we get an equivalence between $PDet(t)$ and $Det(t)\land\proj(t)$
 \end{proof}
 
 \subsection{Swap rule and lockstep rules}
 
-As stated before, $\mathbf{wp}_{\exists}$ behaves more or less the same way as $\mathbf{wp}_{\forall}$, and thus, proofs using it exclusively are very similar in form. Most of the capabilities of this model appears when combining both operators. However, one would need rules to deal with hyperproperties combining the two $\mathbf{wp}$.
+As stated before, $\wpsymb_{\exists}$ behaves more or less the same way as $\wpsymb_{\forall}$, and thus, proofs using it exclusively are very similar in form. Most of the capabilities of this model appears when combining both operators. However, one would need rules to deal with hyperproperties combining the two $\wpsymb$.
 
 \begin{mathfig}{\small}
     \begin{proofrules}        
@@ -158,7 +158,7 @@ As stated before, $\mathbf{wp}_{\exists}$ behaves more or less the same way as $
     \caption{Swap rules}
 \end{mathfig}
 
-A pair of such rules are \cref{rule:lockstep-swap} and \cref{rule:lockstep-swap-local}. A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\mathbf{wp}_{\exists}$ and $\mathbf{wp}_{\forall}$.
+A pair of such rules are \cref{rule:lockstep-swap} and \cref{rule:lockstep-swap-local}. A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\wpsymb_{\exists}$ and $\wpsymb_{\forall}$.
 
 Let's consider two examples: \cref{rule:lockstep-if} and \cref{rule:lockstep-seq}.
 
@@ -218,7 +218,7 @@ We can derive both rules from \cref{rule:lockstep-swap}, as follows:
     \UnaryInfC{$\WPU {\m[i: \code{if}\ g_i\ \code{then}\ t_i\ \code{else}\  t'_i| i \in I]}{\WPE {\m[j: \code{if}\ g'_j\ \code{then}\ u_j\ \code{else}\ u'_j | j \in J]}{Q}}$}
 \end{scprooftree}
 
-In both cases, we simply "unfold" the terms using the corresponding $\mathbf{wp}_{\forall}$ and $\mathbf{wp}_{\exists}$ rules, and then a number \cref{rule:lockstep-swap} to complete the proof.
+In both cases, we simply "unfold" the terms using the corresponding $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$ rules, and then a number \cref{rule:lockstep-swap} to complete the proof.
 
 \subsection{The while rule}
 
@@ -241,7 +241,7 @@ Thankfully, there may be a way to deal with this issue, using a certain encoding
     \infer*{\E n. \bigstep {t^n} s v {s'}}{\bigstep {t^*} s v {s'}}
 \end{proofrules}
 
-From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and *, we can derive the rule for \code{while}. The question is, what did we gain from this encoding ? The short answer is that \code{assume} and * have similar $\mathbf{wp}_{\forall}-\mathbf{wp}_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
+From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and *, we can derive the rule for \code{while}. The question is, what did we gain from this encoding ? The short answer is that \code{assume} and * have similar $\wpsymb_{\forall}-\wpsymb_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
 
 We can derive four rules for \code{assume} and * (described in \cref{fig:assume-*-rules}). From those rules, one can derive rules of the same form as the \code{if} one:
 

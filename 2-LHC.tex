@@ -60,7 +60,7 @@ Each term evaluates to a value and can mutate a store. We note $g$ the terms eva
     \end{cases}
   \]
 
-  We also note $\bigstep{t}{s} \is \E v,s'. \bigstep{t}{s}{v}{s'}$ the judgment that $t$ may terminate with input store $s$. Note that it is equivalent to termination if $t$ is deterministic. This judgment is naturally extended to hyperterms.
+  We also note $\bigsome{t}{s} \is \E v,s'. \bigstep{t}{s}{v}{s'}$ the judgment that $t$ may terminate with input store $s$. Note that it is equivalent to termination if $t$ is deterministic. This judgment is naturally extended to hyperterms.
 \end{definition}
 
 For any term $t$, $\pvar(t)$ (resp. $\mods(t)$) refers to the set of variables used (resp. modified) by $t$. They are extended to hyperterms as follows : $\pvar(\m{t}) \is \{(x,i) \mid i \in\supp(\m{t}), x\in\pvar(\m{t}(i))\}$ (defined similarly for mods).
@@ -162,7 +162,7 @@ For every hyperassertion $P$ and posthyperassertion $Q$, we define $\idx$ the se
   \label{fig:hyper-assertions}
 \end{mathfig}
 
-\subsection{The $\mathbf{wp}_{\forall}$ predicate}
+\subsection{The $\wpsymb_{\forall}$ predicate}
 
 We now introduces a new modality to the logic, directly inspired from the original Hoare logic: the weakest precondition predicate. This modality intuitevily means that all terminating traces of $\m{t}$ give values $\m{v}$ and output states $\m{s'}$ such that $Q(\m{v})(\m{s'})$ holds. More formally:
 
@@ -170,9 +170,7 @@ We now introduces a new modality to the logic, directly inspired from the origin
   $\WPU{\m{t}}{Q} \is \fun \m{s}. \A \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \implies Q(\m{v})$
 \end{definition}
 
-We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} Q$. LHC mainly revolves around the behaviour of this $\mathbf{wp}$ predicate, and the rules defining this behavior. We can divide them into four categories.
-
-\Cref{fig:structure-wpU-rules} describes \emph{structural} rules, that are direct adaptations of regular Hoare logic. \Cref{rule:wpU-triv,rule:wpU-cons,rule:wpU-all,rule:wpU-frame,rule:wpU-impl-r} state that $\mathbf{wp}_{\forall}$ commmutes with $\True$, $\vdash$, $\forall$, $\land$, and ($P \implies$). \Cref{rule:wpU-subst} allows substitution and \cref{rule:wpU-idx} allows bijective reindexing.
+We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} Q$. LHC mainly revolves around the behaviour of this $\wpsymb$ predicate, and the rules defining this behavior. We can divide them into four categories.
 
 \begin{mathfig}[\small]
   \begin{proofrules}
@@ -197,11 +195,11 @@ We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} 
     \input{rules/wpU-idx.tex}
     \label{rule:wpU-idx}
   \end{proofrules}
-  \caption{Structural rules for $\mathbf{wp}_{\forall}$ from LHC}
+  \caption{Structural rules for $\wpsymb_{\forall}$ from LHC}
   \label{fig:structure-wpU-rules}
 \end{mathfig}
 
-\Cref{fig:lockstep-wpU-rules} describes \emph{lockstep} rules, \ie rules allowing for lockstep proofs, as described before. They are similar to Hoare logic rules, and we can in fact recover these corresponding Hoare logic rules by taking the arity-1 case. The \cref{rule:wpU-while} is stated as a rule, but we will discuss 
+\Cref{fig:structure-wpU-rules} describes \emph{structural} rules, that are direct adaptations of regular Hoare logic. \Cref{rule:wpU-triv,rule:wpU-cons,rule:wpU-all,rule:wpU-frame,rule:wpU-impl-r} state that $\wpsymb_{\forall}$ commmutes with $\True$, $\vdash$, $\forall$, $\land$, and ($P \implies$). \Cref{rule:wpU-subst} allows substitution and \cref{rule:wpU-idx} allows bijective reindexing.
 
 \begin{mathfig}{\small}
   \begin{proofrules}
@@ -229,9 +227,11 @@ We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} 
     \input{rules/wpU-while.tex}
     \label{rule:wpU-while}
   \end{proofrules}
-  \caption{Lockstep rules for $\mathbf{wp}_{\forall}$ from LHC}
+  \caption{Lockstep rules for $\wpsymb_{\forall}$ from LHC}
   \label{fig:lockstep-wpU-rules}
 \end{mathfig}
+
+\Cref{fig:lockstep-wpU-rules} describes \emph{lockstep} rules, \ie rules allowing for lockstep proofs, as described before. They are similar to Hoare logic rules, and we can in fact recover these corresponding Hoare logic rules by taking the arity-1 case. The \cref{rule:wpU-while} is stated as a rule, but we will discuss a possible derivation of it later.
 
 \begin{mathfig}{\small}
   \begin{proofrules}
@@ -248,6 +248,12 @@ We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} 
   \label{fig:hyperstructure-rules}
 \end{mathfig}
 
+\Cref{fig:hyperstructure-rules} describes \emph{hyperstructural} rules, and is the center of LHC's novelty. \Cref{rule:wpU-nest} allows to change the arity of an hyper-triple, by nesting $\wpsymb_{\forall}$ inside each other. \Cref{rule:wp-conj} gives another of combining two hypertriples (of potentially different arity) into another of a greater arity. \Cref{rule:wp-proj} describes the behavior of $\wpsymb_{\forall}$ with the projection operator $\Pi_I$. This rule uses a new jusgement, $\proj(\m{t})$, to maintain its soundness. This predicate is defined as follows (for hyperterms, there is a similar definition for unary terms):
+\[
+  \proj(\m{t}) \is \fun \m{s}. \bigsome{\m{t}}{\m{s}}
+\]
+Intuitevily, $\proj(\m{t})$ states that $\m{t}$ has at least one terminating trace. We will come back to this predicate in \cref{sec:extension}.
+
 \begin{mathfig}{\small}
   \begin{proofrules}
     \input{rules/wpU-idx-pass.tex}
@@ -263,5 +269,9 @@ We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} 
     \label{rule:wpU-idx-post}
   \end{proofrules}
   \caption{Reindexing rules from LHC}
-  \label{redindexing-rules}
+  \label{fig:reindexing-rules}
 \end{mathfig}
+
+\Cref{fig:reindexing-rules} describes \emph{reindexing} rules, \ie the behaviour of $\wpsymb_{\forall}$ with non-bijective reindexings. Those reindexings can be reduced to binary reindexings $\isub{j->i}$, with $i\ne j$. \Cref{rule:wpU-idx-pass} deals with the case where $i,j\notin\supp(\m{t})$: the reindexing has no effect, it can simply be transmitted to the post-condition. \Cref{rule:wpU-idx-swap} deals with the case where $j\in\supp(\m{t})$ but $i\notin\supp(\m{t})$: the reindexing simply change the index of the corresponding term. \Cref{rule:wpU-idx-merge} allows merging two terms, if they are identical. \Cref{rule:wpU-idx-post} allows to directly transmit a reindexing to the postcondition, if the context $\Gamma$ doesn't constrain $j$.
+
+\Cref{sec:coq-code} gives an (incomplete) implementation of the original logic, written during the first two months of my internship. The remaining three months were spent building the extension that will occupy the remainder of this paper.

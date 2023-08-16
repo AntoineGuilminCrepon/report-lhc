@@ -1,10 +1,7 @@
 %!TEX root = ../main.tex
-\infer*[lab=wp$_{\exists}$-conj,
-  Right={$ I = \supp(\m{t}_1)\cap\supp(\m{t}_2) $}]{
+\infer*[lab=wp$_{\exists}$-conj]{
   % \idx(Q_1) \subs \supp(\m{t}_1)
   \idx(Q_1) \inters \supp(\m{t}_2) \subs \supp(\m{t}_1)
-  \\
-  \PP I.Det(\m{t}_1)
   \\
   % \idx(Q_2) \subs \supp(\m{t}_2)
   \idx(Q_2) \inters \supp(\m{t}_1) \subs \supp(\m{t}_2)
@@ -14,5 +11,5 @@
   \land
   \WPE{\m{t}_2}{Q_2}
   |-
-  \WPE{(\m{t}_1 \m+ \m{t}_2)}{Q_1 \land Q_2}
+  \WPE{(\m{t}_1 \m\cdot \m{t}_2)}{Q_1 \land Q_2}
 }
