@@ -4,70 +4,35 @@
 
 \subsection{New operator}
 
-The main point of the extension is to add an object to the language complementary to the $\wpsymb_{\forall}$ from the original model.
-
-This object is defined as such :
+The main point of the extension is to add a modality to the language, dual to the $\wpsymb_{\forall}$ from the original model. It is defined as such :
 
 \begin{definition}[Weakest existential precondition]
-$\WPE{\m{t}}{Q} := \lambda \m{s}. \E \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \land Q(\m{v})$
+$\WPE{\m{t}}{Q} := \fun \m{s}. \E \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \land Q(\m{v})$
 \end{definition}
 
-This object behaves in the same way as $\wpsymb_{\forall}$ for most of the rules previously described. Those rules are written down for completeness. Most of the rules can be mirrored as is (just switching a $\wpsymb_{\forall}$ for a $\wpsymb_{\exists}$), but some needs more changes.
+One can easily appreciate the similarity with the original $\wpsymb_{\forall}$ definition. Intuitively, the judgment $\WPE{\m{t}}{Q}$ states that there exists a trace of $\m{t}$ satisfying $Q$. An important point is that any judgment of this form implies \emph{at least} local projectability of $\m{t}$, \ie if we chose an input state satisfying the constraint of the potential context of the judgment, $\m{t}$ must have a terminating trace beginning in this state.
 
-\Cref{rule:wpE-exists} mirrors \cref{rule:wpU-all}, but uses existential quantifiers instead of universal ones. Without much surprise, $\wpsymb_{\exists}$ works better with existentials. \Cref{rule:wpE-while} was modified to take into account the necessity of projectability for $\wpsymb_{\exists}$ statements.
+When finding the rules defining the behavior of $\wpsymb_{\exists}$, it seems that most rules are direct mirrors of the $\wpsymb_{\forall}$ rules (simply replacing one predicate with the other). These "mirrored" rules are written in \cref{sec:mirrored-rules}, for completeness.
 
 \begin{mathfig}{\small}
     \begin{proofrules}
-        \input{rules/wpE-cons.tex}
-        \label{rule:wpE-cons}
-
         \input{rules/wpE-exists.tex}
         \label{rule:wpE-exists}
-
-        \input{rules/wpE-frame.tex}
-        \label{rule:wpE-frame}
 
         \input{rules/wpE-impl-l.tex}
         \label{rule:wpE-impl-l}
 
-        \input{rules/wpE-subst.tex}
-        \label{rule:wpE-subst}
-
-        \input{rules/wpE-idx.tex}
-        \label{rule:wpE-idx}
-
-        \input{rules/wpE-seq.tex}
-        \label{rule:wpE-seq}
-
-        \input{rules/wpE-assign.tex}
-        \label{rule:wpE-assign}
-
-        \input{rules/wpE-if.tex}
-        \label{rule:wpE-if}
-
         \input{rules/wpE-while.tex}
         \label{rule:wpE-while}
 
-        \input{rules/wpE-nest.tex}
-        \label{rule:wpE-nest}
-
         \input{rules/wpE-conj.tex}
         \label{rule:wpE-conj}
-
-        \input{rules/wpE-idx-pass.tex}
-        \label{rule:wpE-idx-pass}
-
-        \input{rules/wpE-idx-swap.tex}
-        \label{rule:wpE-idx-swap}
-
-        \input{rules/wpE-idx-merge.tex}
-        \label{rule:wpE-idx-merge}
-
-        \input{rules/wpE-idx-post.tex}
-        \label{rule:wpE-idx-post}
     \end{proofrules}
-    \caption{Rules for $\wpsymb_{\exists}$ mirrored on $\wpsymb_{\forall}$}
+    \caption{Rules specific to $\wpsymb_{\exists}$}
+    \label{fig:wpE-rules}
 \end{mathfig}
+
+\Cref{fig:wpE-rules} gives out the rules applying to $\wpsymb_{\exists}$ that are substantially different from their $\wpsymb_{\forall}$ couterparts. \Cref{rule:wpE-exists,rule:wpE-impl-l} show that $\wpsymb_{\exists}$ commutes with $\exists$ and $(\implies P)$ (note the duality with \cref{rule:wpU-all,rule:wpU-impl-r}). Because any $\wpsymb_{\exists}$ judgment implies the projectability of the hyperterm, the "invariant" $P$ in \cref{rule:wpE-while} needs to be parametrized by a decreasing loop index $\alpha$. This loop index needs of course to be in a well-founded order (most of the time, natural numbers should suffice, but the possibility to call on transfinite ordinals reinforces the rule). \Cref{rule:wpE-conj} is slightly weaker than its $\wpsymb_{\forall}$ sibling, because the two hyperterms now requires to be disjoint. The reason is that the two traces given by the premisse $\WPE{\m{t}_1}{Q_1} \land \WPE{\m{t}_2}{Q_2}$ do not require to coincide on $\m{t}_1\cap\m{t}_2$
 
 An interesting point is that predicates that couldn't be defined in the original theory using the base langugage, and thus needed to be explicitly defined to be used, can now be defined using this new $\wpsymb_{\exists}$ object.
 
@@ -86,8 +51,8 @@ Thus certain rules from LHC can now be rewritten by combining $\wpsymb_{\forall}
         \input{rules/underapprox-refine.tex}
         \label{rule:underapprox-refine}
 
-        \input{rules/lockstep-proj.tex}
-        \label{rule:lockstep-proj}
+        \input{rules/wp-proj.tex}
+        \label{rule:wp-proj}
     \end{proofrules}
     \caption{Rules rewritten using $\wpsymb_{\exists}$}
 \end{mathfig}
