@@ -4,7 +4,7 @@
 
 \subsection{Writing specifications inside the logic}
 
-When writing down specifications for a program (which are most of the time defined informally), we can stumble upon ambiguity for how to implement it in the logic. One of the strength of LHC is being able to discuss the relationship of those implementations inside of the logic itself.
+When formalizing specifications for a program, there might be multiple ways to do it, and choosing which formalization to use is not always self-evident. One of the strengths of LHC is being able to discuss the relationships between those implementations inside of the logic itself.
 
 As an overarching example, consider idempotence. Semi-formally, one defines a term $t$ as idempotent if $t \simeq (t;t)$. This specification can be divided into two refinement statements: $t \semleq (t;t)$ and $(t;t) \semleq t$. Thanks to the new extension, one can now formalize such refinement statements inside the logic:
 
@@ -22,24 +22,28 @@ As an overarching example, consider idempotence. Semi-formally, one defines a te
     \tag{\textsc{Idem}$^3_{21}$}
 \end{align}
 
-Of this four formalizations, the top two implement $t \semleq (t;t)$ and the bottoom two $(t;t) \semleq t$. Moreover, we have a formal definition of refinement outside of the logic:
+In those formalizations, we suppose that $\pvar(t) = \pvar(t;t) \subseteq \pv{x}$.
+
+Of these four formalizations, the top two implement $t \semleq (t;t)$ and the bottoom two $(t;t) \semleq t$. Moreover, we have a formal definition of refinement outside of the logic:
 
 \[
-    t_1 \semleq t_2 \is \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'}
+    t_1 \sqsubseteq t_2 \is \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'}
 \]
 
 And we can prove the following implications:
 
-\begin{align*}
-    t \semleq (t;t) \Leftarrow \textsc{IdemSeq}_{12} \Leftarrow \textsc{Idem}^3_{12} \\
-    (t;t) \semleq t \Leftarrow \textsc{IdemSeq}_{21} \Leftarrow \textsc{Idem}^3_{21}
-\end{align*}
+\[
+\begin{array}{ccccc}
+    t \sqsubseteq (t;t) &\Leftarrow& \textsc{IdemSeq}_{12} &\Leftarrow& \textsc{Idem}^3_{12} \\
+    (t;t) \sqsubseteq t &\Leftarrow& \textsc{IdemSeq}_{21} &\Leftarrow& \textsc{Idem}^3_{21}
+\end{array}
+\]
 
 \begin{proof}
     The leftmost implications are derived from this more general result on refinements :
 
     \begin{eqnarray*}
-        t_1 \semleq t_2 &\is& \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'} \\
+        t_1 \sqsubseteq t_2 &\is& \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'} \\
         &\Leftarrow& \A s\ v_1\ s_1'. \bigstep {t_1} s {v_1} {s_1'} \implies (\E v_2\ s_2'. \bigstep {t_2} s {v_2} {s_2'} \land s_2' = s_1') \\
         &\Leftarrow& \V \pv{x}(\I 1) = \pv{x}(\I 2) |- \WPU {\m[\I 1: t_1]} {\WPE {\m[\I 2: t_2]} {\pv{x}(\I 1) = \pv{x}(\I 2)}} \\
     \end{eqnarray*}
@@ -186,3 +190,64 @@ The left-hand side, after choosing 0 iterations for the existential star, boils 
                 \pv{x}(\I 1) = \pv{x}(\I 2)}}}}$}
     \UnaryInfC{$\V Q |- \WPU {\m[\I 1: t]} Q$}
 \end{prooftree}
+
+\subsection{Dealing with $\exists\forall$ hyperproperties}
+
+\citet{Dardinier23} presents an application of its logic where it deals with an hyperproperty with a quantifier alternation $\exists\forall$: the minimum. More precisely, it proves that if $t_1$ has a minimum, and $t_2$ is monotonous, then $t_1; t_2$. The derivation in this paper relies on the determinism of $t_2$. We will prove that this condition can be relaxed, only requiring $t_1; t_2$ to be projectable.
+
+First, we write down the specifications needed for this proof:
+
+\begin{align}
+    \WPE {\m[\I 1: t_1]} {\WPU {\m[\I 2: t_1]} {\code{x}(\I 1) \leq \code{x}(\I 2)}}
+    \tag{$hasMin_{\code{x}}(t_1)$} \\
+    \code{x}(\I 1) \leq \code{x}(\I 2) \implies \WPU {\m[\I 1: t_2, \I 2: t_2]} {\code{y}(\I 1) \leq \code{y}(\I 2)}
+    \tag{$Mono_{\code{x}\rightarrow \code{y}}(t_2)$}
+\end{align}
+
+We want to derive from those specifications (and $\proj(t_1; t_2)$) the goal:
+\[
+    \WPE {\m[\I 1: t_1; t_2]} {\WPU {\m[\I 2: t_1; t_2]} {\code{y}(\I 1) \leq \code{y}(\I 2)}}
+\]
+
+The derivation is as follows:
+
+\begin{scprooftree}{0.9}
+    \AxiomC{$\V |- \WPE {\m[\I 1: t_1]}
+            {\WPE {\m[\I 1: t_2]} 
+            {\True}}$}
+    \AxiomC{$\V |- \WPE {\m[\I 1: t_1]}
+                {\WPU {\m[\I 1: t_2]} 
+                {\WPU {\m[\I 2: t_1]}
+                {\WPU {\m[\I 2: t_2]} 
+                {\code{y}(\I 1) \leq \code{y}(\I 2)}}}}$}
+    \BinaryInfC{$\WPE {\m[\I 1: t_1]}
+                {\WPE {\m[\I 1: t_2]} 
+                {\WPU {\m[\I 2: t_1]}
+                {\WPU {\m[\I 2: t_2]} 
+                {\code{y}(\I 1) \leq \code{y}(\I 2)}}}}$}
+    \UnaryInfC{$\V |- \WPE {\m[\I 1: t_1; t_2]} {\WPU {\m[\I 2: t_1; t_2]} {\code{y}(\I 1) \leq \code{y}(\I 2)}}$}
+\end{scprooftree}
+
+The left-hand side is simply $\proj(t_1; t_2)$. The right-hand side is derived the following way:
+
+\begin{scprooftree}{0.9}
+    \AxiomC{$\V |- \WPE {\m[\I 1: t_1]}
+            {\WPU {\m[\I 2: t_1]} 
+            {\code{x}(\I 1) \leq \code{x}(\I 2)}}$}
+    \AxiomC{$\V \code{x}(\I 1) \leq \code{x}(\I 2) |-
+            \WPU {\m[\I 1: t_2]}
+            {\WPU {\m[\I 2: t_2]} 
+            {\code{y}(\I 1) \leq \code{y}(\I 2)}}$}
+    \BinaryInfC{$\V |- \WPE {\m[\I 1: t_1]}
+                {\WPU {\m[\I 2: t_1]} 
+                {\WPU {\m[\I 1: t_2]}
+                {\WPU {\m[\I 2: t_2]} 
+                {\code{y}(\I 1) \leq \code{y}(\I 2)}}}}$}
+    \UnaryInfC{$\V |- \WPE {\m[\I 1: t_1]}
+                {\WPU {\m[\I 1: t_2]} 
+                {\WPU {\m[\I 2: t_1]}
+                {\WPU {\m[\I 2: t_2]} 
+                {\code{y}(\I 1) \leq \code{y}(\I 2)}}}}$}
+\end{scprooftree}
+
+To be completely frank, $\exists\forall$ hyperproperties are one of our logic's weaknesses, mainly because we don't have as nice lockstep rules as with $\forall\exists$ hyperproperties. Still, we hope that with this derivation, one can appreciate that LHC still has the expressiveness and the flexibility allowing to go around this lack of lockstep rules to solve certain goals of this form.
