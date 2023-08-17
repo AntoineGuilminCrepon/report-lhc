@@ -34,14 +34,9 @@ When finding the rules defining the behavior of $\wpsymb_{\exists}$, it seems th
 
 \Cref{fig:wpE-rules} gives out the rules applying to $\wpsymb_{\exists}$ that are substantially different from their $\wpsymb_{\forall}$ couterparts. \Cref{rule:wpE-exists,rule:wpE-impl-l} show that $\wpsymb_{\exists}$ commutes with $\exists$ and $(\implies P)$ (note the duality with \cref{rule:wpU-all,rule:wpU-impl-r}). Because any $\wpsymb_{\exists}$ judgment implies the projectability of the hyperterm, the "invariant" $P$ in \cref{rule:wpE-while} needs to be parametrized by a decreasing loop index $\alpha$. This loop index needs of course to be in a well-founded order (most of the time, natural numbers should suffice, but the possibility to call on transfinite ordinals reinforces the rule). \Cref{rule:wpE-conj} is slightly weaker than its $\wpsymb_{\forall}$ sibling, because the two hyperterms now requires to be disjoint. The reason is that the two traces given by the premisse $\WPE{\m{t}_1}{Q_1} \land \WPE{\m{t}_2}{Q_2}$ do not require to coincide on $\m{t}_1\cap\m{t}_2$
 
-An interesting point is that predicates that couldn't be defined in the original theory using the base langugage, and thus needed to be explicitly defined to be used, can now be defined using this new $\wpsymb_{\exists}$ object.
+In the original logic, certain modalities had to be defined outside the logic, \emph{ad hoc}. It was the case for the projectability predicate and the refinement predicate. With the new addition of $\wpsymb_{\exists}$, one can now rewrite those modalities inside the logic.
 
-\begin{eqnarray*}
-    \proj(t) &:=& \WPE{\m{t}}{\True} \\
-    t_1 \semleq t_2 &:=& \V s(1)=s(2) |- \WPU{[1: t_1]}{\WPE{[2: t_2]}{v(1) = v(2) \land s(1) = s(2)}}
-\end{eqnarray*}
-
-Thus certain rules from LHC can now be rewritten by combining $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$
+The easiest one is $\proj(\m{t})$. If we unfold the definition, we realise that it is exactly the definition of $\WPE{\m{t}}{\True}$. Furthermore, one can state a refinement judgment $t_1 \semleq t_2$ as $\pv{x}(\I 1) = \pv{x}(\I 2) \implies \WPU {\m[\I 1: t_1]} {\WPE {\m[\I 2: t_2]} {\pv{x}(\I 1) = \pv{x}(\I 2)}}$, under the assumption that $\pvar(t_1)\cup\pvar(t_2)\subseteq\pv{x}$. The validity of this refinement will be further discussed in \cref{sec:applications}.
 
 \begin{mathfig}{\small}
     \begin{proofrules}
@@ -55,62 +50,83 @@ Thus certain rules from LHC can now be rewritten by combining $\wpsymb_{\forall}
         \label{rule:wp-proj}
     \end{proofrules}
     \caption{Rules rewritten using $\wpsymb_{\exists}$}
+    \label{fig:rewritten-rules}
 \end{mathfig}
+
+Using those two rewriting, one can rewrite certain rules (precisely \cref{rule:wpU-refine}, its $\wpsymb_{\exists}$ counterpart and \cref{rule:wpU-proj}) into rules combining $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$. Those rules are written down in \cref{fig:rewritten-rules}.
 
 \begin{mathfig}{\small}
     \begin{proofrules}
-        \input{rules/lockstep-triv.tex}
-        \label{rule:lockstep-triv}
+        \input{rules/collapse.tex}
+        \label{rule:collapse}
 
-        \input{rules/proj-elim}
+        \input{rules/refine-reflexivity.tex}
+        \label{rule:reflexivity}
+
+        \input{rules/proj-elim.tex}
         \label{rule:proj-elim}
+
+        \input{rules/proj-elim-E.tex}
+        \label{rule:proj-elim-E}
     \end{proofrules}
-    \caption{Rules combining $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$}
+    \caption{General purpose rules combining $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$}
+    \label{fig:general-purpose}
 \end{mathfig}
 
 \subsection{Relation to $\wpsymb_{\forall}$}
 
-With the use of $\wpsymb_{\exists}$, one can write an interesting property:
+We will now discuss the way to replace $\wpsymb_{\forall}$ with $\wpsymb_{\exists}$ (and vice-versa). It is of note that, assuming excluded middle, $\WPU {\m{t}} Q \lequiv \lnot(\WPE {\m{t}} {\lnot Q})$. Actually, \emph{Propositional Dynamic Logic} (PDL), introduced in \citet{Fischer79}, defines $\wpsymb_{\exists}$ in this way. However, we try to avoid non-constructivity in our logic, and we don't have a good way to reason with negation generally (mainly because of this willingness to stay constructive). We will therefore avoid this equivalence.
+
+Still, we can define a statement regarding the two modalities:
 \begin{eqnarray*}
-    PDet(t) &:=& \WPE {\m{t}} Q \lequiv \WPU {\m{t}} Q
+    PDet(\m{t}) &:=& \WPE {\m{t}} Q \lequiv \WPU {\m{t}} Q
 \end{eqnarray*}
 
-This property is in fact equivalent to $Det(t) \land \proj(t)$, as is shown below.
+This property is useful in proofs where one would like to ignore the nuance between the two modalities, and swap one with the other at will. Thankfully, this property is actually equivalent to $\m{t}$ being deterministic and projectable, two judgments that can be written inside the logic; because determinism will be used a lot, and is a bit large to write, we will use the following notation:
+\begin{eqnarray*}
+    Det(t) &:=& \pv{x}(\I 1) = \pv{x}(\I 2) \implies \WPU {\m[\I 1: t, \I 2: t]} {\pv{x}(\I 1) = \pv{x}(\I 2)}
+\end{eqnarray*}
+The notation is extended to hyperterms, by saying that an hyperterm is deterministic iff all its components are.
 
-\begin{lemma}[$Det(t)\land\proj(t) \iff PDet(t)$]
+We will now show that $PDet(\m{t})$ is in fact \emph{equivalent} to $\proj(\m{t}) \land Det(\m{t})$
+
+\begin{lemma}[$Det(\m{t})\land\proj(\m{t}) \iff PDet(\m{t})$]
 \end{lemma} 
 \begin{proof}
     If $\m{t}$ is deterministic and has a terminating trace, then any terminating trace gives the same output, given the same input. Thus, if there exists a trace that satisfies some property $Q$, then any trace will satisfy the same property. Therefore, we have the direct statement.
 
-    For the reciprocal, we will separate the proof of $PDet(t) \implies Det(t)\land\proj(t)$ in two separate derivations. First off, $PDet(t) \implies \proj(t)$.
+    For the reciprocal, we will separate the proof of $PDet(\m{t}) \implies Det(\m{t})\land\proj(\m{t})$ in two separate derivations. First off, $PDet(\m{t}) \implies \proj(\m{t})$.
 
     \begin{prooftree}
-        \AxiomC{}
-        \LeftLabel{\scriptsize\textsf{wp$_{\forall}$-triv}}
-        \UnaryInfC{$\V |- \WPU {\m{t}}{\True}$}
+        \AxiomC{$\V |- \WPU {\m{t}}{\True}$}
         \AxiomC{}
         \RightLabel{\scriptsize{$PDet(t)$}}
         \UnaryInfC{$\V \WPU {\m{t}}{\True} |- \WPE {\m{t}}{\True}$}
         \BinaryInfC{$\V |- \WPE {\m{t}}{\True}$}
     \end{prooftree}
 
-    Next, $PDet(t) \implies Det(t)$.
-    \begin{scprooftree}{0.9}
-        \AxiomC{$\V \pv{x}(\I1)=\pv{x}(\I2) |- \WPE {\m<\I1: t, \I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)}$}
+    Next, $PDet(\m{t}) \implies Det(\m{t})$. To prove it, we will show that $\A i. PDet(\m{t}(i)) \implies Det(\m{t}(i))$.
+    \begin{scprooftree}{0.75}
+        \AxiomC{$\V \pv{x}(\I1)=\pv{x}(\I2) |- \WPU {\m[\I1: \m{t}(i)]}{\WPE {\m[\I2: \m{t}(i)]}{\pv{x}(\I1)=\pv{x}(\I2)}}$}
         \AxiomC{}
         \RightLabel{\scriptsize{$PDet(t)$}}
-        \UnaryInfC{$\V \WPE {\m<\I1: t, \I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)} |- \WPU {\m<\I1: t, \I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)}$}
-        \BinaryInfC{$\V \pv{x}(\I1)=\pv{x}(\I2) |- \WPU {\m<\I1: t,\I2: t>}{\pv{x}(\I1)=\pv{x}(\I2)}$}
+        \UnaryInfC{$\V \WPE {\m[\I2: \m{t}(i)]}{\pv{x}(\I1)=\pv{x}(\I2)} |- \WPU {\m[\I2: \m{t}(i)]}{\pv{x}(\I1)=\pv{x}(\I2)}$}
+        \UnaryInfC{$\V \WPU {\m[\I1: \m{t}(i)]}{\WPE {\m[\I2: \m{t}(i)]}{\pv{x}(\I1)=\pv{x}(\I2)}} |- Q$}
+        \BinaryInfC{$\V \pv{x}(\I1)=\pv{x}(\I2) |- \underbrace{\WPU {\m<\I1: \m{t}(i),\I2: \m{t}(i)>}{\pv{x}(\I1)=\pv{x}(\I2)}}_Q$}
     \end{scprooftree}
 
-    The left-side assumption is proved the following way: given that both terms receive the same input, if we chose the same trace to execute in both terms, we then get the same output (\ie every term is "deterministic" in the context of $\wpsymb_{\exists}$).
+    Thus we get the equivalence that we wanted.
 
-    Thus we get an equivalence between $PDet(t)$ and $Det(t)\land\proj(t)$
+    The left-hand side of this derivation is and instance of a important judgment : the reflexivity of the refinement relation. It will be used at length, and we chose to enshrine it as a rule: \cref{rule:reflexivity}. 
 \end{proof}
+
+\Cref{rule:collapse} gives as a rule usable in derivation this equivalence. We only give one direction of the equivalence as a rule because, as shown with the proof above, the other direction is derivable inside the logic.
+
+\Cref{fig:general-purpose}, on top of the two rules already mentioned, gives two other rules: \cref{rule:proj-elim} and its dual \cref{rule:proj-elim-E}. The first allows to create an assumption of projectability whenever we have a $\wpsymb_{\forall}$ statement, the second allows to switch from $\wpsymb_{\exists}$ to $\wpsymb_{\forall}$, given that we prove the projectability of the term.
 
 \subsection{Swap rule and lockstep rules}
 
-As stated before, $\wpsymb_{\exists}$ behaves more or less the same way as $\wpsymb_{\forall}$, and thus, proofs using it exclusively are very similar in form. Most of the capabilities of this model appears when combining both operators. However, one would need rules to deal with hyperproperties combining the two $\wpsymb$.
+As stated in \cref{sec:intro}, the main goal of adding the new $\wpsymb_{\exists}$ predicate was to express, and prove, hyperproperties combining both universal and existential quantifiers. Therefore, we need rules allowing us to deal with goals combining $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$.
 
 \begin{mathfig}{\small}
     \begin{proofrules}        
@@ -121,11 +137,12 @@ As stated before, $\wpsymb_{\exists}$ behaves more or less the same way as $\wps
         \label{rule:lockstep-swap-local}
     \end{proofrules}
     \caption{Swap rules}
+    \label{fig:swap-rules}
 \end{mathfig}
 
-A pair of such rules are \cref{rule:lockstep-swap} and \cref{rule:lockstep-swap-local}. A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\wpsymb_{\exists}$ and $\wpsymb_{\forall}$.
+A pair of such rules are \cref{rule:lockstep-swap} and \cref{rule:lockstep-swap-local} (written in \cref{fig:swap-rules}). A special attention will be given to the first one, because it allows us to derive most lockstep rules combining $\wpsymb_{\exists}$ and $\wpsymb_{\forall}$.
 
-Let's consider two examples: \cref{rule:lockstep-if} and \cref{rule:lockstep-seq}.
+Let's consider two examples: \cref{rule:lockstep-seq} and \cref{rule:lockstep-if}.
 
 \resizebox{0.8\width}{!}{
 \begin{proofrules}
@@ -196,26 +213,26 @@ There, of course, exists a rule for \code{while} statements of the same type tha
 
 \bigskip
 
-However, the proof strategy used previously doesn't work for this rule. It comes down to the fact that if we simply unfold \code{while} ($\code{while}\ g\ \code{do}\ t \implies \code{if}\ g\ \code{then}\ \code{skip}\ \code{else}\ \code{while}\ g\ \code{do}\ t$), we can't get a terminating proof, because we get the conclusion as a premisse. The main issue is that we're missing a way to do induction proofs on the length of the loop inside the logic.
+However, the proof strategy used previously doesn't work for this rule. It comes down to the fact that if we simply unfold the \code{while} loop (giving us $\code{if}\ g\ \code{then}\ \code{skip}\ \code{else}\ \code{while}\ g\ \code{do}\ t$), we can't get a terminating proof, because we get the conclusion as a premisse. The main issue is that we're missing a way to do induction proofs on the length of the loop inside the logic.
 
-Thankfully, there may be a way to deal with this issue, using a certain encoding of \code{while}. We will add to construct to the language: \code{assume} and *. Their semantic value can be defined as follows, with $t^n$ a notation for a sequence of $n$ terms $t$.
+Thankfully, there is a way to deal with this issue. We add two constructs to the language, with the goal of encoding \code{while}: \code{assume} and *. Their semantic value can be defined as follows, with $t^n$ a notation for a sequence of $n$ terms $t$.
 
 \begin{proofrules}
-    \infer*{\E v\ne 0. \bigstep g s v {s'}}{\bigstep {\code{assume}(g)} s 1 {s'}}
+    \infer*[Left=$v\ne 0$]{\bigstep g s v {s'}}{\bigstep {\code{assume}(g)} s v {s'}}
 
-    \infer*{\E n. \bigstep {t^n} s v {s'}}{\bigstep {t^*} s v {s'}}
+    \infer*{\bigstep {t^n} s v {s'}}{\bigstep {t^*} s v {s'}}
 \end{proofrules}
 
-From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and *, we can derive the rule for \code{while}. The question is, what did we gain from this encoding ? The short answer is that \code{assume} and * have similar $\wpsymb_{\forall}-\wpsymb_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
+From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and $t^*$, we can derive the rule for \code{while}. The question is, what did we gain from this encoding? The short answer is that \code{assume} and $t^*$ have similar $\wpsymb_{\forall}-\wpsymb_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
 
-We can derive four rules for \code{assume} and * (described in \cref{fig:assume-*-rules}). From those rules, one can derive rules of the same form as the \code{if} one:
+We can derive four rules for \code{assume} and $t^*$ (described in \cref{fig:assume-*-rules}). From those rules, one can derive rules of the same form as the \code{if} one:
 
 \begin{proofrules}
     \input{rules/lockstep-assume.tex}
     \label{rule:lockstep-assume}
 
-    \input{rules/lockstep-star.tex}
-    \label{rule:lockstep-star}
+    \input{rules/lockstep-iter.tex}
+    \label{rule:lockstep-iter}
 \end{proofrules}
 
 \begin{mathfig}
@@ -226,11 +243,11 @@ We can derive four rules for \code{assume} and * (described in \cref{fig:assume-
         \input{rules/wpE-assume.tex}
         \label{rule:wpE-assume}
 
-        \input{rules/wpU-star.tex}
-        \label{rule:wpU-star}
+        \input{rules/wpU-iter.tex}
+        \label{rule:wpU-iter}
 
-        \input{rules/wpE-star.tex}
-        \label{rule:wpE-star}
+        \input{rules/wpE-iter.tex}
+        \label{rule:wpE-iter}
     \end{proofrules}
     \caption{Rules for \code{assume} and *}
     \label{fig:assume-*-rules}
@@ -239,12 +256,12 @@ We can derive four rules for \code{assume} and * (described in \cref{fig:assume-
 They are derived as follows:
 
 \begin{prooftree}
-    \AxiomC{$\WPU {\m[i: g_i | i \in I]}
+    \AxiomC{$\V |- \WPU {\m[i: g_i | i \in I]}
             {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v}\cdot\m{w}) \land\m{w} \ne 0}}$}
-    \UnaryInfC{$\WPU {\m[i: \code{assume}(g_i) | i \in I]}
-                {\WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(1\cdot\m{w}) \land\m{w} \ne 0}}$}
-    \UnaryInfC{$\WPU {\m[i: \code{assume}(g_i) | i \in I]}
-                {\WPE {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(1 \cdot \m{w})}}$}
+    \UnaryInfC{$\V |- \WPU {\m[i: \code{assume}(g_i) | i \in I]}
+                {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v} \cdot\m{w}) \land\m{w} \ne 0} \land \m{v} \ne 0}$}
+    \UnaryInfC{$\V |- \WPU {\m[i: \code{assume}(g_i) | i \in I]}
+                {\fun \m{v}. \WPE {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(\m  {v} \cdot \m{w}) \land \m{v} \ne 0}}$}
 \end{prooftree}
 
 \begin{scprooftree}{0.75}
@@ -273,7 +290,7 @@ They are derived as follows:
                 {\WPE {\m[j: {t'_j}^* | j \in J]} P}$}
 \end{scprooftree}
 
-\Cref{rule:lockstep-while} can be derived from \cref{rule:lockstep-star} and \cref{rule:lockstep-assume} this way:
+\Cref{rule:lockstep-while} can be derived from \cref{rule:lockstep-iter} and \cref{rule:lockstep-assume} this way:
 
 \begin{scprooftree}{0.7}
     \AxiomC{$\V P |-

@@ -226,12 +226,21 @@ We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} 
 
     \input{rules/wpU-while.tex}
     \label{rule:wpU-while}
+
+    \input{rules/wpU-refine.tex}
+    \label{rule:wpU-refine}
   \end{proofrules}
   \caption{Lockstep rules for $\wpsymb_{\forall}$ from LHC}
   \label{fig:lockstep-wpU-rules}
 \end{mathfig}
 
-\Cref{fig:lockstep-wpU-rules} describes \emph{lockstep} rules, \ie rules allowing for lockstep proofs, as described before. They are similar to Hoare logic rules, and we can in fact recover these corresponding Hoare logic rules by taking the arity-1 case. The \cref{rule:wpU-while} is stated as a rule, but we will discuss a possible derivation of it later.
+\Cref{fig:lockstep-wpU-rules} describes \emph{lockstep} rules, \ie rules allowing for lockstep proofs, as described before. They are similar to Hoare logic rules, and we can in fact recover these corresponding Hoare logic rules by taking the arity-1 case. The \cref{rule:wpU-while} is stated as a rule, but we will discuss a possible derivation of it later. \Cref{rule:wpU-refine} allows for \emph{extended lockstep} proofs, as they are explained in \cref{sec:intro}. It allows to replace a term $t_1$ by another $t_2$, assuming a \emph{refinement} $t_1 \semleq t_2$. This refinement is formally defined as follows:
+
+\begin{definition}[Refinement]
+  $t_1 \semleq t_2 \is \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'}$
+\end{definition}
+
+This rule will be rediscussed in \cref{sec:extension}.
 
 \begin{mathfig}{\small}
   \begin{proofrules}

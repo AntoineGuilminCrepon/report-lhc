@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 \infer*[lab=lockstep-assume]{}{
     \V \WPUvv {\m[i: g_i | i \in I]}
-    {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v}\cdot\m{w}) \land\m{w} \ne 0}}
+    {\fun \m{v}. \WPEvv {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v}\cdot\m{w}) \land\m{w} \ne 0}}
     |- \WPUvv {\m[i: \code{assume}(g_i) | i \in I]}
-    {\WPE {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(1 \cdot \m{w})}}
+    {\fun \m{v}. \WPEvv {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(\m{v} \cdot \m{w}) \land \m{v} \ne 0}}
 }

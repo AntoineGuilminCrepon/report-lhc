@@ -1,4 +1,4 @@
 %!TEX root = ../main.tex
 \infer*[lab=wp$_{\forall}$-assume]{}{
-    \V  \WPU {\m[i: g_i | i \in I]} Q |- \WPU {\m[i: \code{assume}(g_i) | i \in I]} {Q(1)}
+    \V  \WPU {\m[i: g_i | i \in I]} Q |- \WPU {\m[i: \code{assume}(g_i) | i \in I]} {\ret. Q(\ret) \land \ret \ne 0}
 }
