@@ -7,7 +7,7 @@
 The main point of the extension is to add a modality to the language, dual to the $\wpsymb_{\forall}$ from the original model. It is defined as such :
 
 \begin{definition}[Weakest existential precondition]
-$\WPE{\m{t}}{Q} := \fun \m{s}. \E \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \land Q(\m{v})$
+    $\WPE{\m{t}}{Q} := \fun \m{s}. \E \m{s'} \m{v}. \bigstep {\m{t}}{\m{s}} {\m{v}} {\m{s'}} \land Q(\m{v})$
 \end{definition}
 
 One can easily appreciate the similarity with the original $\wpsymb_{\forall}$ definition. Intuitively, the judgment $\WPE{\m{t}}{Q}$ states that there exists a trace of $\m{t}$ satisfying $Q$. An important point is that any judgment of this form implies \emph{at least} local projectability of $\m{t}$, \ie if we chose an input state satisfying the constraint of the potential context of the judgment, $\m{t}$ must have a terminating trace beginning in this state.
@@ -145,252 +145,253 @@ A pair of such rules are \cref{rule:lockstep-swap} and \cref{rule:lockstep-swap-
 Let's consider two examples: \cref{rule:lockstep-seq} and \cref{rule:lockstep-if}.
 
 \resizebox{0.8\width}{!}{
-\begin{proofrules}
-    \input{rules/lockstep-seq.tex}
-    \label{rule:lockstep-seq}
+    \begin{proofrules}
+        \input{rules/lockstep-seq.tex}
+        \label{rule:lockstep-seq}
 
-    \input{rules/lockstep-if.tex}
-    \label{rule:lockstep-if}
-\end{proofrules}
-}
+        \input{rules/lockstep-if.tex}
+        \label{rule:lockstep-if}
+    \end{proofrules}
+    }
 
-\bigskip
+    \bigskip
 
-We can derive both rules from \cref{rule:lockstep-swap}, as follows:
+    We can derive both rules from \cref{rule:lockstep-swap}, as follows:
 
-\bigskip
+    \bigskip
 
-\begin{prooftree}
-    \AxiomC{$\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: u_j | j \in J]}{\WPU {\m[i: t'_i | i \in I]}{\WPE {\m[j: u'_j | j \in J]}{Q}}}}$}
-    \UnaryInfC{$\WPU {\m[i: t_i | i \in I]}{\WPU {\m[j: t'_i | i \in I]}{\WPE {\m[i: u_j | j \in J]}{\WPE {\m[j: u'_j | j \in J]}{Q}}}}$}
-    \UnaryInfC{$\WPU {\m[i: t_i; t'_i| i \in I]}{\WPE {\m[j: u_j; u'_j | j \in J]}{Q}}$}
-\end{prooftree}
+    \begin{prooftree}
+        \AxiomC{$\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: u_j | j \in J]}{\WPU {\m[i: t'_i | i \in I]}{\WPE {\m[j: u'_j | j \in J]}{Q}}}}$}
+        \UnaryInfC{$\WPU {\m[i: t_i | i \in I]}{\WPU {\m[j: t'_i | i \in I]}{\WPE {\m[i: u_j | j \in J]}{\WPE {\m[j: u'_j | j \in J]}{Q}}}}$}
+        \UnaryInfC{$\WPU {\m[i: t_i; t'_i| i \in I]}{\WPE {\m[j: u_j; u'_j | j \in J]}{Q}}$}
+    \end{prooftree}
 
-\bigskip
+    \bigskip
 
-\begin{scprooftree}{0.8}
-    \AxiomC{$\WPU {\m[i: g_i | i \in I]}*
-    {\fun \m{b}. \WPE {\m[j: g'_j | j \in J]}*
-    {\fun \m{b}'. \WPU {
-        \begin{pmatrix*}[l]
-        {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
-        {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
-        \end{pmatrix*}
+    \begin{scprooftree}{0.8}
+        \AxiomC{$\WPU {\m[i: g_i | i \in I]}*
+        {\fun \m{b}. \WPE {\m[j: g'_j | j \in J]}*
+        {\fun \m{b}'. \WPU {
+            \begin{pmatrix*}[l]
+                {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
+                {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
+            \end{pmatrix*}
         }*{\WPE {
-        \begin{pmatrix*}[l]
-        {\m[i: u_j | j\in I, \m{b}'(i) \neq 0]}{\m.}\\
-        {\m[i: u'_j | j\in I, \m{b}'(i) = 0]}
-        \end{pmatrix*}           
+            \begin{pmatrix*}[l]
+                {\m[i: u_j | j\in I, \m{b}'(i) \neq 0]}{\m.}\\
+                {\m[i: u'_j | j\in I, \m{b}'(i) = 0]}
+            \end{pmatrix*}           
         }{Q}}
-    }}$}
-    \UnaryInfC{$\WPU {\m[i: g_i | i \in I]}*
-    {\fun \m{b}. \WPU {
-        \begin{pmatrix*}[l]
-        {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
-        {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
-        \end{pmatrix*}}*
+        }}$}
+        \UnaryInfC{$\WPU {\m[i: g_i | i \in I]}*
+        {\fun \m{b}. \WPU {
+            \begin{pmatrix*}[l]
+                {\m[i: t_i | i\in I, \m{b}(i) \neq 0]}{\m.}\\
+                {\m[i: t'_i | i\in I, \m{b}(i) = 0]}
+            \end{pmatrix*}}*
         {\WPE {\m[j: g'_j | j \in J]
         }*{\fun \m{b}'. \WPE {
-        \begin{pmatrix*}[l]
-        {\m[i: u_j | j\in I, \m{b}'(i) \neq 0]}{\m.}\\
-        {\m[i: u'_j | j\in I, \m{b}'(i) = 0]}
-        \end{pmatrix*}           
+            \begin{pmatrix*}[l]
+                {\m[i: u_j | j\in I, \m{b}'(i) \neq 0]}{\m.}\\
+                {\m[i: u'_j | j\in I, \m{b}'(i) = 0]}
+            \end{pmatrix*}           
         }{Q}}
-    }}$}
-    \UnaryInfC{$\WPU {\m[i: \code{if}\ g_i\ \code{then}\ t_i\ \code{else}\  t'_i| i \in I]}{\WPE {\m[j: \code{if}\ g'_j\ \code{then}\ u_j\ \code{else}\ u'_j | j \in J]}{Q}}$}
-\end{scprooftree}
+        }}$}
+        \UnaryInfC{$\WPU {\m[i: \code{if}\ g_i\ \code{then}\ t_i\ \code{else}\  t'_i| i \in I]}{\WPE {\m[j: \code{if}\ g'_j\ \code{then}\ u_j\ \code{else}\ u'_j | j \in J]}{Q}}$}
+    \end{scprooftree}
 
-In both cases, we simply "unfold" the terms using the corresponding $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$ rules, and then a number \cref{rule:lockstep-swap} to complete the proof.
+    In both cases, we simply "unfold" the terms using the corresponding $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$ rules, and then a number \cref{rule:lockstep-swap} to complete the proof.
 
-\subsection{The while rule}
+    \subsection{The while rule}
 
-There, of course, exists a rule for \code{while} statements of the same type than for \code{if} and sequential statements.
+    There, of course, exists a rule for \code{while} statements of the same type than for \code{if} and sequential statements.
 
-\begin{proofrules}
-    \input{rules/lockstep-while.tex}
-    \label{rule:lockstep-while}
-\end{proofrules}
-
-\bigskip
-
-However, the proof strategy used previously doesn't work for this rule. It comes down to the fact that if we simply unfold the \code{while} loop (giving us $\code{if}\ g\ \code{then}\ \code{skip}\ \code{else}\ \code{while}\ g\ \code{do}\ t$), we can't get a terminating proof, because we get the conclusion as a premisse. The main issue is that we're missing a way to do induction proofs on the length of the loop inside the logic.
-
-Thankfully, there is a way to deal with this issue. We add two constructs to the language, with the goal of encoding \code{while}: \code{assume} and *. Their semantic value can be defined as follows, with $t^n$ a notation for a sequence of $n$ terms $t$.
-
-\begin{proofrules}
-    \infer*[Left=$v\ne 0$]{\bigstep g s v {s'}}{\bigstep {\code{assume}(g)} s v {s'}}
-
-    \infer*{\bigstep {t^n} s v {s'}}{\bigstep {t^*} s v {s'}}
-\end{proofrules}
-
-From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and $t^*$, we can derive the rule for \code{while}. The question is, what did we gain from this encoding? The short answer is that \code{assume} and $t^*$ have similar $\wpsymb_{\forall}-\wpsymb_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
-
-We can derive four rules for \code{assume} and $t^*$ (described in \cref{fig:assume-*-rules}). From those rules, one can derive rules of the same form as the \code{if} one:
-
-\begin{proofrules}
-    \input{rules/lockstep-assume.tex}
-    \label{rule:lockstep-assume}
-
-    \input{rules/lockstep-iter.tex}
-    \label{rule:lockstep-iter}
-\end{proofrules}
-
-\begin{mathfig}
     \begin{proofrules}
-        \input{rules/wpU-assume.tex}
-        \label{rule:wpU-assume}
-
-        \input{rules/wpE-assume.tex}
-        \label{rule:wpE-assume}
-
-        \input{rules/wpU-iter.tex}
-        \label{rule:wpU-iter}
-
-        \input{rules/wpE-iter.tex}
-        \label{rule:wpE-iter}
+        \input{rules/lockstep-while.tex}
+        \label{rule:lockstep-while}
     \end{proofrules}
-    \caption{Rules for \code{assume} and *}
-    \label{fig:assume-*-rules}
-\end{mathfig}
 
-They are derived as follows:
+    \bigskip
 
-\begin{prooftree}
-    \AxiomC{$\V |- \WPU {\m[i: g_i | i \in I]}
-            {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v}\cdot\m{w}) \land\m{w} \ne 0}}$}
-    \UnaryInfC{$\V |- \WPU {\m[i: \code{assume}(g_i) | i \in I]}
-                {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v} \cdot\m{w}) \land\m{w} \ne 0} \land \m{v} \ne 0}$}
-    \UnaryInfC{$\V |- \WPU {\m[i: \code{assume}(g_i) | i \in I]}
-                {\fun \m{v}. \WPE {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(\m  {v} \cdot \m{w}) \land \m{v} \ne 0}}$}
-\end{prooftree}
+    However, the proof strategy used previously doesn't work for this rule. It comes down to the fact that if we simply unfold the \code{while} loop (giving us $\code{if}\ g\ \code{then}\ \code{skip}\ \code{else}\ \code{while}\ g\ \code{do}\ t$), we can't get a terminating proof, because we get the conclusion as a premisse. The main issue is that we're missing a way to do induction proofs on the length of the loop inside the logic.
 
-\begin{scprooftree}{0.75}
-    \AxiomC{$\V P |- \WPU {\m[i: t_i | i \in I]}
-            {\WPE {\m[j: t'_j | j \in J]} P}$}
-    \AxiomC{}
-    \UnaryInfC{$\A n. \V \WPU {\m[i: t_i^n | i \in I]}
-            {\WPE {\m[j: {t'_j}^n | j \in J]} P}
-            |- \WPU {\m[i: t_i^n | i \in I]}
-            {\WPE {\m[j: {t'_j}^n | j \in J]} P}$}
-    \BinaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n | i \in I]}
-                {\WPE {\m[j: {t'_j}^n | j \in J]} P}
-                |- \WPU {\m[i: t_i | i \in I]}
-                {\WPE {\m[j: t'_j | j \in J]}
-                {\WPU {\m[i: t_i^n | i \in I]}
-                {\WPE {\m[j: {t'_j}^n | j \in J]} P}}}$}
-    \UnaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n | i \in I]}
-                {\WPE {\m[j: {t'_j}^n | j \in J]} P}
-                |- \WPU {\m[i: t_i^{n+1} | i \in I]}
-                {\WPE {\m[j: {t'_j}^{n+1} | j \in J]} P}$}
-    \UnaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n | i \in I]}
-                {\WPE {\m[j: {t'_j}^* | j \in J]} P}
-                |- \WPU {\m[i: t_i^{n+1} | i \in I]}
-                {\WPE {\m[j: {t'_j}^* | j \in J]} P}$}
-    \UnaryInfC{$\V P |- \WPU {\m[i: t_i^* | i \in I]}
-                {\WPE {\m[j: {t'_j}^* | j \in J]} P}$}
-\end{scprooftree}
+    Thankfully, there is a way to deal with this issue. We add two constructs to the language, with the goal of encoding \code{while}: \code{assume} and *. Their semantic value can be defined as follows, with $t^n$ a notation for a sequence of $n$ terms $t$.
 
-\Cref{rule:lockstep-while} can be derived from \cref{rule:lockstep-iter} and \cref{rule:lockstep-assume} this way:
+    \begin{proofrules}
+        \infer*[Left=$v\ne 0$]{\bigstep g s v {s'}}{\bigstep {\code{assume}(g)} s v {s'}}
 
-\begin{scprooftree}{0.7}
-    \AxiomC{$\V P |-
-                \WPU {\m[i: \code{assume}(g_i)]}
-                {\WPE {\m[j: \code{assume}(g'_j)]}
-                {\WPU {\m[i: t_i]} {\WPE {\m[j: t'_j]} {P}}}}$}
-    \UnaryInfC{$\V P |- 
-                \WPU {\m[i: \code{assume}(g_i); t_i]}
-                {\WPE {\m[j: \code{assume}(g'_j); t'_j]} P}$}
-    \UnaryInfC{$\V P |- 
-                \WPU {\m[i: (\code{assume}(g_i); t_i)^*]}
-                {\WPE {\m[j: (\code{assume}(g'_j); t'_j)^*]} P}$}
-    \AxiomC{$\V P |-
-                \WPU {\m[i: \code{assume}(\lnot g_i)]}
-                {\WPE {\m[j: \code{assume}(\lnot g'_j)]} Q}$}
-    \BinaryInfC{$\V P |- 
-                \WPU {\m[i: (\code{assume}(g_i); t_i)^*; \code{assume}(\lnot g_i)]}
-                {\WPE {\m[j: (\code{assume}(g'_j); t'_j)^*; \code{assume}(\lnot g'_j)]} Q}$}
-\end{scprooftree}
+        \infer*{\bigstep {t^n} s v {s'}}{\bigstep {t^*} s v {s'}}
+    \end{proofrules}
 
-Both leaves can be derived from the premisse of \cref{rule:lockstep-while} by applying \cref{rule:lockstep-assume} (after negating the guards for the righthand leave), and collapsing the postcondition according to the return value being forced by the rule.
+    From this, we can encode $\code{while}\ g\ \code{do}\ t \is (\code{assume}(g); t)^*;\code{assume}(\lnot g)$. Thus, if we have rules for \code{assume} and $t^*$, we can derive the rule for \code{while}. The question is, what did we gain from this encoding? The short answer is that \code{assume} and $t^*$ have similar $\wpsymb_{\forall}-\wpsymb_{\exists}$ rules with \code{if} and sequences. The long answer is the following.
 
-\begin{scprooftree}{0.75}
-    \AxiomC{$\V
-    P
-    |- 
-    \WPU {\m[i: g_i | i \in I]}*
-    {\fun \m{b}'. \WPE {\m[j: g_j' | j \in J]}*
-    {\begin{pmatrix*}[l]
-    \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
-    \lor 
-    \begin{pmatrix*}[l]
-        (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
-        \land \WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
-    \end{pmatrix*}
-    \end{pmatrix*}}}$}
-    \UnaryInfC{$\V
-    P
-    |- 
-    \WPU {\m[i: \code{assume}(g_i) | i \in I]}*
-    {\fun \m{b}'. \WPE {\m[j: \code{assume}(g_j') | j \in J]}*
-    {\begin{pmatrix*}[l]
-    \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
-    \lor 
-    \begin{pmatrix*}[l]
-        (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
-        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
-    \end{pmatrix*} \land (\m{b} \cdot \m{b}' \ne_{I\cup J} 0)
-    \end{pmatrix*}}}$}
-    \UnaryInfC{$\V
-    P
-    |- 
-    \WPU {\m[i: \code{assume}(g_i) | i \in I]}*
-    {\WPE {\m[j: \code{assume}(g_j') | j \in J]}*
-    {\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}}}$}
-\end{scprooftree}
+    We can derive four rules for \code{assume} and $t^*$ (described in \cref{fig:assume-*-rules}). From those rules, one can derive rules of the same form as the \code{if} one:
 
-\begin{scprooftree}{0.75}
-    \AxiomC{$\V
-    P
-    |- 
-    \WPU {\m[i: g_i | i \in I]}*
-    {\fun \m{b}'. \WPE {\m[j: g_j' | j \in J]}*
-    {\begin{pmatrix*}[l]
-    \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
-    \lor 
-    \begin{pmatrix*}[l]
-        (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
-        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
-    \end{pmatrix*}
-    \end{pmatrix*}}}$}
-    \UnaryInfC{$\V
-    P
-    |- 
-    \WPU {\m[i: \lnot g_i | i \in I]}*
-    {\fun \m{b}'. \WPE {\m[j: \lnot g_j' | j \in J]}*
-    {\begin{pmatrix*}[l]
-    \fun \m{b}. (\m{b} \cdot \m{b}' \ne_{I\cup J} 0 \land Q) \\
-    \lor 
-    \begin{pmatrix*}[l]
-        (\m{b} \cdot \m{b}') =_{I\cup J} 0 \\
-        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
-    \end{pmatrix*}
-    \end{pmatrix*}}}$}
-    \UnaryInfC{$\V
-    P
-    |- 
-    \WPU {\m[i: \code{assume}(\lnot g_i) | i \in I]}*
-    {\fun \m{b}'. \WPE {\m[j: \code{assume}(\lnot g_j') | j \in J]}*
-    {\begin{pmatrix*}[l]
-    \fun \m{b}. (\m{b} \cdot \m{b}' \ne_{I\cup J} 0 \land Q) \\
-    \lor 
-    \begin{pmatrix*}[l]
-        (\m{b} \cdot \m{b}') =_{I\cup J} 0 \\
-        \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j' | j \in J]} {P}}
-    \end{pmatrix*} \land (\m{b} \cdot \m{b}' \ne_{I\cup J} 0)
-    \end{pmatrix*}}}$}
-    \UnaryInfC{$\V
-    P
-    |- 
-    \WPU {\m[i: \code{assume}(\lnot g_i) | i \in I]}*
-    {\WPE {\m[j: \code{assume}(\lnot g_j') | j \in J]} Q}$}
-\end{scprooftree}
+    \begin{proofrules}
+        \input{rules/lockstep-assume.tex}
+        \label{rule:lockstep-assume}
+
+        \input{rules/lockstep-iter.tex}
+        \label{rule:lockstep-iter}
+    \end{proofrules}
+
+    \begin{mathfig}
+        \begin{proofrules}
+            \input{rules/wpU-assume.tex}
+            \label{rule:wpU-assume}
+
+            \input{rules/wpE-assume.tex}
+            \label{rule:wpE-assume}
+
+            \input{rules/wpU-iter.tex}
+            \label{rule:wpU-iter}
+
+            \input{rules/wpE-iter.tex}
+            \label{rule:wpE-iter}
+        \end{proofrules}
+        \caption{Rules for \code{assume} and *}
+        \label{fig:assume-*-rules}
+    \end{mathfig}
+
+    They are derived as follows:
+
+    \begin{prooftree}
+        \AxiomC{$\V |- \WPU {\m[i: g_i | i \in I]}
+        {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v}\cdot\m{w}) \land\m{w} \ne 0}}$}
+        \UnaryInfC{$\V |- \WPU {\m[i: \code{assume}(g_i) | i \in I]}
+        {\fun \m{v}. \WPE {\m[j: g'_j | j \in J]} {\fun \m{w}. Q(\m{v} \cdot\m{w}) \land\m{w} \ne 0} \land \m{v} \ne 0}$}
+        \UnaryInfC{$\V |- \WPU {\m[i: \code{assume}(g_i) | i \in I]}
+        {\fun \m{v}. \WPE {\m[j: \code{assume}(g'_j) | j \in J]} {\fun \m{w}. Q(\m  {v} \cdot \m{w}) \land \m{v} \ne 0}}$}
+    \end{prooftree}
+
+    \begin{scprooftree}{0.9}
+        \AxiomC{$\V P |- \WPU {\m[i: t_i]}
+        {\WPE {\m[j: t'_j |]} P}$}
+        \AxiomC{}
+        \UnaryInfC{$\A n. \V \WPU {\m[i: t_i^n]}
+        {\WPE {\m[j: {t'_j}^n]} P}
+        |- \WPU {\m[i: t_i^n]}
+        {\WPE {\m[j: {t'_j}^n]} P}$}
+        \BinaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n]}
+        {\WPE {\m[j: {t'_j}^n]} P}
+        |- \WPU {\m[i: t_i]}
+        {\WPE {\m[j: t'_j]}
+        {\WPU {\m[i: t_i^n]}
+        {\WPE {\m[j: {t'_j}^n]} P}}}$}
+        \UnaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n]}
+        {\WPE {\m[j: {t'_j}^n]} P}
+        |- \WPU {\m[i: t_i^{n+1}]}
+        {\WPE {\m[j: {t'_j}^{n+1}]} P}$}
+        \UnaryInfC{$\A n. \V P, \WPU {\m[i: t_i^n]}
+        {\WPE {\m[j: {t'_j}^*]} P}
+        |- \WPU {\m[i: t_i^{n+1}]}
+        {\WPE {\m[j: {t'_j}^*]} P}$}
+        \UnaryInfC{$\V P |- \WPU {\m[i: t_i^*]}
+        {\WPE {\m[j: {t'_j}^*]} P}$}
+    \end{scprooftree}
+
+    \Cref{rule:lockstep-while} can be derived from \cref{rule:lockstep-iter} and \cref{rule:lockstep-assume} this way\footnote{It is of note that the iteration rules are currently unary, and that therefore the entire derivation only holds for two loops. It is enough for the remaining derivations of this paper, but we believe that a derivation for the more general rule exists. It remains a work in progress at time of writing}:
+
+    \begin{scprooftree}{0.7}
+        \AxiomC{$\V P |-
+        \WPU {\m[i: \code{assume}(g_i)]}
+        {\WPE {\m[j: \code{assume}(g'_j)]}
+        {\WPU {\m[i: t_i]} {\WPE {\m[j: t'_j]} {P}}}}$}
+        \UnaryInfC{$\V P |- 
+        \WPU {\m[i: \code{assume}(g_i); t_i]}
+        {\WPE {\m[j: \code{assume}(g'_j); t'_j]} P}$}
+        \UnaryInfC{$\V P |- 
+        \WPU {\m[i: (\code{assume}(g_i); t_i)^*]}
+        {\WPE {\m[j: (\code{assume}(g'_j); t'_j)^*]} P}$}
+        \AxiomC{$\V P |-
+        \WPU {\m[i: \code{assume}(\lnot g_i)]}
+        {\WPE {\m[j: \code{assume}(\lnot g'_j)]} Q}$}
+        \BinaryInfC{$\V P |- 
+        \WPU {\m[i: (\code{assume}(g_i); t_i)^*; \code{assume}(\lnot g_i)]}
+        {\WPE {\m[j: (\code{assume}(g'_j); t'_j)^*; \code{assume}(\lnot g'_j)]} Q}$}
+    \end{scprooftree}
+
+    Both leaves can be derived from the premisse of \cref{rule:lockstep-while} by applying \cref{rule:lockstep-assume} (after negating the guards for the righthand leave), and collapsing the postcondition according to the return value being forced by the rule.
+
+    \begin{scprooftree}{0.75}
+        \AxiomC{$\V
+        P
+        |- 
+        \WPU {\m[i: g_i]}*
+        {\fun \m{b}'. \WPE {\m[j: g_j']}*
+        {\begin{pmatrix*}[l]
+            \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
+            \lor 
+            \begin{pmatrix*}[l]
+                (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
+                \land \WPU {\m[i: t_i]}{\WPE {\m[j: t_j']} {P}}
+            \end{pmatrix*}
+        \end{pmatrix*}}}$}
+        \UnaryInfC{$\V
+        P
+        |- 
+        \WPU {\m[i: \code{assume}(g_i)]}*
+        {\fun \m{b}'. \WPE {\m[j: \code{assume}(g_j')]}*
+        {\begin{pmatrix*}[l]
+            \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
+            \lor 
+            \begin{pmatrix*}[l]
+                (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
+                \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j']} {P}}
+            \end{pmatrix*} \land (\m{b} \cdot \m{b}' \ne_{I\cup J} 0)
+        \end{pmatrix*}}}$}
+        \UnaryInfC{$\V
+        P
+        |- 
+        \WPU {\m[i: \code{assume}(g_i)]}*
+        {\WPE {\m[j: \code{assume}(g_j')]}*
+        {\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j']} {P}}}}$}
+    \end{scprooftree}
+
+    \begin{scprooftree}{0.75}
+        \AxiomC{$\V
+        P
+        |- 
+        \WPU {\m[i: g_i]}*
+        {\fun \m{b}'. \WPE {\m[j: g_j']}*
+        {\begin{pmatrix*}[l]
+            \fun \m{b}. (\m{b} \cdot \m{b}' =_{I\cup J} 0 \land Q) \\
+            \lor 
+            \begin{pmatrix*}[l]
+                (\m{b} \cdot \m{b}') \ne_{I\cup J} 0 \\
+                \land\WPU {\m[i: t_i | i \in I]}{\WPE {\m[j: t_j']} {P}}
+            \end{pmatrix*}
+        \end{pmatrix*}}}$}
+        \UnaryInfC{$\V
+        P
+        |- 
+        \WPU {\m[i: \lnot g_i]}*
+        {\fun \m{b}'. \WPE {\m[j: \lnot g_j']}*
+        {\begin{pmatrix*}[l]
+            \fun \m{b}. (\m{b} \cdot \m{b}' \ne_{I\cup J} 0 \land Q) \\
+            \lor 
+            \begin{pmatrix*}[l]
+                (\m{b} \cdot \m{b}') =_{I\cup J} 0 \\
+                \land\WPU {\m[i: t_i]}{\WPE {\m[j: t_j']} {P}}
+            \end{pmatrix*}
+        \end{pmatrix*}}}$}
+        \UnaryInfC{$\V
+        P
+        |- 
+        \WPU {\m[i: \code{assume}(\lnot g_i)]}*
+        {\fun \m{b}'. \WPE {\m[j: \code{assume}(\lnot g_j')]}*
+        {\begin{pmatrix*}[l]
+            \fun \m{b}. (\m{b} \cdot \m{b}' \ne_{I\cup J} 0 \land Q) \\
+            \lor 
+            \begin{pmatrix*}[l]
+                (\m{b} \cdot \m{b}') =_{I\cup J} 0 \\
+                \land\WPU {\m[i: t_i]}{\WPE {\m[j: t_j']} {P}}
+            \end{pmatrix*} \land (\m{b} \cdot \m{b}' \ne_{I\cup J} 0)
+        \end{pmatrix*}}}$}
+        \UnaryInfC{$\V
+        P
+        |- 
+        \WPU {\m[i: \code{assume}(\lnot g_i)]}*
+        {\WPE {\m[j: \code{assume}(\lnot g_j')]} Q}$}
+    \end{scprooftree}
+    

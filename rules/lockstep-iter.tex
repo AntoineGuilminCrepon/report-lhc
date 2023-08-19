@@ -1,10 +1,11 @@
 %!TEX root = ../main.tex
-\infer*[lab=lockstep-iter]{
+\infer*[lab=lockstep-iter,
+    Right=$I \ne \emptyset$]{
     \V P |- 
-    \WPU {\m[i: t_i | i \in I]}*
-    {\WPE {\m[j: t'_j | j \in J]} P}
+    \WPU {\m[i: t_i]}*
+    {\WPE {\m[j: t'_j]} P}
 }{ 
     \V P |- 
-    \WPU {\m[i: t_i^* | i \in I]}*
-    {\WPE {\m[j: {t'_j}^* | j \in J]} P}
+    \WPU {\m[i: t_i^*]}*
+    {\WPE {\m[j: {t'_j}^*]} P}
 }
