@@ -5,22 +5,22 @@
 Many properties about programs are not properties on one specific trace of a program, but rather of several traces from multiple programs. For example, non-determinism cannot be formally specified as a property on a single execution, because proving it requires to distinguish at least two traces giving back differents outputs from the same input. Those "multi-traces" properties have been formally studied by \citet{ClarksonS08}, who coined the term \emph{hyperproperties}.
 More formally, those hyperproperties are of the form:
 \(
-Q_1 (s_1, s'_1) \in \sem{t_1},
+\gamma_1 (s_1, s'_1) \in \sem{t_1},
 \dots
-Q_n (s_n, s'_n) \in \sem{t_n},
+\gamma_n (s_n, s'_n) \in \sem{t_n},
 \phi(s_1, s'_1, \dots, s_n, s'_n)
 \)
-where $\sem{t}$ is the \emph{semantic} of $t$, \ie the set of input/output states of the traces of $t$, and the $Q_i$ are existential or universal quantifiers. Examples of hyperproperties are refinement ($n = 2, (Q_1, Q_2) = (\forall, \exists)$), minimum ($n = 2, (Q_1, Q_2) = (\exists, \forall)$) or transitivity ($n = 3, (Q_1, Q_2, Q_3) = (\forall, \forall, \forall)$).
+where $\sem{t}$ is the \emph{semantic} of $t$, \ie the set of input/output states of the traces of $t$, and the $\gamma_i$ are existential or universal quantifiers. Examples of hyperproperties are refinement ($n = 2, (\gamma_1, \gamma_2) = (\forall, \exists)$), minimum ($n = 2, (\gamma_1, \gamma_2) = (\exists, \forall)$) or transitivity ($n = 3, (\gamma_1, \gamma_2, \gamma_3) = (\forall, \forall, \forall)$).
 
 A naïve way of proving those hyperproperties whould be to compute $\sem{t}$ for every $t$ we need, and then evaluate $\phi$ using the results. However, this approach requires us to prove the functional correctness of $t$, which is stronger than what is needed to prove $\phi$.
 
 To solve this issue, it is easier to reason directly on judgements we will now call \emph{hyper-triples}, which are an extension of Hoare triples, that take multiple programs as arguments. An hyper-triple (of arity $n$) could be written (a bit more formally) as follows:
 \[
-    \J |- {P} {\m[\I 1: t_1]^{Q_1} \dots \m[\I n: t_n]^{Q_n}} {Q}    
+    \J |- {P} {\m[\I 1: t_1]^{\gamma_1} \dots \m[\I n: t_n]^{\gamma_n}} {Q}    
 \]
-where every program $t_i$ is quantified universally or existentially, following $Q_i$
+where every program $t_i$ is quantified universally or existentially, following $\gamma_i$
 
-Several relational logics have already been built using those hyper-triples in \cite{Yang07, SousaD16, Benton04, BartheCK16}. Those relational logics center around so-called "lockstep" proofs, that relies on the similarity in structure between the different terms used inside hyper-triples. For example, they can deal with sequential composition using a rule that might look as follows:
+Several relational logics have already been built using those hyper-triples in \cite{Yang07, SousaD16, Benton04, BartheCK16}. Those relational logics center around so-called ``lockstep'' proofs, that relies on the similarity in structure between the different terms used inside hyper-triples. For example, they can deal with sequential composition using a rule that might look as follows:
 
 \begin{prooftree}
     \AxiomC{$\J |- {P} {\m[\I 1: t_1, \I 2: t_2]^{\forall}} {Q}$}
@@ -32,11 +32,11 @@ This rule is useful when $t_1$ and $t_2$ (resp. $t'_1$ and $t'_2$) are related, 
 
 However, this type of proof is limited, mainly because they are too rigid. To be more precise, they ask that the terms are structurally similar, which is not the case in general. Most of the work cited has been centered around what we can call \emph{enhanced lockstep}, chich relies on replacing terms with equivalent ones that match the structure of their neighbours. This proofs are done by first doing these kinds of replacement, before applying a lockstep proof. This model of proof, though simple, has shown to be efficient in several applications, and keen to be automated.
 
-But we would now like to point a new example: suppose a library with a certain specification, that calls to other functions, which also come with specifications. Supposing we could express all specifications as hyperproperties, we would to be able to derive the library hyperproperty from the functions hyperproperties. However, and that is the important part, the hyperproperties of the underlying functions potentially use different arities (for example, we would need for our proof that one function has a minimum -- arity 2 -- and is transitive -- arity 3). And unfortunately, all of the logics cited so far require to keep the same arity $n$ throughout the entire proof.
+But we would now like to point a new example: suppose a library with a certain specification, that calls to other functions, which also come with specifications. Supposing we could express all specifications as hyperproperties, we would to be able to derive the library hyperproperty from the functions hyperproperties. However, and that is the important part, the hyperproperties of the underlying functions potentially use different arities (for example, we would need for our proof that one function has a minimum - arity 2 - and is transitive arity 3). And unfortunately, all of the logics cited so far require to keep the same arity $n$ throughout the entire proof.
 
 To come around this issue, \citet{DOsualdo22} proposes LHC (for \emph{Logic for Hyper-Triple Composition}), which adds rules allowing the composition of such hyper-triples. \cref{sec:lhc} gives a more complete description of LHC, upon which this work is built.
 
-As is, LHC only deals with hypersafety, \ie $\forall^*$ hyperproperties. But, ideally, we would like to deal with any hyperproperty, more precisely, any alternation of quantifiers on traces. Some recent work has been done on those hyperproperties in \cite{Dickerson22, Dardinier23, Beutner22}, but the logics presented there suffer the same issues regarding their rigidity. Furthermore, they have a limited expressivity, by creating specific judgments enshrining certain alternations of quantifiers. This is done because those logics aim at being automated, which is a worthy goal. However, we argue that a more expressive logic serving as a foundational base for those other, more specialized, works, would be a nice addition.
+As is, LHC only deals with hypersafety, \ie $\forall^*$ hyperproperties. But, ideally, we would like to deal with any hyperproperty, more precisely, any alternation of quantifiers on traces. Some recent work has been done on those hyperproperties in \cite{Dickerson22, Dardinier23, Beutner22}, but the logics presented there suffer the same rigidity as \cite{Yang07, SousaD16, Benton04, BartheCK16}. Furthermore, they have a limited expressivity, by creating specific judgments enshrining certain alternations of quantifiers. This is done because those logics aim at being automated, which is a worthy goal. However, we argue that a more expressive logic serving as a foundational base for those other, more specialized, works would be a useful addition.
 
 Therefore, starting with LHC as a base, we aim at extending it, so that it could express any hyperproperty, and adding the relevant rules to prove them.
 

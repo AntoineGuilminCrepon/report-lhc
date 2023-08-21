@@ -1,12 +1,12 @@
 %!TEX root = ../main.tex
-\infer*[lab=wp-proj,
+\infer*[lab=wp$_{\forall}$-proj,
   Right={$ I = \supp(\m{t}_1) $}
 ]{
   %I = \supp(\m{t}_1)
 }{
   \V
   \P I. \bigl(
-  \WPU{\m{t}_2}{\WPE{\m{t}_1}{\True}}
+  \proj(\m{t}_2) \implies \proj(\m{t}_1)
   \land
   \WPU{(\m{t}_1 \m. \m{t}_2)}{Q}
   \bigr)

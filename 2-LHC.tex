@@ -37,7 +37,7 @@ We can now define the following types (with $\Store$ the type of stores, and $\T
 \end{grammar}
 \begin{eqnarray*}
   \Store&\is&\PVar\rightarrow\Val \\
-  \Type{HStore}&\is&\Idx\pto\Store \\
+  \Type{HStore}&\is&\Idx\rightarrow\Store \\
   \Type{HTerm}&\is&\Idx\pto\Term \\
   \Type{HReturn}&\is&\Idx\pto\Val \\
   \Assrt&\is&\Store\rightarrow\Prop \\
@@ -237,7 +237,7 @@ We can now define hypertriples $\T {P} {\m{t}} {Q}$ as $P \implies \WPU {\m{t}} 
 \Cref{fig:lockstep-wpU-rules} describes \emph{lockstep} rules, \ie rules allowing for lockstep proofs, as described before. They are similar to Hoare logic rules, and we can in fact recover these corresponding Hoare logic rules by taking the arity-1 case. The \cref{rule:wpU-while} is stated as a rule, but we will discuss a possible derivation of it later. \Cref{rule:wpU-refine} allows for \emph{extended lockstep} proofs, as they are explained in \cref{sec:intro}. It allows to replace a term $t_1$ by another $t_2$, assuming a \emph{refinement} $t_1 \semleq t_2$. This refinement is formally defined as follows:
 
 \begin{definition}[Refinement]
-  $t_1 \semleq t_2 \is \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'}$
+  $t_1 \semleq t_2 \is \fun s. \A v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'}$
 \end{definition}
 
 This rule will be rediscussed in \cref{sec:extension}.
@@ -250,14 +250,14 @@ This rule will be rediscussed in \cref{sec:extension}.
     \input{rules/wpU-conj.tex}
     \label{rule:wpU-conj}
 
-    \input{rules/wpU-proj.tex}
-    \label{rule:wpU-proj}
+    \input{rules/wpU-proj-origin.tex}
+    \label{rule:wpU-proj-origin}
   \end{proofrules}
   \caption{Hyper-structure rules from LHC}
   \label{fig:hyperstructure-rules}
 \end{mathfig}
 
-\Cref{fig:hyperstructure-rules} describes \emph{hyperstructural} rules, and is the center of LHC's novelty. \Cref{rule:wpU-nest} allows to change the arity of an hyper-triple, by nesting $\wpsymb_{\forall}$ inside each other. \Cref{rule:wpU-conj} gives another of combining two hypertriples (of potentially different arity) into another of a greater arity. \Cref{rule:wp-proj} describes the behavior of $\wpsymb_{\forall}$ with the projection operator $\Pi_I$. This rule uses a new jusgement, $\proj(\m{t})$, to maintain its soundness. This predicate is defined as follows (for hyperterms, there is a similar definition for unary terms):
+\Cref{fig:hyperstructure-rules} describes \emph{hyperstructural} rules, and is the center of LHC's novelty. \Cref{rule:wpU-nest} allows to change the arity of an hyper-triple, by nesting $\wpsymb_{\forall}$ inside each other. \Cref{rule:wpU-conj} gives another of combining two hypertriples (of potentially different arity) into another of a greater arity. \Cref{rule:wpU-proj-origin} describes the behavior of $\wpsymb_{\forall}$ with the projection operator $\Pi_I$. This rule uses a new jusgement, $\proj(\m{t})$, to maintain its soundness. This predicate is defined as follows (for hyperterms, there is a similar definition for unary terms):
 \[
   \proj(\m{t}) \is \fun \m{s}. \bigsome{\m{t}}{\m{s}}
 \]

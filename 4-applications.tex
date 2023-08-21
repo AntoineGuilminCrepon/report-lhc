@@ -40,7 +40,7 @@ And we can prove the following implications:
 \]
 
 \begin{proof}
-    The leftmost implications are derived from this more general result on refinements :
+    The leftmost implications are derived from this more general result on refinements:
 
     \begin{eqnarray*}
         t_1 \sqsubseteq t_2 &\is& \A s\ v\ s'. \bigstep {t_1} s v {s'} \implies \bigstep {t_2} s v {s'} \\
@@ -193,9 +193,9 @@ The left-hand side, after choosing 0 iterations for the existential star, boils 
 
 \subsection{Dealing with $\exists\forall$ hyperproperties}
 
-\citet{Dardinier23} presents an application of its logic where it deals with an hyperproperty with a quantifier alternation $\exists\forall$: the minimum. More precisely, it proves that if $t_1$ has a minimum, and $t_2$ is monotonous, then $t_1; t_2$ has a minimum. The derivation in this paper relies on the determinism of $t_2$. We will prove that this condition can be relaxed, only requiring $t_1; t_2$ to be projectable.
+One of the strengths of having two dual modalities $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$ is the ability to freely alternate quantifiers, as opposed to a logic where $\forall$ and $\exists$ are stated in judgments in a fixed alternation, as in \eg RHLE. One class that we can formalize, and that has not been explored much, is the $\exists\forall$ class. To explore the capacities of our logic in this class, we adapt an example from \citet{Dardinier23}: the property that if $t_1$ has a minimum, and $t_2$ is monotonous, then $t_1; t_2$ has a minimum. The derivation in this paper relies on the determinism of $t_2$. We will prove that this condition can be relaxed, only requiring $t_1; t_2$ to be projectable.
 
-First, we write down the specifications needed for this proof:
+Being monotonous and having a minimum can both be specified in LHC, as follows.
 
 \begin{align}
     \WPE {\m[\I 1: t_1]} {\WPU {\m[\I 2: t_1]} {\code{x}(\I 1) \leq \code{x}(\I 2)}}
@@ -204,7 +204,7 @@ First, we write down the specifications needed for this proof:
     \tag{$Mono_{\code{x}\rightarrow \code{y}}(t_2)$}
 \end{align}
 
-We want to derive from those specifications (and $\proj(t_1; t_2)$) the goal:
+To those two premisses, we also add $\proj(t_1;t_2)$. The goal of our derivation is that $t_1;t_2$ has a minimum, \ie:
 \[
     \WPE {\m[\I 1: t_1; t_2]} {\WPU {\m[\I 2: t_1; t_2]} {\code{y}(\I 1) \leq \code{y}(\I 2)}}
 \]
@@ -250,4 +250,4 @@ The left-hand side is simply $\proj(t_1; t_2)$. The right-hand side is derived t
                 {\code{y}(\I 1) \leq \code{y}(\I 2)}}}}$}
 \end{scprooftree}
 
-To be completely frank, $\exists\forall$ hyperproperties are one of our logic's weaknesses, mainly because we don't have as nice lockstep rules as with $\forall\exists$ hyperproperties. Still, we hope that with this derivation, one can appreciate that LHC still has the expressiveness and the flexibility allowing to go around this lack of lockstep rules to solve certain goals of this form.
+This derivation shows a strength of our logic: because it can handle $\wpsymb_{\forall}$ and $\wpsymb_{\exists}$ separatly, it can deal with any alternation of quantifiers without locking itself into it. To the best of our knowledge, the $\exists\forall$-property class is not well explored in the litterature, and we are missing good proof-principles for it. We think that the flexibility of our framework is a useful tool for investigating them.
