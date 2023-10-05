@@ -1,6 +1,11 @@
 %!TEX root = main.tex
 \section{Related work}
+\label{sec:related} 
 
 There is a large body of research regarding relational logics. We compare here our work to closely related research.
 
-\emph{Relational Hoare Logic and derivatives.} The original Relational Hoare Logic (RHL) from \citet{Benton04} provides a framework for judgments on pairs of programs, supporting lockstep proofs. This logic, and its extension to Separation logic by \citet{Yang07} have already been used to prove a wide range of properties.\citet{BartheCK11} introduces product programs as a way to handle 2-properties, by reducing them to standard Hoare logic statements. Futher work in \citet{BartheKOB13, BartheGHS17} extends this concept to probabilistic properties, like security of cryptographic code. Cartesian Hoare Logic (CHL), presented in \citet{SousaD16}, generalizes RHL to $k$-safety property, with fixed $k$. 
+\emph{Relational Hoare Logic and derivatives.} The original Relational Hoare Logic (RHL) from \citet{Benton04} provides a framework for judgments on pairs of programs, supporting lockstep proofs. This logic, and its extension to Separation logic by \citet{Yang07} have already been used to prove a wide range of properties.~\citet{BartheCK11} introduces product programs as a way to handle 2-properties, by reducing them to standard Hoare logic statements. Futher work in \citet{BartheKOB13, BartheGHS17} extends this concept to probabilistic properties, like security of cryptographic code. Cartesian Hoare Logic (CHL), presented in \citet{SousaD16}, generalizes RHL to $k$-safety properties, with fixed $k$. This generalisation is useful for common properties on operators, like associativity or transitivity. LHC~\cite{DOsualdo22} generalizes even more to $k$-safety properties with \emph{arbitrary} $k$, allowing a greater compositionality of proofs, with lower-arity premisses deriving higher-arity goals.
+
+\citet{Dickerson22} presents RHLE to deal with hyperliveness, $\forall\exists$ properties, such as generalized non-interference.~\citet{Dardinier23} develops Hyper Hoare Logic, that is also able to deal with $\exists\forall$ hyperproperties, \eg{} minimality of a function. Our work engulf both of these logics, by being able to express hyperproperties with an arbitrary sequence of quantifiers.
+
+\emph{Refinement logics.} By expressing hyperliveness properties, our extension to LHC can now express and prove refinement statements. The matter of proving refinement has already been discussed at length in the literature \eg{} \cite{FruminKB18, LiangFF12}.
